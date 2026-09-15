@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>B2 Speedrun OS</title>
+    <style>
+        :root {
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --primary: #00e676; 
+            --text-main: #ffffff;
+            --text-muted: #a0a0a0;
+            
+            /* Priority Colors */
+            --prio-1: #ff5252; /* Red */
+            --prio-2: #ffb142; /* Orange */
+            --prio-3: #34ace0; /* Blue */
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .container {
+            max-width: 550px;
+            width: 100%;
+        }
+        h1 {
+            text-align: center;
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .subtitle {
+            text-align: center;
+            color: var(--text-muted);
+            margin-bottom: 25px;
+            font-size: 0.9rem;
+        }
+        
+        /* Dropdown Button Styles */
+        .accordion-btn {
+            background-color: var(--card-bg);
+            color: var(--text-main);
+            cursor: pointer;
+            padding: 18px;
+            width: 100%;
+            border: 1px solid #333;
+            border-radius: 8px;
+            text-align: left;
+            outline: none;
+            font-size: 1.1rem;
+            font-weight: bold;
+            transition: 0.2s;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .accordion-btn:hover, .accordion-btn.active {
+            background-color: #2a2a2a;
+            border-color: var(--primary);
+        }
+        .accordion-btn::after {
+            content: '+';
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+        .accordion-btn.active::after {
+            content: '-';
+        }
+
+        /* Dropdown Content */
+        .panel {
+            padding: 0 10px;
+            background-color: var(--bg-color);
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            margin-bottom: 10px;
+        }
+
+        /* Priority Cards */
+        .task-card {
+            background-color: var(--card-bg);
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            line-height: 1.5;
+            font-size: 0.95rem;
+        }
+        .prio-1 { border-left: 5px solid var(--prio-1); }
+        .prio-2 { border-left: 5px solid var(--prio-2); }
+        .prio-3 { border-left: 5px solid var(--prio-3); }
+        
+        .prio-label {
+            font-size: 0.8rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+            display: inline-block;
+        }
+        .prio-1 .prio-label { color: var(--prio-1); }
+        .prio-2 .prio-label { color: var(--prio-2); }
+        .prio-3 .prio-label { color: var(--prio-3); }
+
+        /* Custom Grammar Engine Box */
+        .grammar-engine {
+            background-color: #1a1a2e;
+            border: 1px dashed var(--primary);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            font-size: 0.9rem;
+        }
+        .grammar-engine h3 {
+            margin-top: 0;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+        }
+        .grammar-engine ul {
+            padding-left: 20px;
+            margin-top: 5px;
+        }
+        .grammar-engine li {
+            margin-bottom: 8px;
+        }
+        .conditional {
+            background-color: #2d2d2d;
+            padding: 10px;
+            border-radius: 4px;
+            border-left: 3px solid #ffb142;
+            margin-top: 5px;
+            font-size: 0.85rem;
+            line-height: 1.4;
+        }
+
+        /* Tooltip Setup */
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+            background: #333;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+            border-radius: 50%;
+            width: 22px;
+            height: 22px;
+            text-align: center;
+            line-height: 22px;
+            font-size: 0.85rem;
+            margin-left: 10px;
+            font-weight: bold;
+        }
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 280px;
+            background-color: #222;
+            color: #fff;
+            text-align: left;
+            border-radius: 6px;
+            padding: 12px;
+            position: absolute;
+            z-index: 10;
+            top: 150%; 
+            left: 50%;
+            margin-left: -140px;
+            border: 1px solid var(--primary);
+            box-shadow: 0px 4px 12px rgba(0,0,0,0.8);
+            font-size: 0.85rem;
+            font-weight: normal;
+            line-height: 1.4;
+        }
+        .tooltip .tooltiptext::after {
+            content: "";
+            position: absolute;
+            bottom: 100%;  
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: transparent transparent var(--primary) transparent;
+        }
+        .tooltip:hover .tooltiptext, .tooltip:active .tooltiptext {
+            visibility: visible;
+        }
+        .method-highlight { color: var(--primary); font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>B2 Speedrun OS</h1>
+    <div class="subtitle">Target: Nov 3 Internal Exam (49 Days)</div>
+
+    <!-- GRAMMAR ALGORITHM -->
+    <button class="accordion-btn">⚙️ The Dynamic Grammar Engine</button>
+    <div class="panel">
+        <div class="grammar-engine">
+            <h3>Complete B2 Unit Flow 
+                <div class="tooltip">?
+                    <span class="tooltiptext">
+                        <span class="method-highlight">First Pass Method:</span><br>
+                        1. Brief read (2 mins) of the theory page.<br>
+                        2. Jump to exercises. TYPE every sentence out fully.<br>
+                        3. Check answer key after EVERY single exercise to micro-correct.<br><br>
+                        <span class="method-highlight">Repeat Pass Method:</span><br>
+                        1. Do NOT re-read theory.<br>
+                        2. Do ONLY the exercises you failed previously.<br>
+                        3. If you fail again, open ChatGPT: <i>"Give me 5 custom exercises to drill [Rule Name]."</i>
+                    </span>
+                </div>
+            </h3>
+
+            <b>Milestone 1: MVG (Syntax Base)</b>
+            <ul><li>Units 11 (V2), 5 & 7 (Brackets), 42 (Verb-Kickers)</li></ul>
+            <div class="conditional">
+                <b>IF</b> test >90% accurate: Move to Milestone 2.<br>
+                <b>IF</b> <90% accurate: Execute <i>Repeat Pass Method</i> before advancing.
+            </div>
+
+            <br><b>Milestone 2: Cases & Connectors</b>
+            <ul><li>Units 31 & 32 (Dativ/Akk), 33 & 34 (2-Way)</li>
+            <li>Units 40, 41, 72, 73 (und, aber, als, während)</li></ul>
+            <div class="conditional">
+                <b>IF</b> connectors are easy but prepositions are failing: Pause 72/73. Drill Anki case flashcards exclusively for 2 days.
+            </div>
+
+            <br><b>Milestone 3: B2 Output Structures</b>
+            <ul><li>Units 70 & 71 (Relativsätze), 74 (um...zu), 75 (Entweder/oder), 77 (Genitiv)</li></ul>
+
+            <br><b>Milestone 4: The Final Bosses</b>
+            <ul><li>Unit 79 (Adjektivdeklination)</li>
+            <li>Units 55 & 56 (Konjunktiv II)</li>
+            <li>Units 57 & 58 (Passiv), Unit 53 (Verben mit Präp)</li></ul>
+            <div class="conditional">
+                <b>IF</b> Adjective endings (79) drain your brain: Abandon them. Go straight to Passiv (57). Adjective endings offer low ROI compared to correct Passive voice.
+            </div>
+
+            <br><b style="color:var(--primary);">Milestone 5: The Endgame (Units 100% Done)</b>
+            <div class="conditional">
+                <i>You beat the textbook before the exam.</i><br>
+                <b>1.</b> Stop reading the book.<br>
+                <b>2.</b> Grind 1 full Mock Exam / C-Test daily.<br>
+                <b>3.</b> <b>IF</b> the mock exposes a hole (e.g., Passive) -> <b>THEN</b> snipe that specific unit using the <i>Repeat Pass Method</i>. Otherwise, just output.
+            </div>
+        </div>
+    </div>
+
+    <!-- DAILY DECISION TREE -->
+    
+    <button class="accordion-btn">🚶 Walking / Commuting</button>
+    <div class="panel">
+        <div class="task-card prio-1">
+            <span class="prio-label">Morning</span><br>
+            <b>Walk 1 (Active Input):</b> Listen to Michel Thomas or Language Transfer. You MUST shout the answers out loud.
+        </div>
+        <div class="task-card prio-3">
+            <span class="prio-label">Mid-Day</span><br>
+            <b>Walk 2 (Passive Wash):</b> Easy German Podcast or Nicos Weg audio. Calibrate your ears. No active translating.
+        </div>
+        <div class="task-card prio-1">
+            <span class="prio-label">Night</span><br>
+            <b>Walk 3 (Verbal Output):</b> No headphones. Look at objects and run "Clause Collisions" aloud (e.g., "Der Hund ist schnell" -> "Ich denke, dass der Hund schnell ist").
+        </div>
+    </div>
+
+    <button class="accordion-btn">💻 Uni Class (Device Allowed)</button>
+    <div class="panel">
+        <div class="task-card prio-1">
+            <span class="prio-label">Priority 1 (Stealth)</span><br>
+            <b>Grammatik aktiv Digital Scriptorium:</b> Open PDF. Type out your current Milestone exercises in a Google Doc. Looks like taking intense notes.
+        </div>
+        <div class="task-card prio-2">
+            <span class="prio-label">Priority 2 (Grind)</span><br>
+            <b>Anki Clear:</b> 50 daily cards. Force silent articulation of the article (der/die/das) before hitting spacebar.
+        </div>
+        <div class="task-card prio-3">
+            <span class="prio-label">Priority 3 (Passive)</span><br>
+            <b>Wikipedia Mining:</b> Read German Wiki of your lecture subject. Use Alt+Shift+T. Mine 5 words to Anki.
+        </div>
+    </div>
+
+    <button class="accordion-btn">📝 Uni Class (No Device)</button>
+    <div class="panel">
+        <div class="task-card prio-1">
+            <span class="prio-label">Priority 1 (Trojan Horse)</span><br>
+            <b>Pre-Printed Worksheets:</b> Fill out the "Trojan Google Doc" you printed last night containing blank sentences from your current Milestone.
+        </div>
+        <div class="task-card prio-2">
+            <span class="prio-label">Priority 2 (Translation)</span><br>
+            <b>Live V2 Translations:</b> Every 15 mins, translate one sentence the professor says into German in your margins.
+        </div>
+        <div class="task-card prio-3">
+            <span class="prio-label">Priority 3 (System Dump)</span><br>
+            <b>Memory Write-Out:</b> Draw a box. Write DOGFU, ABM-NS-VZ, or your verb-kicker list from memory.
+        </div>
+    </div>
+
+    <button class="accordion-btn">☀️ Free Time (Daytime Desk)</button>
+    <div class="panel">
+        <div class="task-card prio-1">
+            <span class="prio-label">Priority 1 (Deep Work)</span><br>
+            <b>Advance the Grammar Engine:</b> Check your current Milestone. Complete the units. If conditionals are met, move to the next phase. Type all answers.
+        </div>
+        <div class="task-card prio-2">
+            <span class="prio-label">Priority 2 (Reality Check)</span><br>
+            <b>C-Test Grind:</b> Take 1 online C-Test (Lückentext). Let it expose exactly which prepositions/endings you are missing.
+        </div>
+        <div class="task-card prio-2">
+            <span class="prio-label">Priority 2 (Output)</span><br>
+            <b>AI Interrogation (20m):</b> Text chat with Claude/ChatGPT in B2. Demand brutal syntax corrections.
+        </div>
+    </div>
+
+    <button class="accordion-btn">🌙 Free Time (Night)</button>
+    <div class="panel">
+        <div class="task-card prio-2">
+            <span class="prio-label">If Mon/Tue (Short Time)</span><br>
+            Do a 15-minute AI chat or 1 C-Test. Watch 1 episode of German Netflix. Go to sleep. Do not open textbooks.
+        </div>
+        <div class="task-card prio-1">
+            <span class="prio-label">If Wed/Thu/Fri (3-5 Hours)</span><br>
+            <b>Hour 1:</b> High-Friction Output. Write a 150-word B2 essay. Grade with DeepL.<br><br>
+            <b>Hours 2-5:</b> Deep Immersion. Close textbooks. Play video games in German, watch Nicos Weg, dive down German YouTube rabbit holes.
+        </div>
+    </div>
+
+    <button class="accordion-btn">🏋️ Hands Busy (Gym / Cooking)</button>
+    <div class="panel">
+        <div class="task-card prio-2">
+            <span class="prio-label">Acoustic & Mental</span><br>
+            Listen to Easy German or Nicos Weg without pausing. Between sets or while waiting for food to cook, run preposition cases in your head.
+        </div>
+    </div>
+</div>
+
+<script>
+    var acc = document.getElementsByClassName("accordion-btn");
+    for (var i = 0; i < acc.length; i++) {
+        acc[i].addEventListener("click", function() {
+            this.classList.toggle("active");
+            var panel = this.nextElementSibling;
+            if (panel.style.maxHeight) {
+                panel.style.maxHeight = null;
+            } else {
+                panel.style.maxHeight = panel.scrollHeight + "px";
+            } 
+        });
+    }
+</script>
+
+</body>
+</html>
