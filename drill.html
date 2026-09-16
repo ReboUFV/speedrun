@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stealth Drill OS - Strict SVOV</title>
+    <title>Stealth Drill OS - Memory Engine</title>
     <style>
         :root {
             --bg-color: #0d0d0d;
             --card-bg: #1a1a1a;
             --primary: #00e676; 
             --nav-bg: #1a1a2e;
+            --error: #ff5252;
             --text-main: #ffffff;
             --text-muted: #888888;
             --btn-disabled: #333333;
@@ -113,7 +114,13 @@
         }
 
         /* Buttons */
-        .btn-group {
+        .btn-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            width: 100%;
+        }
+        .btn-row {
             display: flex;
             gap: 15px;
             width: 100%;
@@ -136,7 +143,7 @@
         .btn-answer:active {
             background-color: #00c853;
         }
-        .btn-next {
+        .btn-next, .btn-danger {
             background-color: var(--btn-disabled);
             color: var(--text-muted);
             pointer-events: none;
@@ -148,6 +155,21 @@
         }
         .btn-next.active:active {
             background-color: #ddd;
+        }
+        .btn-danger.active {
+            background-color: transparent;
+            border: 2px solid var(--error);
+            color: var(--error);
+            pointer-events: auto;
+        }
+        .btn-danger.active:active {
+            background-color: rgba(255, 82, 82, 0.2);
+        }
+        
+        #stats {
+            margin-top: 15px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
         }
     </style>
 </head>
@@ -163,19 +185,34 @@
         <div id="english-prompt">Loading Engine...</div>
         <div id="german-answer"></div>
         
-        <div class="btn-group">
-            <button class="btn btn-answer" id="btn-answer" onclick="showAnswer()">Answer</button>
-            <button class="btn btn-next" id="btn-next" onclick="nextQuestion()">Next</button>
+        <div class="btn-controls">
+            <div class="btn-row">
+                <button class="btn btn-answer" id="btn-answer" onclick="showAnswer()">Answer</button>
+                <button class="btn btn-next" id="btn-next" onclick="nextQuestion()">Next</button>
+            </div>
+            <!-- The Danger Button -->
+            <button class="btn btn-danger" id="btn-danger" onclick="banSentence()">DONE (Never Repeat)</button>
         </div>
+        
+        <div id="stats">Mastered Sentences: 0</div>
     </div>
 </div>
 
 <script>
     // ==========================================
+    // LOCAL STORAGE MEMORY DATABASE
+    // ==========================================
+    // Load banned sentences from browser storage, or create empty array if new
+    let bannedSentences = new Set(JSON.parse(localStorage.getItem('speedrunBannedSet')) || []);
+    let currentSentenceData = { en: "", de: "" };
+
+    function updateStats() {
+        document.getElementById('stats').innerText = `Mastered Sentences: ${bannedSentences.size}`;
+    }
+
+    // ==========================================
     // STRICT SVOV PROCEDURAL ENGINE
     // ==========================================
-
-    // 1. Dictionaries (The Building Blocks)
     const subjects = [
         { de: "ich", en: "I", m: { can: {de:"kann", en:"can"}, must: {de:"muss", en:"must"}, want: {de:"will", en:"want to"} } },
         { de: "wir", en: "we", m: { can: {de:"können", en:"can"}, must: {de:"müssen", en:"must"}, want: {de:"wollen", en:"want to"} } },
@@ -211,7 +248,6 @@
         { de: "weil", en: "because" }, { de: "wenn", en: "if" }
     ];
 
-    // 2. Utility Functions
     function getRandom(arr) {
         return arr[Math.floor(Math.random() * arr.length)];
     }
@@ -220,7 +256,6 @@
         return str.charAt(0).toUpperCase() + str.slice(1);
     }
 
-    // 3. Strict SVOV Clause Generators
     function buildClause() {
         const s = getRandom(subjects);
         const modalKey = getRandom(["can", "must", "want"]);
@@ -230,9 +265,7 @@
         const mod = getRandom(modals);
         const l = getRandom(lokals);
 
-        // Strict SVOV TeKaMoLo Rule: Subject -> Modal -> Temporal -> Modal -> Object -> Lokal -> Infinitive
         let deMittelfeld = `${t.de} ${mod.de} ${a.oDe} ${l.de}`;
-        
         let de = `${s.de} ${m.de} ${deMittelfeld} ${a.vDe}`;
         let en = `${s.en} ${m.en} ${a.vEn} ${a.oEn} ${mod.en} ${l.en} ${t.en}`;
         let tag = "[SVOV]";
@@ -249,7 +282,6 @@
         const mod = getRandom(modals);
         const l = getRandom(lokals);
 
-        // Verb-Kicker: Conjugated modal moves to absolute end
         let de = `${connector.de} ${s.de} ${t.de} ${mod.de} ${a.oDe} ${l.de} ${a.vDe} ${m.de}`;
         let en = `${connector.en} ${s.en} ${m.en} ${a.vEn} ${a.oEn} ${mod.en} ${l.en} ${t.en}`;
         let tag = `[${capitalize(connector.de)}]`;
@@ -257,46 +289,54 @@
         return { de, en, tag };
     }
 
-    // 4. The Master Combiner
-    function generateFullSentence() {
-        // Randomly pick a sentence pattern (0, 1, or 2)
+    function generateRawSentence() {
         const pattern = Math.floor(Math.random() * 3);
         let finalDe = "";
         let finalEn = "";
 
         if (pattern === 0) {
-            // Pattern 0: SVOV + (und/aber/denn) + SVOV
             let c1 = buildClause();
             let conn = getRandom(pos0Connectors);
             let c2 = buildClause();
-            
             finalEn = `<span class="tag">${c1.tag}</span> ${capitalize(c1.en)}, ${conn.en} <span class="tag">${c2.tag}</span> ${c2.en}.`;
             finalDe = `${capitalize(c1.de)}, ${conn.de} ${c2.de}.`;
-        
         } else if (pattern === 1) {
-            // Pattern 1: SVOV + (weil/wenn) + Nebensatz
             let c1 = buildClause();
             let conn = getRandom(verbKickers);
             let c2 = buildNebensatz(conn);
-
             finalEn = `<span class="tag">${c1.tag}</span> ${capitalize(c1.en)}, <span class="tag">${c2.tag}</span> ${c2.en}.`;
             finalDe = `${capitalize(c1.de)}, ${c2.de}.`;
-
         } else {
-            // Pattern 2: Dass clause
             const intros = [
-                { de: "ich denke", en: "I think" },
-                { de: "er sagt", en: "he says" },
-                { de: "wir wissen", en: "we know" }
+                { de: "ich denke", en: "I think" }, { de: "er sagt", en: "he says" }, { de: "wir wissen", en: "we know" }
             ];
             let intro = getRandom(intros);
             let c2 = buildNebensatz({de: "dass", en: "that"});
-
             finalEn = `<span class="tag">[SVOV]</span> ${capitalize(intro.en)}, <span class="tag">[Dass]</span> ${c2.en}.`;
             finalDe = `${capitalize(intro.de)}, ${c2.de}.`;
         }
-
         return { en: finalEn, de: finalDe };
+    }
+
+    // Generator Wrapper with LocalStorage Check
+    function getUniqueSentence() {
+        let sentence;
+        let safeCounter = 0;
+        
+        do {
+            sentence = generateRawSentence();
+            safeCounter++;
+            // Failsafe in case you somehow ban 8 million sentences
+            if (safeCounter > 200) {
+                console.warn("Too many rerolls, resetting memory.");
+                bannedSentences.clear();
+                localStorage.removeItem('speedrunBannedSet');
+                updateStats();
+                break;
+            }
+        } while (bannedSentences.has(sentence.de));
+        
+        return sentence;
     }
 
     // ==========================================
@@ -305,21 +345,36 @@
     const promptEl = document.getElementById("english-prompt");
     const answerEl = document.getElementById("german-answer");
     const btnNext = document.getElementById("btn-next");
+    const btnDanger = document.getElementById("btn-danger");
 
     function loadQuestion() {
-        const sentence = generateFullSentence();
-        promptEl.innerHTML = sentence.en;
-        answerEl.innerText = sentence.de;
+        currentSentenceData = getUniqueSentence();
+        promptEl.innerHTML = currentSentenceData.en;
+        answerEl.innerText = currentSentenceData.de;
+        
+        // Hide answer and disable Next/Done buttons until Answer is clicked
         answerEl.classList.remove("visible");
         btnNext.classList.remove("active");
+        btnDanger.classList.remove("active");
+        updateStats();
     }
 
     function showAnswer() {
         answerEl.classList.add("visible");
         btnNext.classList.add("active");
+        btnDanger.classList.add("active"); // Now you are allowed to ban it
     }
 
     function nextQuestion() {
+        loadQuestion();
+    }
+
+    function banSentence() {
+        // 1. Add current German string to the Set
+        bannedSentences.add(currentSentenceData.de);
+        // 2. Save it permanently to browser LocalStorage
+        localStorage.setItem('speedrunBannedSet', JSON.stringify([...bannedSentences]));
+        // 3. Immediately move to the next question
         loadQuestion();
     }
 
