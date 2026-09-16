@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stealth Drill OS - Memory Engine</title>
+    <title>Stealth Drill OS - Tagless Memory Engine</title>
     <style>
         :root {
             --bg-color: #0d0d0d;
@@ -101,18 +101,6 @@
             opacity: 1 !important;
         }
 
-        /* Syntax Tags */
-        .tag {
-            background-color: #333;
-            color: #ffb142;
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-size: 0.8rem;
-            margin-right: 5px;
-            text-transform: uppercase;
-            vertical-align: middle;
-        }
-
         /* Buttons */
         .btn-controls {
             display: flex;
@@ -190,7 +178,6 @@
                 <button class="btn btn-answer" id="btn-answer" onclick="showAnswer()">Answer</button>
                 <button class="btn btn-next" id="btn-next" onclick="nextQuestion()">Next</button>
             </div>
-            <!-- The Danger Button -->
             <button class="btn btn-danger" id="btn-danger" onclick="banSentence()">DONE (Never Repeat)</button>
         </div>
         
@@ -202,7 +189,6 @@
     // ==========================================
     // LOCAL STORAGE MEMORY DATABASE
     // ==========================================
-    // Load banned sentences from browser storage, or create empty array if new
     let bannedSentences = new Set(JSON.parse(localStorage.getItem('speedrunBannedSet')) || []);
     let currentSentenceData = { en: "", de: "" };
 
@@ -211,7 +197,7 @@
     }
 
     // ==========================================
-    // STRICT SVOV PROCEDURAL ENGINE
+    // STRICT SVOV PROCEDURAL ENGINE (TAGLESS)
     // ==========================================
     const subjects = [
         { de: "ich", en: "I", m: { can: {de:"kann", en:"can"}, must: {de:"muss", en:"must"}, want: {de:"will", en:"want to"} } },
@@ -268,9 +254,8 @@
         let deMittelfeld = `${t.de} ${mod.de} ${a.oDe} ${l.de}`;
         let de = `${s.de} ${m.de} ${deMittelfeld} ${a.vDe}`;
         let en = `${s.en} ${m.en} ${a.vEn} ${a.oEn} ${mod.en} ${l.en} ${t.en}`;
-        let tag = "[SVOV]";
         
-        return { de, en, tag };
+        return { de, en };
     }
 
     function buildNebensatz(connector) {
@@ -284,9 +269,8 @@
 
         let de = `${connector.de} ${s.de} ${t.de} ${mod.de} ${a.oDe} ${l.de} ${a.vDe} ${m.de}`;
         let en = `${connector.en} ${s.en} ${m.en} ${a.vEn} ${a.oEn} ${mod.en} ${l.en} ${t.en}`;
-        let tag = `[${capitalize(connector.de)}]`;
 
-        return { de, en, tag };
+        return { de, en };
     }
 
     function generateRawSentence() {
@@ -298,13 +282,13 @@
             let c1 = buildClause();
             let conn = getRandom(pos0Connectors);
             let c2 = buildClause();
-            finalEn = `<span class="tag">${c1.tag}</span> ${capitalize(c1.en)}, ${conn.en} <span class="tag">${c2.tag}</span> ${c2.en}.`;
+            finalEn = `${capitalize(c1.en)}, ${conn.en} ${c2.en}.`;
             finalDe = `${capitalize(c1.de)}, ${conn.de} ${c2.de}.`;
         } else if (pattern === 1) {
             let c1 = buildClause();
             let conn = getRandom(verbKickers);
             let c2 = buildNebensatz(conn);
-            finalEn = `<span class="tag">${c1.tag}</span> ${capitalize(c1.en)}, <span class="tag">${c2.tag}</span> ${c2.en}.`;
+            finalEn = `${capitalize(c1.en)}, ${c2.en}.`;
             finalDe = `${capitalize(c1.de)}, ${c2.de}.`;
         } else {
             const intros = [
@@ -312,13 +296,12 @@
             ];
             let intro = getRandom(intros);
             let c2 = buildNebensatz({de: "dass", en: "that"});
-            finalEn = `<span class="tag">[SVOV]</span> ${capitalize(intro.en)}, <span class="tag">[Dass]</span> ${c2.en}.`;
+            finalEn = `${capitalize(intro.en)}, ${c2.en}.`;
             finalDe = `${capitalize(intro.de)}, ${c2.de}.`;
         }
         return { en: finalEn, de: finalDe };
     }
 
-    // Generator Wrapper with LocalStorage Check
     function getUniqueSentence() {
         let sentence;
         let safeCounter = 0;
@@ -326,7 +309,6 @@
         do {
             sentence = generateRawSentence();
             safeCounter++;
-            // Failsafe in case you somehow ban 8 million sentences
             if (safeCounter > 200) {
                 console.warn("Too many rerolls, resetting memory.");
                 bannedSentences.clear();
@@ -352,7 +334,6 @@
         promptEl.innerHTML = currentSentenceData.en;
         answerEl.innerText = currentSentenceData.de;
         
-        // Hide answer and disable Next/Done buttons until Answer is clicked
         answerEl.classList.remove("visible");
         btnNext.classList.remove("active");
         btnDanger.classList.remove("active");
@@ -362,7 +343,7 @@
     function showAnswer() {
         answerEl.classList.add("visible");
         btnNext.classList.add("active");
-        btnDanger.classList.add("active"); // Now you are allowed to ban it
+        btnDanger.classList.add("active"); 
     }
 
     function nextQuestion() {
@@ -370,15 +351,11 @@
     }
 
     function banSentence() {
-        // 1. Add current German string to the Set
         bannedSentences.add(currentSentenceData.de);
-        // 2. Save it permanently to browser LocalStorage
         localStorage.setItem('speedrunBannedSet', JSON.stringify([...bannedSentences]));
-        // 3. Immediately move to the next question
         loadQuestion();
     }
 
-    // Start
     loadQuestion();
 </script>
 
