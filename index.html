@@ -9,27 +9,61 @@
             --bg-color: #121212;
             --card-bg: #1e1e1e;
             --primary: #00e676; 
+            --nav-bg: #1a1a2e;
             --text-main: #ffffff;
             --text-muted: #a0a0a0;
             
-            /* Priority Colors */
-            --prio-1: #ff5252; /* Red */
-            --prio-2: #ffb142; /* Orange */
-            --prio-3: #34ace0; /* Blue */
+            --prio-1: #ff5252; 
+            --prio-2: #ffb142; 
+            --prio-3: #34ace0; 
         }
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             background-color: var(--bg-color);
             color: var(--text-main);
             margin: 0;
-            padding: 20px;
+            padding: 0 0 20px 0;
             display: flex;
             flex-direction: column;
             align-items: center;
         }
+        
+        /* Navigation Bar */
+        .navbar {
+            width: 100%;
+            background-color: var(--nav-bg);
+            display: flex;
+            justify-content: center;
+            border-bottom: 2px solid var(--primary);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .nav-link {
+            flex: 1;
+            text-align: center;
+            padding: 15px 10px;
+            color: var(--text-main);
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: background 0.2s;
+        }
+        .nav-link.active {
+            background-color: rgba(0, 230, 118, 0.1);
+            color: var(--primary);
+        }
+        .nav-link:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
         .container {
             max-width: 550px;
             width: 100%;
+            padding: 20px;
+            box-sizing: border-box;
         }
         h1 {
             text-align: center;
@@ -37,7 +71,6 @@
             margin-bottom: 5px;
             color: var(--primary);
             text-transform: uppercase;
-            letter-spacing: 1px;
         }
         .subtitle {
             text-align: center;
@@ -115,7 +148,7 @@
 
         /* Custom Grammar Engine Box */
         .grammar-engine {
-            background-color: #1a1a2e;
+            background-color: var(--nav-bg);
             border: 1px dashed var(--primary);
             padding: 15px;
             border-radius: 8px;
@@ -199,6 +232,11 @@
 </head>
 <body>
 
+<div class="navbar">
+    <a href="index.html" class="nav-link active">OS Menu</a>
+    <a href="drill.html" class="nav-link">Stealth Drill</a>
+</div>
+
 <div class="container">
     <h1>B2 Speedrun OS</h1>
     <div class="subtitle">Target: Nov 3 Internal Exam (49 Days)</div>
@@ -217,7 +255,6 @@
                         <span class="method-highlight">Repeat Pass Method:</span><br>
                         1. Do NOT re-read theory.<br>
                         2. Do ONLY the exercises you failed previously.<br>
-                        3. If you fail again, open ChatGPT: <i>"Give me 5 custom exercises to drill [Rule Name]."</i>
                     </span>
                 </div>
             </h3>
@@ -226,7 +263,7 @@
             <ul><li>Units 11 (V2), 5 & 7 (Brackets), 42 (Verb-Kickers)</li></ul>
             <div class="conditional">
                 <b>IF</b> test >90% accurate: Move to Milestone 2.<br>
-                <b>IF</b> <90% accurate: Execute <i>Repeat Pass Method</i> before advancing.
+                <b>IF</b> <90% accurate: Execute <i>Repeat Pass Method</i>.
             </div>
 
             <br><b>Milestone 2: Cases & Connectors</b>
@@ -243,35 +280,30 @@
             <ul><li>Unit 79 (Adjektivdeklination)</li>
             <li>Units 55 & 56 (Konjunktiv II)</li>
             <li>Units 57 & 58 (Passiv), Unit 53 (Verben mit Präp)</li></ul>
-            <div class="conditional">
-                <b>IF</b> Adjective endings (79) drain your brain: Abandon them. Go straight to Passiv (57). Adjective endings offer low ROI compared to correct Passive voice.
-            </div>
 
             <br><b style="color:var(--primary);">Milestone 5: The Endgame (Units 100% Done)</b>
             <div class="conditional">
-                <i>You beat the textbook before the exam.</i><br>
                 <b>1.</b> Stop reading the book.<br>
                 <b>2.</b> Grind 1 full Mock Exam / C-Test daily.<br>
-                <b>3.</b> <b>IF</b> the mock exposes a hole (e.g., Passive) -> <b>THEN</b> snipe that specific unit using the <i>Repeat Pass Method</i>. Otherwise, just output.
+                <b>3.</b> <b>IF</b> mock exposes a hole -> <b>THEN</b> snipe that specific unit.
             </div>
         </div>
     </div>
 
     <!-- DAILY DECISION TREE -->
-    
     <button class="accordion-btn">🚶 Walking / Commuting</button>
     <div class="panel">
         <div class="task-card prio-1">
             <span class="prio-label">Morning</span><br>
-            <b>Walk 1 (Active Input):</b> Listen to Michel Thomas or Language Transfer. You MUST shout the answers out loud.
+            <b>Walk 1 (Active Input):</b> Listen to Michel Thomas or Language Transfer. Shout the answers out loud.
         </div>
         <div class="task-card prio-3">
             <span class="prio-label">Mid-Day</span><br>
-            <b>Walk 2 (Passive Wash):</b> Easy German Podcast or Nicos Weg audio. Calibrate your ears. No active translating.
+            <b>Walk 2 (Passive Wash):</b> Easy German Podcast or Nicos Weg audio. Calibrate your ears.
         </div>
         <div class="task-card prio-1">
             <span class="prio-label">Night</span><br>
-            <b>Walk 3 (Verbal Output):</b> No headphones. Look at objects and run "Clause Collisions" aloud (e.g., "Der Hund ist schnell" -> "Ich denke, dass der Hund schnell ist").
+            <b>Walk 3 (Verbal Output):</b> No headphones. Run "Clause Collisions" aloud.
         </div>
     </div>
 
@@ -279,31 +311,23 @@
     <div class="panel">
         <div class="task-card prio-1">
             <span class="prio-label">Priority 1 (Stealth)</span><br>
-            <b>Grammatik aktiv Digital Scriptorium:</b> Open PDF. Type out your current Milestone exercises in a Google Doc. Looks like taking intense notes.
+            <b>Digital Scriptorium:</b> Type out current Milestone exercises in a Google Doc.
         </div>
         <div class="task-card prio-2">
             <span class="prio-label">Priority 2 (Grind)</span><br>
-            <b>Anki Clear:</b> 50 daily cards. Force silent articulation of the article (der/die/das) before hitting spacebar.
-        </div>
-        <div class="task-card prio-3">
-            <span class="prio-label">Priority 3 (Passive)</span><br>
-            <b>Wikipedia Mining:</b> Read German Wiki of your lecture subject. Use Alt+Shift+T. Mine 5 words to Anki.
+            <b>Anki Clear:</b> 50 daily cards. Think the article (der/die/das).
         </div>
     </div>
 
     <button class="accordion-btn">📝 Uni Class (No Device)</button>
     <div class="panel">
         <div class="task-card prio-1">
-            <span class="prio-label">Priority 1 (Trojan Horse)</span><br>
-            <b>Pre-Printed Worksheets:</b> Fill out the "Trojan Google Doc" you printed last night containing blank sentences from your current Milestone.
+            <span class="prio-label">Priority 1 (Trojan / Drill)</span><br>
+            Fill out pre-printed Google Doc <b>OR</b> pull out phone and run the <b>Stealth Drill App</b> under the desk.
         </div>
         <div class="task-card prio-2">
             <span class="prio-label">Priority 2 (Translation)</span><br>
-            <b>Live V2 Translations:</b> Every 15 mins, translate one sentence the professor says into German in your margins.
-        </div>
-        <div class="task-card prio-3">
-            <span class="prio-label">Priority 3 (System Dump)</span><br>
-            <b>Memory Write-Out:</b> Draw a box. Write DOGFU, ABM-NS-VZ, or your verb-kicker list from memory.
+            <b>Live V2 Translations:</b> Translate one sentence the professor says into German in your margins.
         </div>
     </div>
 
@@ -311,15 +335,11 @@
     <div class="panel">
         <div class="task-card prio-1">
             <span class="prio-label">Priority 1 (Deep Work)</span><br>
-            <b>Advance the Grammar Engine:</b> Check your current Milestone. Complete the units. If conditionals are met, move to the next phase. Type all answers.
+            <b>Advance Grammar Engine:</b> Complete the units. Type all answers.
         </div>
         <div class="task-card prio-2">
             <span class="prio-label">Priority 2 (Reality Check)</span><br>
-            <b>C-Test Grind:</b> Take 1 online C-Test (Lückentext). Let it expose exactly which prepositions/endings you are missing.
-        </div>
-        <div class="task-card prio-2">
-            <span class="prio-label">Priority 2 (Output)</span><br>
-            <b>AI Interrogation (20m):</b> Text chat with Claude/ChatGPT in B2. Demand brutal syntax corrections.
+            <b>C-Test & AI:</b> 1x C-Test (Lückentext) + 20 mins AI Interrogation.
         </div>
     </div>
 
@@ -327,20 +347,12 @@
     <div class="panel">
         <div class="task-card prio-2">
             <span class="prio-label">If Mon/Tue (Short Time)</span><br>
-            Do a 15-minute AI chat or 1 C-Test. Watch 1 episode of German Netflix. Go to sleep. Do not open textbooks.
+            15-minute AI chat or 1 C-Test. 1 episode of German Netflix. Sleep.
         </div>
         <div class="task-card prio-1">
             <span class="prio-label">If Wed/Thu/Fri (3-5 Hours)</span><br>
-            <b>Hour 1:</b> High-Friction Output. Write a 150-word B2 essay. Grade with DeepL.<br><br>
-            <b>Hours 2-5:</b> Deep Immersion. Close textbooks. Play video games in German, watch Nicos Weg, dive down German YouTube rabbit holes.
-        </div>
-    </div>
-
-    <button class="accordion-btn">🏋️ Hands Busy (Gym / Cooking)</button>
-    <div class="panel">
-        <div class="task-card prio-2">
-            <span class="prio-label">Acoustic & Mental</span><br>
-            Listen to Easy German or Nicos Weg without pausing. Between sets or while waiting for food to cook, run preposition cases in your head.
+            <b>Hour 1:</b> Write 150-word B2 essay. Grade with DeepL.<br><br>
+            <b>Hours 2-5:</b> Deep Immersion. Books away. Video games, Nicos Weg, YouTube.
         </div>
     </div>
 </div>
@@ -359,6 +371,5 @@
         });
     }
 </script>
-
 </body>
 </html>

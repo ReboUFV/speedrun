@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stealth Drill OS</title>
+    <style>
+        :root {
+            --bg-color: #0d0d0d;
+            --card-bg: #1a1a1a;
+            --primary: #00e676; 
+            --nav-bg: #1a1a2e;
+            --error: #ff5252;   
+            --text-main: #ffffff;
+            --text-muted: #888888;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+        }
+        
+        /* Navigation Bar */
+        .navbar {
+            width: 100%;
+            background-color: var(--nav-bg);
+            display: flex;
+            justify-content: center;
+            border-bottom: 2px solid var(--primary);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .nav-link {
+            flex: 1;
+            text-align: center;
+            padding: 15px 10px;
+            color: var(--text-main);
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: background 0.2s;
+        }
+        .nav-link.active {
+            background-color: rgba(0, 230, 118, 0.1);
+            color: var(--primary);
+        }
+        .nav-link:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .main-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .container {
+            max-width: 400px;
+            width: 100%;
+            background-color: var(--card-bg);
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            text-align: center;
+        }
+        .header {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+        }
+        #english-prompt {
+            font-size: 1.4rem;
+            font-weight: bold;
+            margin-bottom: 25px;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        input[type="text"] {
+            width: 100%;
+            background-color: #222;
+            border: 2px solid #333;
+            color: var(--text-main);
+            padding: 15px;
+            font-size: 1.1rem;
+            border-radius: 6px;
+            box-sizing: border-box;
+            outline: none;
+            transition: border-color 0.2s;
+            text-align: center;
+        }
+        input[type="text"]:focus {
+            border-color: var(--primary);
+        }
+        #feedback {
+            margin-top: 20px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            min-height: 50px;
+        }
+        .correct { color: var(--primary); }
+        .incorrect { color: var(--error); }
+        .correction-text {
+            color: var(--text-main);
+            font-size: 1rem;
+            margin-top: 5px;
+            font-weight: normal;
+        }
+        .btn {
+            background-color: var(--text-main);
+            color: var(--bg-color);
+            border: none;
+            padding: 12px 20px;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 6px;
+            margin-top: 15px;
+            cursor: pointer;
+            width: 100%;
+        }
+        .btn:active { background-color: #ddd; }
+    </style>
+</head>
+<body>
+
+<div class="navbar">
+    <a href="index.html" class="nav-link">OS Menu</a>
+    <a href="drill.html" class="nav-link active">Stealth Drill</a>
+</div>
+
+<div class="main-wrapper">
+    <div class="container">
+        <div class="header">Syntax & Connector Drill</div>
+        <div id="english-prompt">Loading...</div>
+        <input type="text" id="german-input" autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false" placeholder="Type German & hit Enter">
+        <div id="feedback"></div>
+        <button class="btn" onclick="checkAnswer()" id="action-btn">Submit</button>
+    </div>
+</div>
+
+<script>
+    // Expanded Matrix: Modals, V2, Fragewörter, Connectors
+    const drillData = [
+        // Core Modals & Brackets
+        { en: "I want it.", de: ["ich will es"] },
+        { en: "I must do it.", de: ["ich muss es machen"] },
+        { en: "I can't see it.", de: ["ich kann es nicht sehen"] },
+        { en: "Can you (formal) tell me?", de: ["können sie mir sagen"] },
+        { en: "I want to play.", de: ["ich will spielen"] },
+        
+        // V2 Inversion (Time/Place first)
+        { en: "Today I am learning German.", de: ["heute lerne ich deutsch"] },
+        { en: "Now I must go.", de: ["jetzt muss ich gehen"] },
+        { en: "Here is the car.", de: ["hier ist das auto"] },
+        
+        // Fragewörter (Question Words)
+        { en: "Where is it?", de: ["wo ist es"] },
+        { en: "What is that?", de: ["was ist das"] },
+        { en: "Why are you doing that?", de: ["warum machst du das", "wieso machst du das"] },
+        { en: "When can we go?", de: ["wann können wir gehen"] },
+        { en: "Who is that?", de: ["wer ist das"] },
+        { en: "How is the weather?", de: ["wie ist das wetter"] },
+
+        // Simple Connectors (Position 0: aber, denn, und)
+        { en: "I am tired, but I must study.", de: ["ich bin müde aber ich muss lernen"] },
+        { en: "I am eating, because I have hunger.", de: ["ich esse denn ich habe hunger"] },
+        { en: "I will do it and you will wait.", de: ["ich werde es machen und du wirst warten", "ich will es machen und du wirst warten"] }
+    ];
+
+    let currentIndex = 0;
+    let state = "typing"; 
+
+    const promptEl = document.getElementById("english-prompt");
+    const inputEl = document.getElementById("german-input");
+    const feedbackEl = document.getElementById("feedback");
+    const actionBtn = document.getElementById("action-btn");
+
+    function shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+    }
+
+    function initDrill() {
+        shuffle(drillData);
+        loadQuestion();
+    }
+
+    function loadQuestion() {
+        state = "typing";
+        promptEl.innerText = drillData[currentIndex].en;
+        inputEl.value = "";
+        inputEl.style.borderColor = "#333";
+        feedbackEl.innerHTML = "";
+        actionBtn.innerText = "Submit";
+        inputEl.focus();
+    }
+
+    function normalizeText(text) {
+        // Strip punctuation and lower case to remove friction
+        return text.toLowerCase().replace(/[.,?!]/g, "").trim();
+    }
+
+    function checkAnswer() {
+        if (state === "reviewing") {
+            currentIndex = (currentIndex + 1) % drillData.length;
+            loadQuestion();
+            return;
+        }
+
+        const userAnswer = normalizeText(inputEl.value);
+        const validAnswers = drillData[currentIndex].de;
+
+        if (userAnswer === "") return;
+
+        if (validAnswers.includes(userAnswer)) {
+            feedbackEl.innerHTML = `<span class="correct">CORRECT</span>
+                                    <div class="correction-text"><b>${validAnswers[0]}</b></div>`;
+            inputEl.style.borderColor = var(--primary);
+            state = "reviewing";
+            actionBtn.innerText = "Next";
+        } else {
+            feedbackEl.innerHTML = `<span class="incorrect">BRUTAL ERROR</span>
+                                    <div class="correction-text">Correct: <b>${validAnswers[0]}</b></div>`;
+            inputEl.style.borderColor = var(--error);
+            state = "reviewing";
+            actionBtn.innerText = "Next";
+        }
+    }
+
+    // Stealth Enter-Key Support
+    inputEl.addEventListener("keypress", function(event) {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            checkAnswer();
+        }
+    });
+
+    initDrill();
+</script>
+
+</body>
+</html>
