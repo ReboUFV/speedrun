@@ -9,61 +9,27 @@
             --bg-color: #121212;
             --card-bg: #1e1e1e;
             --primary: #00e676; 
-            --nav-bg: #1a1a2e;
             --text-main: #ffffff;
             --text-muted: #a0a0a0;
             
-            --prio-1: #ff5252; 
-            --prio-2: #ffb142; 
-            --prio-3: #34ace0; 
+            /* Priority Colors */
+            --prio-1: #ff5252;
+            --prio-2: #ffb142;
+            --prio-3: #34ace0;
         }
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             background-color: var(--bg-color);
             color: var(--text-main);
             margin: 0;
-            padding: 0 0 20px 0;
+            padding: 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
         }
-        
-        /* Navigation Bar */
-        .navbar {
-            width: 100%;
-            background-color: var(--nav-bg);
-            display: flex;
-            justify-content: center;
-            border-bottom: 2px solid var(--primary);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-        .nav-link {
-            flex: 1;
-            text-align: center;
-            padding: 15px 10px;
-            color: var(--text-main);
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 1rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: background 0.2s;
-        }
-        .nav-link.active {
-            background-color: rgba(0, 230, 118, 0.1);
-            color: var(--primary);
-        }
-        .nav-link:hover {
-            background-color: rgba(255, 255, 255, 0.05);
-        }
-
         .container {
             max-width: 550px;
             width: 100%;
-            padding: 20px;
-            box-sizing: border-box;
         }
         h1 {
             text-align: center;
@@ -71,6 +37,7 @@
             margin-bottom: 5px;
             color: var(--primary);
             text-transform: uppercase;
+            letter-spacing: 1px;
         }
         .subtitle {
             text-align: center;
@@ -146,9 +113,9 @@
         .prio-2 .prio-label { color: var(--prio-2); }
         .prio-3 .prio-label { color: var(--prio-3); }
 
-        /* Custom Grammar Engine Box */
+        /* Grammar Engine Box */
         .grammar-engine {
-            background-color: var(--nav-bg);
+            background-color: #1a1a2e;
             border: 1px dashed var(--primary);
             padding: 15px;
             border-radius: 8px;
@@ -178,7 +145,36 @@
             line-height: 1.4;
         }
 
-        /* Tooltip Setup */
+        /* AI Prompt UI */
+        .prompt-trigger {
+            background: #2a2a2a;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            margin-left: 8px;
+            vertical-align: middle;
+            font-weight: bold;
+            display: inline-block;
+        }
+        .prompt-box {
+            display: none; 
+            background-color: #000;
+            border: 1px solid #444;
+            border-left: 3px solid var(--primary);
+            border-radius: 4px;
+            padding: 12px;
+            margin-top: 10px;
+            font-family: monospace;
+            font-size: 0.8rem;
+            color: #00e676;
+            white-space: pre-wrap;
+            line-height: 1.4;
+        }
+
+        /* Grammar Tooltip */
         .tooltip {
             position: relative;
             display: inline-block;
@@ -212,17 +208,6 @@
             box-shadow: 0px 4px 12px rgba(0,0,0,0.8);
             font-size: 0.85rem;
             font-weight: normal;
-            line-height: 1.4;
-        }
-        .tooltip .tooltiptext::after {
-            content: "";
-            position: absolute;
-            bottom: 100%;  
-            left: 50%;
-            margin-left: -5px;
-            border-width: 5px;
-            border-style: solid;
-            border-color: transparent transparent var(--primary) transparent;
         }
         .tooltip:hover .tooltiptext, .tooltip:active .tooltiptext {
             visibility: visible;
@@ -231,11 +216,6 @@
     </style>
 </head>
 <body>
-
-<div class="navbar">
-    <a href="index.html" class="nav-link active">OS Menu</a>
-    <a href="drill.html" class="nav-link">Stealth Drill</a>
-</div>
 
 <div class="container">
     <h1>B2 Speedrun OS</h1>
@@ -249,12 +229,12 @@
                 <div class="tooltip">?
                     <span class="tooltiptext">
                         <span class="method-highlight">First Pass Method:</span><br>
-                        1. Brief read (2 mins) of the theory page.<br>
-                        2. Jump to exercises. TYPE every sentence out fully.<br>
-                        3. Check answer key after EVERY single exercise to micro-correct.<br><br>
+                        1. Brief read (2 mins) of theory.<br>
+                        2. TYPE every sentence out fully.<br>
+                        3. Check answer key after EVERY exercise.<br><br>
                         <span class="method-highlight">Repeat Pass Method:</span><br>
                         1. Do NOT re-read theory.<br>
-                        2. Do ONLY the exercises you failed previously.<br>
+                        2. Do ONLY the exercises you failed previously.
                     </span>
                 </div>
             </h3>
@@ -270,7 +250,7 @@
             <ul><li>Units 31 & 32 (Dativ/Akk), 33 & 34 (2-Way)</li>
             <li>Units 40, 41, 72, 73 (und, aber, als, während)</li></ul>
             <div class="conditional">
-                <b>IF</b> connectors are easy but prepositions are failing: Pause 72/73. Drill Anki case flashcards exclusively for 2 days.
+                <b>IF</b> connectors are easy but prepositions are failing: Pause 72/73. Drill Anki case cards exclusively for 2 days.
             </div>
 
             <br><b>Milestone 3: B2 Output Structures</b>
@@ -280,12 +260,15 @@
             <ul><li>Unit 79 (Adjektivdeklination)</li>
             <li>Units 55 & 56 (Konjunktiv II)</li>
             <li>Units 57 & 58 (Passiv), Unit 53 (Verben mit Präp)</li></ul>
+            <div class="conditional">
+                <b>IF</b> Adjective endings (79) drain your brain: Abandon them. Go straight to Passiv (57).
+            </div>
 
             <br><b style="color:var(--primary);">Milestone 5: The Endgame (Units 100% Done)</b>
             <div class="conditional">
                 <b>1.</b> Stop reading the book.<br>
                 <b>2.</b> Grind 1 full Mock Exam / C-Test daily.<br>
-                <b>3.</b> <b>IF</b> mock exposes a hole -> <b>THEN</b> snipe that specific unit.
+                <b>3.</b> Fix specific failed grammar holes using Repeat Pass Method.
             </div>
         </div>
     </div>
@@ -295,15 +278,15 @@
     <div class="panel">
         <div class="task-card prio-1">
             <span class="prio-label">Morning</span><br>
-            <b>Walk 1 (Active Input):</b> Listen to Michel Thomas or Language Transfer. Shout the answers out loud.
+            <b>Walk 1 (Active Input):</b> Listen to Michel Thomas or Language Transfer. Shout answers out loud.
         </div>
         <div class="task-card prio-3">
             <span class="prio-label">Mid-Day</span><br>
-            <b>Walk 2 (Passive Wash):</b> Easy German Podcast or Nicos Weg audio. Calibrate your ears.
+            <b>Walk 2 (Passive Wash):</b> Listen to the exact same audio from Walk 1 (The Passive Echo trick). No active translating.
         </div>
         <div class="task-card prio-1">
             <span class="prio-label">Night</span><br>
-            <b>Walk 3 (Verbal Output):</b> No headphones. Run "Clause Collisions" aloud.
+            <b>Walk 3 (Verbal Output):</b> No headphones. Run "Clause Collisions" aloud (e.g., "Ich denke, dass das Auto schnell ist").
         </div>
     </div>
 
@@ -311,53 +294,78 @@
     <div class="panel">
         <div class="task-card prio-1">
             <span class="prio-label">Priority 1 (Stealth)</span><br>
-            <b>Digital Scriptorium:</b> Type out current Milestone exercises in a Google Doc.
+            <b>Grammatik aktiv Scriptorium:</b> Open PDF. Type Milestone exercises in a Google Doc.
         </div>
         <div class="task-card prio-2">
             <span class="prio-label">Priority 2 (Grind)</span><br>
-            <b>Anki Clear:</b> 50 daily cards. Think the article (der/die/das).
+            <b>Anki Clear:</b> 50 daily cards. Force silent articulation of the article (der/die/das).
         </div>
     </div>
 
     <button class="accordion-btn">📝 Uni Class (No Device)</button>
     <div class="panel">
         <div class="task-card prio-1">
-            <span class="prio-label">Priority 1 (Trojan / Drill)</span><br>
-            Fill out pre-printed Google Doc <b>OR</b> pull out phone and run the <b>Stealth Drill App</b> under the desk.
+            <span class="prio-label">Priority 1 (Trojan Horse)</span><br>
+            <b>Pre-Printed Worksheets:</b> Fill out the "Trojan Google Doc" hidden in your notebook.
         </div>
         <div class="task-card prio-2">
             <span class="prio-label">Priority 2 (Translation)</span><br>
-            <b>Live V2 Translations:</b> Translate one sentence the professor says into German in your margins.
+            <b>Live V2 Translations:</b> Translate one sentence the professor says into German in your margins every 15 mins.
         </div>
     </div>
 
     <button class="accordion-btn">☀️ Free Time (Daytime Desk)</button>
     <div class="panel">
+        <div class="task-card prio-3" style="border-left-color: #8c7ae6;">
+            <span class="prio-label" style="color: #8c7ae6;">🎧 Audio Protocol</span><br>
+            <b>NO German Audio.</b> The cognitive load of typing syntax is too high. If you need background noise to focus, use non-vocal audio only (Lo-fi, Brown Noise, or Video Game OSTs).
+        </div>
         <div class="task-card prio-1">
             <span class="prio-label">Priority 1 (Deep Work)</span><br>
-            <b>Advance Grammar Engine:</b> Complete the units. Type all answers.
+            <b>Advance the Grammar Engine:</b> Complete current Milestone units. Type all answers.
         </div>
         <div class="task-card prio-2">
-            <span class="prio-label">Priority 2 (Reality Check)</span><br>
-            <b>C-Test & AI:</b> 1x C-Test (Lückentext) + 20 mins AI Interrogation.
+            <span class="prio-label">Priority 2 (Reality Check)</span> 
+            <span class="prompt-trigger" onclick="togglePrompt(this, 'prompt-ctest')">🤖 AI Prompt</span><br>
+            <b>C-Test Grind:</b> Let AI generate a Lückentext to expose your missing endings.
+            <div id="prompt-ctest" class="prompt-box">Act as a Goethe B2 exam generator. Create a 100-word C-Test (Lückentext) paragraph about [Insert Topic: Environment, Tech, Work]. Remove the second half of every second word (e.g., Gestern bin ich in die St___ gegangen). Give me the text, wait for my answers, and then grade my grammar and adjective endings.</div>
+        </div>
+        <div class="task-card prio-2">
+            <span class="prio-label">Priority 2 (Output)</span>
+            <span class="prompt-trigger" onclick="togglePrompt(this, 'prompt-interrogate')">🤖 AI Prompt</span><br>
+            <b>AI Interrogation (20m):</b> Text chat with Claude/ChatGPT in B2.
+            <div id="prompt-interrogate" class="prompt-box">Act as a strict German Syntax Drill Master. Ask me one B2-level question at a time about [Insert Topic]. Wait for my answer. If I make a mistake with the V2 rule, Verb-Kickers (dass/weil), or cases (Acc/Dat), give me a brutal 1-sentence correction. Then ask the next question.</div>
         </div>
     </div>
 
     <button class="accordion-btn">🌙 Free Time (Night)</button>
     <div class="panel">
         <div class="task-card prio-2">
-            <span class="prio-label">If Mon/Tue (Short Time)</span><br>
-            15-minute AI chat or 1 C-Test. 1 episode of German Netflix. Sleep.
+            <span class="prio-label">If Mon/Tue (Short Time)</span>
+            <span class="prompt-trigger" onclick="togglePrompt(this, 'prompt-audio')">🤖 AI Prompt</span><br>
+            Do a 15-minute Audio-Drill chat. Then watch 1 episode of German Netflix. Sleep.
+            <div id="prompt-audio" class="prompt-box">Act as a strict German Drill Master. Give me sentences from the first 3 hours of Michel Thomas or first 17 lessons of Language Transfer in English. Wait for my German translation. Correct my V2/Modal grammar brutally, then give the next sentence.</div>
         </div>
         <div class="task-card prio-1">
-            <span class="prio-label">If Wed/Thu/Fri (3-5 Hours)</span><br>
-            <b>Hour 1:</b> Write 150-word B2 essay. Grade with DeepL.<br><br>
-            <b>Hours 2-5:</b> Deep Immersion. Books away. Video games, Nicos Weg, YouTube.
+            <span class="prio-label">If Wed/Thu/Fri (3-5 Hours)</span>
+            <span class="prompt-trigger" onclick="togglePrompt(this, 'prompt-essay')">🤖 AI Prompt</span><br>
+            <b>Hour 1:</b> Write a 150-word B2 essay. Let AI grade it.<br><br>
+            <div id="prompt-essay" class="prompt-box">Act as a strict Goethe B2 Examiner. Grade my 150-word essay. Give me a score based on B2 rubrics. Highlight every grammar/case error, explain it briefly, and rewrite the sentence so it sounds natural and uses B2 connective structures (um...zu, weil, obwohl).</div>
+            <b>Hours 2-5:</b> Deep Immersion. Close textbooks. Play video games in German, watch Nicos Weg, dive down German YouTube rabbit holes.
+        </div>
+    </div>
+
+    <button class="accordion-btn">🏋️ Hands Busy (Gym / Cooking)</button>
+    <div class="panel">
+        <div class="task-card prio-2">
+            <span class="prio-label">Acoustic & Mental</span><br>
+            Listen to Easy German without pausing. Between sets, run preposition cases in your head.
         </div>
     </div>
 </div>
 
 <script>
+    // Accordion Logic
     var acc = document.getElementsByClassName("accordion-btn");
     for (var i = 0; i < acc.length; i++) {
         acc[i].addEventListener("click", function() {
@@ -366,10 +374,30 @@
             if (panel.style.maxHeight) {
                 panel.style.maxHeight = null;
             } else {
-                panel.style.maxHeight = panel.scrollHeight + "px";
+                panel.style.maxHeight = panel.scrollHeight + 500 + "px"; 
             } 
         });
     }
+
+    // Toggle Prompt Logic
+    function togglePrompt(btn, promptId) {
+        var promptBox = document.getElementById(promptId);
+        if (promptBox.style.display === "block") {
+            promptBox.style.display = "none";
+            btn.style.background = "#2a2a2a";
+            btn.style.color = "var(--primary)";
+        } else {
+            promptBox.style.display = "block";
+            btn.style.background = "var(--primary)";
+            btn.style.color = "#000";
+        }
+        
+        var panel = btn.closest('.panel');
+        if (panel && panel.style.maxHeight) {
+            panel.style.maxHeight = panel.scrollHeight + 500 + "px";
+        }
+    }
 </script>
+
 </body>
 </html>
