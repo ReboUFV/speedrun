@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Essay View</title>
+    <style>
+        :root {
+            --bg-color: #121212; --card-bg: #1e1e1e; --primary: #00e676; 
+            --text-main: #ffffff; --text-muted: #a0a0a0;
+            --error-red: #ff5252; --correct-blue: #34ace0; --trans-blue: #1e90ff;
+        }
+        body { font-family: -apple-system, sans-serif; background-color: var(--bg-color); color: var(--text-main); padding: 20px; display: flex; flex-direction: column; align-items: center; }
+        .container { max-width: 700px; width: 100%; }
+        a.back-btn { display: inline-block; background: transparent; border: 1px solid var(--primary); color: var(--primary); padding: 8px 15px; border-radius: 6px; text-decoration: none; margin-bottom: 20px; font-weight: bold; }
+        .header h1 { color: var(--primary); margin-bottom: 5px; }
+        .header .meta { color: var(--text-muted); margin-bottom: 20px; }
+        
+        .section-box { background-color: var(--card-bg); border-radius: 8px; padding: 20px; margin-bottom: 20px; line-height: 1.6; }
+        .section-title { margin-top: 0; border-bottom: 1px solid #333; padding-bottom: 10px; font-size: 1.2rem; }
+        .footnote { font-size: 0.8rem; color: var(--text-muted); text-align: right; margin-top: 10px; font-style: italic; }
+        
+        .error-block { border-left: 3px solid #555; padding-left: 15px; margin-bottom: 25px; }
+        .err-red { color: var(--error-red); font-weight: bold; background: rgba(255, 82, 82, 0.1); padding: 2px 4px; border-radius: 3px; display: block; margin-bottom: 5px;}
+        .corr-blue { color: var(--correct-blue); font-weight: bold; background: rgba(52, 172, 224, 0.1); padding: 2px 4px; border-radius: 3px; display: block; margin-top: 5px;}
+        .trans-dark { color: var(--trans-blue); font-size: 0.85em; font-style: italic; }
+        .error-block ul { margin-top: 8px; padding-left: 20px; font-size: 0.95rem; color: #ccc;}
+        .advice-box { border-left: 4px solid var(--primary); background: #1a1a2e; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <a href="archive.html" class="back-btn">← Back to Archive</a>
+    
+    <div class="header">
+        <h1>Skeleton: Immobilienpreise</h1>
+        <div class="meta">Date: Sept 16, 2026 | Grade: Nicht bestanden (Band D / ~40%)</div>
+    </div>
+
+    <div class="section-box">
+        <h3 class="section-title">Original Submission</h3>
+        <div>Es ist ein unumstrittenes Thema in der heutigen Gesellschaft, dass der Preis von Häusern aufgrund der aktuellen Situation eine große Rolle spielt. Meines Erachtens ist es von entscheidender Bedeutung, dass wir dieses Problem ernst nehmen. Einerseits bietet dass die Tatsache dass es ist sehr schwierig ein Hauss kaufen für junge Leute enorme Vorteile, andererseits dürfen wir die Nachteile nicht außer Acht lassen von reduzieren der Preis von Häusern. Wenn ich die Wahl hätte, würde ich vorschlagen, dass Politiker sehen das Thema so dass das Problem Könnte lösen. Abschließend lässt sich sagen, dass die Menschen mehr Verantwortung übernehmen müssen.</div>
+        <div class="footnote">Word Count: 93 words</div>
+    </div>
+
+    <div class="section-box">
+        <h3 class="section-title">Error Breakdown</h3>
+        
+        <div class="error-block">
+            <span class="err-red">Original: Einerseits bietet dass die Tatsache dass es ist sehr schwierig ein Hauss kaufen für junge Leute enorme Vorteile, andererseits dürfen wir die Nachteile nicht außer Acht lassen von reduzieren der Preis von Häusern</span>
+            <ul>
+                <li><b>Syntax crash:</b> "bietet dass die Tatsache dass" is completely broken. It should be "bietet die Tatsache, dass...".</li>
+                <li><b>Subordinate clause:</b> "dass es ist..." is wrong. The conjugated verb must go to the very end.</li>
+                <li><b>Infinitive clause:</b> Missing the mandatory "zu" ("ein Haus zu kaufen") and contains a spelling error.</li>
+                <li><b>Preposition & Case:</b> "von reduzieren der Preis..." is wrong. "Von" requires Dative, but a Genitive attribute (die Reduzierung der Immobilienpreise) is required for B2.</li>
+                <li><b>Logic:</b> Claiming the inability to buy a house is an "enormous advantage" makes no sense.</li>
+            </ul>
+            <span class="corr-blue">Correction: Einerseits ist es eine traurige Tatsache, dass es für junge Leute heutzutage sehr schwierig ist, ein Haus zu kaufen, weil die Zinsen so hoch sind. Andererseits dürfen wir die wirtschaftlichen Nachteile einer staatlichen Preissenkung nicht außer Acht lassen. <br>
+            <span class="trans-dark">(On the one hand, it is a sad fact that it is very difficult for young people to buy a house today because interest rates are so high. On the other hand, we must not ignore the economic disadvantages of a state price reduction.)</span></span>
+        </div>
+
+        <div class="error-block">
+            <span class="err-red">Original: Wenn ich die Wahl hätte, würde ich vorschlagen, dass Politiker sehen das Thema so dass das Problem Könnte lösen.</span>
+            <ul>
+                <li><b>Subordinate clause:</b> "dass Politiker sehen das Thema so" is wrong. The verb "sehen" must go to the end.</li>
+                <li><b>Grammar/Syntax:</b> "Könnte" should not be capitalized. The problem cannot solve itself; you need the passive voice (gelöst werden könnte).</li>
+            </ul>
+            <span class="corr-blue">Correction: Wenn ich die Wahl hätte, würde ich vorschlagen, dass sich die Politiker intensiver mit diesem Thema befassen, um das Problem endlich zu lösen. <br>
+            <span class="trans-dark">(If I had the choice, I would suggest that politicians deal more intensively with this topic in order to finally solve the problem.)</span></span>
+        </div>
+
+    </div>
+
+    <div class="section-box" style="border-left: 4px solid var(--correct-blue);">
+        <h3 class="section-title">B2 Rewritten Essay</h3>
+        <div>Obwohl es in der heutigen Gesellschaft viele drängende Themen gibt, ist es unumstritten, dass die steigenden Immobilienpreise eine zentrale Rolle spielen. Meines Erachtens ist es von entscheidender Bedeutung, dass wir dieses Problem ernst nehmen, um langfristige soziale Folgen zu vermeiden. Einerseits ist es eine traurige Tatsache, dass es für junge Leute heutzutage sehr schwierig ist, ein Haus zu kaufen, weil die Zinsen so hoch sind. Andererseits dürfen wir die wirtschaftlichen Nachteile einer staatlichen Preissenkung nicht außer Acht lassen. Wenn ich die Wahl hätte, würde ich vorschlagen, dass sich die Politiker intensiver mit diesem Thema befassen, um das Problem endlich zu lösen. Abschließend lässt sich sagen, dass sowohl die Politik als auch die Gesellschaft mehr Verantwortung übernehmen müssen, obwohl es keine einfachen Lösungen für die Immobilienkrise gibt.</div>
+    </div>
+
+    <div class="section-box advice-box">
+        <h3 class="section-title">🤖 AI Examiner Advice</h3>
+        <div>Stop relying solely on generic templates. As examiners, we are trained to spot "Frankenstein essays"—texts where beautiful, memorized C1-level template frames are stitched together with A2-level grammar in the middle. You need to practice writing your own subordinate clauses (putting the verb at the end) and correctly using zu-infinitives. Furthermore, always make sure you hit the 150-word minimum by actually discussing the prompt's bullet points!</div>
+    </div>
+</div>
+
+</body>
+</html>

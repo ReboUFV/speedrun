@@ -1,0 +1,89 @@
+<!-- 
+========================================================================
+AI HTML MERGE PROMPT:
+Act as a web developer. I am giving you this HTML template, my original B2 German essay, and your grading feedback. 
+Your task is to output this exact HTML file but with all the bracketed placeholders [LIKE THIS] filled in. 
+- Fill in the Title, Date, Grade, and Word Count.
+- Paste the original text and the full B2 rewrite.
+- Paste your final Examiner Advice.
+- For EVERY major sentence error, duplicate the <div class="error-block"> section. Fill in the original failed sentence, create <li> bullet points explaining the grammar failures, provide the B2 correction, and provide a dark blue English translation. 
+Output ONLY the raw HTML code inside a single code block. Do not add markdown text outside the code block.
+========================================================================
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Essay View</title>
+    <style>
+        :root {
+            --bg-color: #121212; --card-bg: #1e1e1e; --primary: #00e676; 
+            --text-main: #ffffff; --text-muted: #a0a0a0;
+            --error-red: #ff5252; --correct-blue: #34ace0; --trans-blue: #1e90ff;
+        }
+        body { font-family: -apple-system, sans-serif; background-color: var(--bg-color); color: var(--text-main); padding: 20px; display: flex; flex-direction: column; align-items: center; }
+        .container { max-width: 700px; width: 100%; }
+        a.back-btn { display: inline-block; background: transparent; border: 1px solid var(--primary); color: var(--primary); padding: 8px 15px; border-radius: 6px; text-decoration: none; margin-bottom: 20px; font-weight: bold; }
+        .header h1 { color: var(--primary); margin-bottom: 5px; }
+        .header .meta { color: var(--text-muted); margin-bottom: 20px; }
+        
+        .section-box { background-color: var(--card-bg); border-radius: 8px; padding: 20px; margin-bottom: 20px; line-height: 1.6; }
+        .section-title { margin-top: 0; border-bottom: 1px solid #333; padding-bottom: 10px; font-size: 1.2rem; }
+        .footnote { font-size: 0.8rem; color: var(--text-muted); text-align: right; margin-top: 10px; font-style: italic; }
+        
+        /* Error formatting */
+        .error-block { border-left: 3px solid #555; padding-left: 15px; margin-bottom: 25px; }
+        .err-red { color: var(--error-red); font-weight: bold; background: rgba(255, 82, 82, 0.1); padding: 2px 4px; border-radius: 3px; display: block; margin-bottom: 5px;}
+        .corr-blue { color: var(--correct-blue); font-weight: bold; background: rgba(52, 172, 224, 0.1); padding: 2px 4px; border-radius: 3px; display: block; margin-top: 5px;}
+        .trans-dark { color: var(--trans-blue); font-size: 0.85em; font-style: italic; }
+        .error-block ul { margin-top: 8px; padding-left: 20px; font-size: 0.95rem; color: #ccc;}
+        .advice-box { border-left: 4px solid var(--primary); background: #1a1a2e; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <a href="archive.html" class="back-btn">← Back to Archive</a>
+    
+    <div class="header">
+        <h1>[TOPIC NAME]</h1>
+        <div class="meta">Date: [DATE] | Grade: [GRADE]</div>
+    </div>
+
+    <div class="section-box">
+        <h3 class="section-title">Original Submission</h3>
+        <div>[PASTE ORIGINAL ESSAY HERE]</div>
+        <div class="footnote">Word Count: [00] words</div>
+    </div>
+
+    <div class="section-box">
+        <h3 class="section-title">Error Breakdown</h3>
+        
+        <!-- ERROR BLOCK -->
+        <div class="error-block">
+            <span class="err-red">Original: [PASTE FAILED SENTENCE]</span>
+            <ul>
+                <li>[PASTE AI BULLET POINT 1]</li>
+                <li>[PASTE AI BULLET POINT 2]</li>
+            </ul>
+            <span class="corr-blue">Correction: [PASTE CORRECTED SENTENCE] <br>
+            <span class="trans-dark">([PASTE ENGLISH TRANSLATION])</span></span>
+        </div>
+        <!-- END ERROR BLOCK -->
+
+    </div>
+
+    <div class="section-box" style="border-left: 4px solid var(--correct-blue);">
+        <h3 class="section-title">B2 Rewritten Essay</h3>
+        <div>[PASTE FULL REWRITE HERE]</div>
+    </div>
+
+    <div class="section-box advice-box">
+        <h3 class="section-title">🤖 AI Examiner Advice</h3>
+        <div>[PASTE AI ADVICE HERE]</div>
+    </div>
+</div>
+
+</body>
+</html>
