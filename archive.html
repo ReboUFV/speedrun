@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>B2 Essay Archive</title>
+    <style>
+        :root {
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --primary: #00e676; 
+            --text-main: #ffffff;
+            --text-muted: #a0a0a0;
+            --error-red: #ff5252;
+            --border-color: #333;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .container { max-width: 800px; width: 100%; }
+        
+        /* Navbar */
+        .nav {
+            display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 1px solid var(--border-color); padding-bottom: 15px; margin-bottom: 25px;
+        }
+        .nav a {
+            color: var(--primary); text-decoration: none; font-weight: bold;
+            border: 1px solid var(--primary); padding: 8px 15px; border-radius: 6px;
+            transition: background 0.2s;
+        }
+        .nav a:hover { background-color: rgba(0, 230, 118, 0.1); }
+        h1 { margin: 0; color: var(--primary); text-transform: uppercase; font-size: 1.5rem; }
+
+        /* Google Drive Row View */
+        .list-container {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        /* Table Header (Interactive) */
+        .list-header {
+            display: flex;
+            background-color: #222;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .header-col {
+            padding: 12px 20px;
+            cursor: pointer;
+            user-select: none;
+            display: flex;
+            align-items: center;
+            transition: background-color 0.2s;
+        }
+        .header-col:hover { background-color: #2a2a2a; color: var(--text-main); }
+        .sort-icon { color: var(--primary); margin-left: 5px; font-size: 1rem; width: 12px;}
+
+        /* Row Layout */
+        .file-row {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            border-bottom: 1px solid #2a2a2a;
+            cursor: pointer;
+            text-decoration: none;
+            color: var(--text-main);
+            transition: background-color 0.15s ease;
+        }
+        .file-row:hover { background-color: #2a2a2a; }
+        .file-row:last-child { border-bottom: none; }
+
+        /* Columns */
+        .col-name { flex: 2; display: flex; align-items: center; min-width: 200px; }
+        .col-date { flex: 1; color: var(--text-muted); font-size: 0.9rem; }
+        .col-grade { flex: 1; text-align: right; justify-content: flex-end; }
+
+        .file-icon { font-size: 1.3rem; margin-right: 15px; }
+        .file-title { font-weight: bold; font-size: 0.95rem; }
+        
+        .grade-badge {
+            display: inline-block; background: rgba(255, 82, 82, 0.15); color: var(--error-red);
+            padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: bold;
+            border: 1px solid rgba(255, 82, 82, 0.3);
+        }
+        .grade-pass { 
+            background: rgba(0, 230, 118, 0.15); 
+            color: var(--primary);
+            border-color: rgba(0, 230, 118, 0.3);
+        }
+
+        /* Mobile Adjustments */
+        @media (max-width: 600px) {
+            .list-header { display: none; /* Hide interactive header on mobile to save space */ }
+            .file-row { flex-direction: column; align-items: flex-start; padding: 15px; position: relative; }
+            .col-name { margin-bottom: 8px; width: 100%; }
+            .col-date { margin-left: 38px; margin-bottom: 8px; font-size: 0.8rem; }
+            .col-grade { margin-left: 38px; text-align: left; justify-content: flex-start; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="nav">
+        <h1>📑 Essay Archive</h1>
+        <a href="index.html">← Back to OS</a>
+    </div>
+
+    <!-- The Row Directory -->
+    <div class="list-container">
+        <!-- Clickable Headers -->
+        <div class="list-header">
+            <div class="header-col col-name" onclick="sortBy('name')" id="hdr-name">Name <span class="sort-icon"></span></div>
+            <div class="header-col col-date" onclick="sortBy('date')" id="hdr-date">Date <span class="sort-icon"></span></div>
+            <div class="header-col col-grade" onclick="sortBy('grade')" id="hdr-grade">AI Grade <span class="sort-icon"></span></div>
+        </div>
+        <div id="row-view"></div>
+    </div>
+</div>
+
+<script>
+    // THE DIRECTORY INDEX
+    const db = [
+        {
+            title: "Skeleton: Immobilienpreise",
+            date: "Sept 16, 2026",
+            grade: "Nicht bestanden (~40%)",
+            passed: false,
+            url: "essay-001.html"
+        },
+        // Example dummy entry to show sorting works (delete this later):
+        {
+            title: "Skeleton: Home Office",
+            date: "Sept 17, 2026",
+            grade: "Band C (~75%)",
+            passed: true,
+            url: "#"
+        }
+    ];
+
+    // Sorting State
+    let currentSort = { column: 'date', direction: 'desc' };
+
+    function renderTable() {
+        // 1. Sort the Database
+        const sortedDb = [...db].sort((a, b) => {
+            let valA, valB;
+
+            if (currentSort.column === 'name') {
+                valA = a.title.toLowerCase();
+                valB = b.title.toLowerCase();
+            } else if (currentSort.column === 'date') {
+                valA = new Date(a.date).getTime();
+                valB = new Date(b.date).getTime();
+            } else if (currentSort.column === 'grade') {
+                valA = a.grade.toLowerCase();
+                valB = b.grade.toLowerCase();
+            }
+
+            if (valA < valB) return currentSort.direction === 'asc' ? -1 : 1;
+            if (valA > valB) return currentSort.direction === 'asc' ? 1 : -1;
+            return 0;
+        });
+
+        // 2. Render the Rows
+        const container = document.getElementById('row-view');
+        container.innerHTML = '';
+        sortedDb.forEach(item => {
+            const badgeClass = item.passed ? 'grade-pass' : '';
+            container.innerHTML += `
+                <a href="${item.url}" class="file-row">
+                    <div class="col-name">
+                        <div class="file-icon">📄</div>
+                        <div class="file-title">${item.title}</div>
+                    </div>
+                    <div class="col-date">${item.date}</div>
+                    <div class="col-grade">
+                        <span class="grade-badge ${badgeClass}">${item.grade}</span>
+                    </div>
+                </a>
+            `;
+        });
+
+        // 3. Update the UI Arrows
+        document.querySelectorAll('.sort-icon').forEach(el => el.innerHTML = ''); // clear all
+        const activeHeader = document.getElementById('hdr-' + currentSort.column);
+        if (activeHeader) {
+            activeHeader.querySelector('.sort-icon').innerHTML = currentSort.direction === 'asc' ? '↑' : '↓';
+        }
+    }
+
+    function sortBy(column) {
+        if (currentSort.column === column) {
+            // Toggle direction if clicking the same column
+            currentSort.direction = currentSort.direction === 'asc' ? 'desc' : 'asc';
+        } else {
+            // Default to ascending when clicking a new column
+            currentSort.column = column;
+            currentSort.direction = 'asc'; 
+        }
+        renderTable();
+    }
+
+    // Initial load
+    renderTable();
+</script>
+
+</body>
+</html>
