@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>B2 Speedrun Performance</title>
+    <style>
+        :root {
+            --bg-color: #121212; --card-bg: #1e1e1e; --primary: #00e676; 
+            --text-main: #ffffff; --text-muted: #a0a0a0;
+            --prio-1: #ff5252; --prio-2: #ffb142; --prio-3: #34ace0;
+        }
+        body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; background-color: var(--bg-color); color: var(--text-main); margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; }
+        .container { max-width: 600px; width: 100%; }
+        
+        h1 { margin: 0; color: var(--primary); text-transform: uppercase; font-size: 1.5rem; text-align: center; }
+        .subtitle { text-align: center; color: var(--text-muted); margin-bottom: 20px; font-size: 0.9rem; }
+
+        /* Top Navigation Bar */
+        .topbar { display: flex; gap: 6px; width: 100%; margin-bottom: 25px; }
+        .topbar a { flex: 1; text-align: center; background-color: var(--card-bg); border: 1px solid var(--primary); color: var(--primary); padding: 10px 4px; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 0.85rem; transition: all 0.2s; }
+        .topbar a:hover, .topbar a.active { background-color: var(--primary); color: #000; }
+
+        /* Accordions & Cards */
+        .accordion-btn { background-color: var(--card-bg); color: var(--text-main); cursor: pointer; padding: 18px; width: 100%; border: 1px solid #333; border-radius: 8px; text-align: left; outline: none; font-size: 1.1rem; font-weight: bold; transition: 0.2s; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
+        .accordion-btn:hover, .accordion-btn.active-acc { background-color: #2a2a2a; border-color: var(--primary); }
+        .accordion-btn::after { content: '+'; font-size: 1.5rem; color: var(--primary); }
+        .accordion-btn.active-acc::after { content: '-'; }
+        
+        .panel { padding: 0 10px; background-color: var(--bg-color); max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; margin-bottom: 10px; }
+
+        .kpi-card { background-color: var(--card-bg); padding: 15px; border-radius: 6px; margin-top: 10px; margin-bottom: 10px; border-left: 5px solid var(--prio-3); font-size: 0.9rem; line-height: 1.5; }
+        .kupi-card { background-color: var(--card-bg); padding: 15px; border-radius: 6px; margin-bottom: 10px; border-left: 5px solid var(--prio-1); font-size: 0.9rem; line-height: 1.5; }
+        
+        .conditional-box { background-color: #1a1a2e; border: 1px dashed var(--primary); padding: 15px; border-radius: 8px; margin-top: 15px; margin-bottom: 20px; font-size: 0.85rem; line-height: 1.5; }
+        .conditional-box h4 { margin-top: 0; color: var(--primary); margin-bottom: 10px; text-transform: uppercase; }
+        .cond-case { margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid #333; }
+        .cond-case:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+        .cond-title { font-weight: bold; font-size: 0.9rem; display: block; margin-bottom: 5px; }
+        
+        /* Specific Recovery Lists */
+        .recovery-list { margin: 8px 0 0 20px; padding: 0; list-style-type: square; color: #ccc; }
+        .recovery-list li { margin-bottom: 6px; }
+        .recovery-list b { color: var(--text-main); }
+        
+        .c-green { color: var(--primary); } .c-orange { color: var(--prio-2); } .c-red { color: var(--prio-1); }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>B2 Speedrun OS</h1>
+    <div class="subtitle">Performance Engine</div>
+
+    <div class="topbar">
+        <a href="index.html">🏠 OS</a>
+        <a href="drill.html">⚡ Drills</a>
+        <a href="archive.html">📑 Archive</a>
+        <a href="performance.html" class="active">📊 Perf</a>
+    </div>
+
+    <!-- WEEK 1 -->
+    <button class="accordion-btn">Week 1: MVG & Syntax Base</button>
+    <div class="panel">
+        <div class="kpi-card">
+            <b style="color:var(--prio-3);">KPIs (Success):</b> Units 11, 5, 7, 42 done. 350 Anki cards cleared. 1 Essay archived.
+        </div>
+        <div class="kupi-card">
+            <b style="color:var(--prio-1);">KUPs (Failing):</b> Verb position crashes after weil/dass. Backlog > 100 cards.
+        </div>
+        <div class="conditional-box">
+            <h4>Sunday Audit Recovery</h4>
+            <div class="cond-case">
+                <span class="cond-title c-green">1. KPIs Met:</span> Green light. Advance to Week 2.
+            </div>
+            <div class="cond-case">
+                <span class="cond-title c-orange">2. Minor Friction (Max 1 KUP):</span> Apply surgical fix based on the leak:
+                <ul class="recovery-list">
+                    <li><b>Grammar:</b> Add 15 mins of pure Unit 42 C-Tests to your Power Block.</li>
+                    <li><b>Vocab:</b> Use Anki custom study to clear the backlog before Monday.</li>
+                    <li><b>Listening:</b> Force "Passive Echo" rules—listen only to audio you already actively parsed.</li>
+                    <li><b>Speaking/Output:</b> Dictate 5 <i>dass</i> clauses to AI using the prompt cache.</li>
+                </ul>
+            </div>
+            <div class="cond-case">
+                <span class="cond-title c-red">3. Massive Miss (>1 KUP):</span> You are 100% fine. The foundation just needs cement. Pivot to recovery:
+                <ul class="recovery-list">
+                    <li><b>Grammar:</b> Drop new grammar. Mon/Tue are dedicated purely to re-running Units 11 and 42 until V2 is muscle memory.</li>
+                    <li><b>Vocab:</b> Nuke the Anki settings. Suspend low-priority words; drill top 100 verbs only.</li>
+                    <li><b>Listening:</b> Media blackout. No Netflix, no podcasts. Only Michel Thomas active translation.</li>
+                    <li><b>Speaking/Output:</b> Stop freehanding essays. Copy the skeleton and fill in single-word blanks only.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- WEEK 2 -->
+    <button class="accordion-btn">Week 2: Cases & Connectors</button>
+    <div class="panel">
+        <div class="kpi-card">
+            <b style="color:var(--prio-3);">KPIs (Success):</b> Units 31-34, 40-41 conquered. 2 Essays formatted.
+        </div>
+        <div class="kupi-card">
+            <b style="color:var(--prio-1);">KUPs (Failing):</b> Dative vs. Accusative blind spots. C-Tests stalling below 40%.
+        </div>
+        <div class="conditional-box">
+            <h4>Sunday Audit Recovery</h4>
+            <div class="cond-case">
+                <span class="cond-title c-green">1. KPIs Met:</span> Perfect. Advance to Week 3.
+            </div>
+            <div class="cond-case">
+                <span class="cond-title c-orange">2. Minor Friction (Max 1 KUP):</span> Keep moving, but patch the leak:
+                <ul class="recovery-list">
+                    <li><b>Grammar:</b> Spend 10 mins hand-drawing the DOGFU / ABM-NS-VZ cheat sheets.</li>
+                    <li><b>Vocab:</b> Tag your Anki cards specifically for connector words (und, weil, obwohl).</li>
+                    <li><b>Listening:</b> Listen to Easy German, but explicitly listen for preposition triggers.</li>
+                    <li><b>Speaking/Output:</b> Force yourself to use one Two-Way preposition in your next AI chat.</li>
+                </ul>
+            </div>
+            <div class="cond-case">
+                <span class="cond-title c-red">3. Massive Miss (>1 KUP):</span> A standard B1/B2 bottleneck. Highly solvable:
+                <ul class="recovery-list">
+                    <li><b>Grammar:</b> Pause Unit 70. Do not advance. Run AI drills purely on Dative/Accusative for 48 hours.</li>
+                    <li><b>Vocab:</b> Suspend all noun cards. Focus entirely on verb+preposition pairs (warten auf, denken an).</li>
+                    <li><b>Listening:</b> Drop to A2 level audio (Nicos Weg early episodes) to rebuild confidence in cases.</li>
+                    <li><b>Speaking/Output:</b> Write 10 disconnected sentences using purely Dative verbs (helfen, danken). Let AI grade them.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- WEEK 3 -->
+    <button class="accordion-btn">Week 3: B2 Output Structures</button>
+    <div class="panel">
+        <div class="kpi-card">
+            <b style="color:var(--prio-3);">KPIs (Success):</b> Relativsätze (70-71) & Genitiv (77) done. Using um...zu naturally.
+        </div>
+        <div class="kupi-card">
+            <b style="color:var(--prio-1);">KUPs (Failing):</b> Reverting to A2 simple sentences to avoid relative clauses.
+        </div>
+        <div class="conditional-box">
+            <h4>Sunday Audit Recovery</h4>
+            <div class="cond-case">
+                <span class="cond-title c-green">1. KPIs Met:</span> Unstoppable. Move to Week 4.
+            </div>
+            <div class="cond-case">
+                <span class="cond-title c-orange">2. Minor Friction (Max 1 KUP):</span> The complexity is scary. Force the issue:
+                <ul class="recovery-list">
+                    <li><b>Grammar:</b> Focus purely on Nominative/Accusative relative clauses. Ignore Dative relative pronouns for now.</li>
+                    <li><b>Vocab:</b> Ensure you know the gender (der/die/das) of your essay nouns, or you can't build the clause.</li>
+                    <li><b>Listening:</b> Shadow native speakers. Repeat their relative clauses aloud.</li>
+                    <li><b>Speaking/Output:</b> Your next essay MUST contain one "um...zu" and one Relativsatz, even if wrong. Let AI fix it.</li>
+                </ul>
+            </div>
+            <div class="cond-case">
+                <span class="cond-title c-red">3. Massive Miss (>1 KUP):</span> Brain fatigue has hit. You can still recover easily:
+                <ul class="recovery-list">
+                    <li><b>Grammar:</b> Drop Genitiv (Unit 77) completely. It is low priority. Master Relativsätze only.</li>
+                    <li><b>Vocab:</b> Cut Anki to 20 reviews/day. Free up cognitive load.</li>
+                    <li><b>Listening:</b> Take a 24-hour break from active listening. Passive wash only.</li>
+                    <li><b>Speaking/Output:</b> Use the AI "Verb-Kicker" prompt. Drill the mechanics in a zero-pressure chat before trying an essay.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- WEEK 4 -->
+    <button class="accordion-btn">Week 4: The Final Bosses</button>
+    <div class="panel">
+        <div class="kpi-card">
+            <b style="color:var(--prio-3);">KPIs (Success):</b> Passiv & Konjunktiv II completed. Mock essays hitting Band C.
+        </div>
+        <div class="kupi-card">
+            <b style="color:var(--prio-1);">KUPs (Failing):</b> Adjective endings destroying accuracy. Passive voice totally backwards.
+        </div>
+        <div class="conditional-box">
+            <h4>Sunday Audit Recovery</h4>
+            <div class="cond-case">
+                <span class="cond-title c-green">1. KPIs Met:</span> The book is defeated. Move to Mock Exams.
+            </div>
+            <div class="cond-case">
+                <span class="cond-title c-orange">2. Minor Friction (Max 1 KUP):</span> Strategic retreat:
+                <ul class="recovery-list">
+                    <li><b>Grammar:</b> ABANDON ADJECTIVE ENDINGS. The ROI on a B2 exam is terrible. Shift 100% focus to Passiv (Unit 57).</li>
+                    <li><b>Vocab:</b> Drill past participles (ge- verbs) so you can actually build the Passive.</li>
+                    <li><b>Listening:</b> Watch Nicos Weg and count how many times they use "würde".</li>
+                    <li><b>Speaking/Output:</b> Write 3 simple sentences in the present, then rewrite them in Passiv.</li>
+                </ul>
+            </div>
+            <div class="cond-case">
+                <span class="cond-title c-red">3. Massive Miss (>1 KUP):</span> Textbook burnout. We pivot to synthesis:
+                <ul class="recovery-list">
+                    <li><b>Grammar:</b> Close the book. You have enough syntax to pass right now if you stick to what you know.</li>
+                    <li><b>Vocab:</b> Stop adding new cards. Maintain mature retention only.</li>
+                    <li><b>Listening:</b> Find an audiobook or news clip WITH a transcript. Read and listen simultaneously.</li>
+                    <li><b>Speaking/Output:</b> Switch entirely to essay templates. Automate your output so you don't have to think about "The Bosses".</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- WEEKS 5 & 6 -->
+    <button class="accordion-btn">Weeks 5 & 6: The Sniper Phase</button>
+    <div class="panel">
+        <div class="kpi-card">
+            <b style="color:var(--prio-3);">KPIs (Success):</b> 2-3 Mock Exams per week. Book is only used as a sniper rifle for repairs.
+        </div>
+        <div class="kupi-card">
+            <b style="color:var(--prio-1);">KUPs (Failing):</b> Running out of time on Reading. Same grammar error repeating.
+        </div>
+        <div class="conditional-box">
+            <h4>Sunday Audit Recovery</h4>
+            <div class="cond-case">
+                <span class="cond-title c-green">1. KPIs Met:</span> Coasting to victory. Maintain pace.
+            </div>
+            <div class="cond-case">
+                <span class="cond-title c-orange">2. Minor Friction (Max 1 KUP):</span> Optimize the test mechanics:
+                <ul class="recovery-list">
+                    <li><b>Grammar:</b> Look at your last Mock Exam. Pick the ONE rule you failed most. Re-do that single unit.</li>
+                    <li><b>Vocab:</b> Highlight unknown words in Mock Exams, but only Anki the ones that appear in the questions.</li>
+                    <li><b>Listening:</b> Do a mock listening test, but pause after every question to verify understanding.</li>
+                    <li><b>Speaking/Output:</b> Stop writing full essays. Just write introductions and conclusions to build speed.</li>
+                </ul>
+            </div>
+            <div class="cond-case">
+                <span class="cond-title c-red">3. Massive Miss (>1 KUP):</span> You are scoring 40% on mocks. Don't panic. You only need 60% to pass:
+                <ul class="recovery-list">
+                    <li><b>Grammar:</b> Stop learning. Game the rubrics. Memorize exact phrases that score points regardless of context.</li>
+                    <li><b>Vocab:</b> Use DeepL to translate full B2 mock exam texts to rapidly absorb test-specific vocabulary.</li>
+                    <li><b>Listening:</b> Play the mock audio at 0.75x speed to train your brain to catch the keywords, then speed it up to 1x.</li>
+                    <li><b>Speaking/Output:</b> Dedicate 4 days purely to C-Test (Lückentext) optimization. This is where easy points live.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- WEEK 7 -->
+    <button class="accordion-btn">Week 7: The Final Sprint (Exam: Nov 3)</button>
+    <div class="panel">
+        <div class="kpi-card">
+            <b style="color:var(--prio-3);">KPIs (Success):</b> C-Tests >60%. 4 perfectly memorized skeletons. Rested.
+        </div>
+        <div class="kupi-card">
+            <b style="color:var(--prio-1);">KUPs (Failing):</b> Burnout, brain fog, or severe panic before the exam.
+        </div>
+        <div class="conditional-box">
+            <h4>Pre-Exam Audit Recovery</h4>
+            <div class="cond-case">
+                <span class="cond-title c-green">1. KPIs Met:</span> Walk in and execute.
+            </div>
+            <div class="cond-case">
+                <span class="cond-title c-orange">2. Minor Friction (Max 1 KUP):</span> Pre-test anxiety is normal:
+                <ul class="recovery-list">
+                    <li><b>Grammar:</b> Do not open a grammar book.</li>
+                    <li><b>Vocab:</b> Do your Anki reviews, but delete any cards you fail. They aren't going to stick now.</li>
+                    <li><b>Listening:</b> Listen to your favorite German music or an easy podcast. Keep the language in your ears but remove the stress.</li>
+                    <li><b>Speaking/Output:</b> Mentally run your skeletons while showering or walking.</li>
+                </ul>
+            </div>
+            <div class="cond-case">
+                <span class="cond-title c-red">3. Massive Miss (>1 KUP):</span> You feel entirely unprepared. Victory is still mathematically viable through brute force formatting:
+                <ul class="recovery-list">
+                    <li><b>Grammar:</b> Execute the "72-Hour Wash". No new information. You only rely on V2 and dass-clauses.</li>
+                    <li><b>Vocab:</b> Ignore everything. Use A2 vocabulary wrapped in C1 templates.</li>
+                    <li><b>Listening:</b> Michel Thomas tracks 1-3 only. Rebuild total confidence in basic sentence structures.</li>
+                    <li><b>Speaking/Output:</b> Type out your 4 Essay Skeletons 10 times each. You will drag a passing grade out of the sheer mechanics of the template. Execute.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    var acc = document.getElementsByClassName("accordion-btn");
+    for (var i = 0; i < acc.length; i++) {
+        acc[i].addEventListener("click", function() {
+            this.classList.toggle("active-acc");
+            var panel = this.nextElementSibling;
+            if (panel.style.maxHeight) {
+                panel.style.maxHeight = null;
+            } else {
+                panel.style.maxHeight = panel.scrollHeight + 300 + "px";
+            } 
+        });
+    }
+</script>
+
+</body>
+</html>
