@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stealth Drill OS</title>
+    <title>Stealth Drill OS - Strict SVOV</title>
     <style>
         :root {
             --bg-color: #0d0d0d;
@@ -65,14 +65,14 @@
             box-sizing: border-box;
         }
         .container {
-            max-width: 450px;
+            max-width: 500px;
             width: 100%;
             background-color: var(--card-bg);
             padding: 30px 20px;
             border-radius: 12px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.5);
             text-align: center;
-            min-height: 280px;
+            min-height: 300px;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -80,24 +80,36 @@
         
         /* Text Areas */
         #english-prompt {
-            font-size: 1.3rem;
+            font-size: 1.25rem;
             font-weight: bold;
-            line-height: 1.4;
+            line-height: 1.5;
             margin-bottom: 25px;
             color: var(--text-main);
         }
         #german-answer {
-            font-size: 1.4rem;
+            font-size: 1.35rem;
             font-weight: bold;
-            line-height: 1.4;
+            line-height: 1.5;
             color: var(--primary);
             margin-bottom: 30px;
             opacity: 0;
             transition: opacity 0.2s ease-in-out;
-            min-height: 60px; /* Prevents layout jump */
+            min-height: 80px; 
         }
         .visible {
             opacity: 1 !important;
+        }
+
+        /* Syntax Tags */
+        .tag {
+            background-color: #333;
+            color: #ffb142;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            margin-right: 5px;
+            text-transform: uppercase;
+            vertical-align: middle;
         }
 
         /* Buttons */
@@ -127,7 +139,7 @@
         .btn-next {
             background-color: var(--btn-disabled);
             color: var(--text-muted);
-            pointer-events: none; /* Disabled until answer is shown */
+            pointer-events: none;
         }
         .btn-next.active {
             background-color: var(--text-main);
@@ -148,7 +160,7 @@
 
 <div class="main-wrapper">
     <div class="container">
-        <div id="english-prompt">Loading...</div>
+        <div id="english-prompt">Loading Engine...</div>
         <div id="german-answer"></div>
         
         <div class="btn-group">
@@ -159,51 +171,146 @@
 </div>
 
 <script>
-    // The Compound Matrix: V2, Modals, Connectors (aber/und/denn), Verb-Kickers (weil/dass)
-    const drillData = [
-        { en: "I want to play, but I cannot, because I am tired.", de: "Ich will spielen, aber ich kann nicht, weil ich müde bin." },
-        { en: "Today I am learning German, and tomorrow I will play.", de: "Heute lerne ich Deutsch, und morgen will ich spielen." },
-        { en: "I must go now, but I will do it later.", de: "Ich muss jetzt gehen, aber ich will es später machen." },
-        { en: "I cannot eat, because I must study.", de: "Ich kann nicht essen, weil ich lernen muss." },
-        { en: "Can you tell me, that you have it?", de: "Können Sie mir sagen, dass Sie es haben?" },
-        { en: "I think that it is good, but I must see it.", de: "Ich denke, dass es gut ist, aber ich muss es sehen." },
-        { en: "I want it, but I cannot have it.", de: "Ich will es, aber ich kann es nicht haben." },
-        { en: "He says that he is here, but I cannot see it.", de: "Er sagt, dass er hier ist, aber ich kann es nicht sehen." },
-        { en: "I will wait, because I want to see it.", de: "Ich will warten, weil ich es sehen will." },
-        { en: "I am eating now, because I am hungry.", de: "Ich esse jetzt, denn ich habe Hunger." },
-        { en: "I must stay here, because I have no time.", de: "Ich muss hier bleiben, weil ich keine Zeit habe." },
-        { en: "I know that you are here, and I want to see you.", de: "Ich weiß, dass du hier bist, und ich will dich sehen." }
+    // ==========================================
+    // STRICT SVOV PROCEDURAL ENGINE
+    // ==========================================
+
+    // 1. Dictionaries (The Building Blocks)
+    const subjects = [
+        { de: "ich", en: "I", m: { can: {de:"kann", en:"can"}, must: {de:"muss", en:"must"}, want: {de:"will", en:"want to"} } },
+        { de: "wir", en: "we", m: { can: {de:"können", en:"can"}, must: {de:"müssen", en:"must"}, want: {de:"wollen", en:"want to"} } },
+        { de: "er", en: "he", m: { can: {de:"kann", en:"can"}, must: {de:"muss", en:"must"}, want: {de:"will", en:"wants to"} } },
+        { de: "sie", en: "she", m: { can: {de:"kann", en:"can"}, must: {de:"muss", en:"must"}, want: {de:"will", en:"wants to"} } }
     ];
 
-    let currentIndex = 0;
+    const actions = [
+        { oDe: "das Buch", oEn: "the book", vDe: "lesen", vEn: "read" },
+        { oDe: "die Pizza", oEn: "the pizza", vDe: "essen", vEn: "eat" },
+        { oDe: "Deutsch", oEn: "German", vDe: "lernen", vEn: "study" },
+        { oDe: "das Auto", oEn: "the car", vDe: "kaufen", vEn: "buy" },
+        { oDe: "das Projekt", oEn: "the project", vDe: "machen", vEn: "do" }
+    ];
 
+    const temporals = [
+        { de: "heute", en: "today" }, { de: "morgen", en: "tomorrow" }, { de: "jetzt", en: "now" }
+    ];
+
+    const modals = [
+        { de: "schnell", en: "quickly" }, { de: "leider", en: "unfortunately" }, { de: "gerne", en: "gladly" }
+    ];
+
+    const lokals = [
+        { de: "zu Hause", en: "at home" }, { de: "in der Schule", en: "at school" }, { de: "draußen", en: "outside" }
+    ];
+
+    const pos0Connectors = [
+        { de: "und", en: "and" }, { de: "aber", en: "but" }, { de: "denn", en: "because" }
+    ];
+
+    const verbKickers = [
+        { de: "weil", en: "because" }, { de: "wenn", en: "if" }
+    ];
+
+    // 2. Utility Functions
+    function getRandom(arr) {
+        return arr[Math.floor(Math.random() * arr.length)];
+    }
+
+    function capitalize(str) {
+        return str.charAt(0).toUpperCase() + str.slice(1);
+    }
+
+    // 3. Strict SVOV Clause Generators
+    function buildClause() {
+        const s = getRandom(subjects);
+        const modalKey = getRandom(["can", "must", "want"]);
+        const m = s.m[modalKey];
+        const a = getRandom(actions);
+        const t = getRandom(temporals);
+        const mod = getRandom(modals);
+        const l = getRandom(lokals);
+
+        // Strict SVOV TeKaMoLo Rule: Subject -> Modal -> Temporal -> Modal -> Object -> Lokal -> Infinitive
+        let deMittelfeld = `${t.de} ${mod.de} ${a.oDe} ${l.de}`;
+        
+        let de = `${s.de} ${m.de} ${deMittelfeld} ${a.vDe}`;
+        let en = `${s.en} ${m.en} ${a.vEn} ${a.oEn} ${mod.en} ${l.en} ${t.en}`;
+        let tag = "[SVOV]";
+        
+        return { de, en, tag };
+    }
+
+    function buildNebensatz(connector) {
+        const s = getRandom(subjects);
+        const modalKey = getRandom(["can", "must", "want"]);
+        const m = s.m[modalKey];
+        const a = getRandom(actions);
+        const t = getRandom(temporals);
+        const mod = getRandom(modals);
+        const l = getRandom(lokals);
+
+        // Verb-Kicker: Conjugated modal moves to absolute end
+        let de = `${connector.de} ${s.de} ${t.de} ${mod.de} ${a.oDe} ${l.de} ${a.vDe} ${m.de}`;
+        let en = `${connector.en} ${s.en} ${m.en} ${a.vEn} ${a.oEn} ${mod.en} ${l.en} ${t.en}`;
+        let tag = `[${capitalize(connector.de)}]`;
+
+        return { de, en, tag };
+    }
+
+    // 4. The Master Combiner
+    function generateFullSentence() {
+        // Randomly pick a sentence pattern (0, 1, or 2)
+        const pattern = Math.floor(Math.random() * 3);
+        let finalDe = "";
+        let finalEn = "";
+
+        if (pattern === 0) {
+            // Pattern 0: SVOV + (und/aber/denn) + SVOV
+            let c1 = buildClause();
+            let conn = getRandom(pos0Connectors);
+            let c2 = buildClause();
+            
+            finalEn = `<span class="tag">${c1.tag}</span> ${capitalize(c1.en)}, ${conn.en} <span class="tag">${c2.tag}</span> ${c2.en}.`;
+            finalDe = `${capitalize(c1.de)}, ${conn.de} ${c2.de}.`;
+        
+        } else if (pattern === 1) {
+            // Pattern 1: SVOV + (weil/wenn) + Nebensatz
+            let c1 = buildClause();
+            let conn = getRandom(verbKickers);
+            let c2 = buildNebensatz(conn);
+
+            finalEn = `<span class="tag">${c1.tag}</span> ${capitalize(c1.en)}, <span class="tag">${c2.tag}</span> ${c2.en}.`;
+            finalDe = `${capitalize(c1.de)}, ${c2.de}.`;
+
+        } else {
+            // Pattern 2: Dass clause
+            const intros = [
+                { de: "ich denke", en: "I think" },
+                { de: "er sagt", en: "he says" },
+                { de: "wir wissen", en: "we know" }
+            ];
+            let intro = getRandom(intros);
+            let c2 = buildNebensatz({de: "dass", en: "that"});
+
+            finalEn = `<span class="tag">[SVOV]</span> ${capitalize(intro.en)}, <span class="tag">[Dass]</span> ${c2.en}.`;
+            finalDe = `${capitalize(intro.de)}, ${c2.de}.`;
+        }
+
+        return { en: finalEn, de: finalDe };
+    }
+
+    // ==========================================
+    // UI CONTROLS
+    // ==========================================
     const promptEl = document.getElementById("english-prompt");
     const answerEl = document.getElementById("german-answer");
-    const btnAnswer = document.getElementById("btn-answer");
     const btnNext = document.getElementById("btn-next");
 
-    function shuffle(array) {
-        for (let i = array.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [array[i], array[j]] = [array[j], array[i]];
-        }
-    }
-
-    function initDrill() {
-        shuffle(drillData);
-        loadQuestion();
-    }
-
     function loadQuestion() {
-        // Set text
-        promptEl.innerText = drillData[currentIndex].en;
-        answerEl.innerText = drillData[currentIndex].de;
-        
-        // Reset state
+        const sentence = generateFullSentence();
+        promptEl.innerHTML = sentence.en;
+        answerEl.innerText = sentence.de;
         answerEl.classList.remove("visible");
-        
-        // Button toggles
-        btnAnswer.style.display = "block";
         btnNext.classList.remove("active");
     }
 
@@ -213,12 +320,11 @@
     }
 
     function nextQuestion() {
-        currentIndex = (currentIndex + 1) % drillData.length;
         loadQuestion();
     }
 
     // Start
-    initDrill();
+    loadQuestion();
 </script>
 
 </body>
