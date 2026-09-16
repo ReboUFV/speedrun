@@ -6,212 +6,44 @@
     <title>B2 Speedrun OS</title>
     <style>
         :root {
-            --bg-color: #121212;
-            --card-bg: #1e1e1e;
-            --primary: #00e676; 
-            --text-main: #ffffff;
-            --text-muted: #a0a0a0;
-            
-            /* Priority Colors */
-            --prio-1: #ff5252;
-            --prio-2: #ffb142;
-            --prio-3: #34ace0;
+            --bg-color: #121212; --card-bg: #1e1e1e; --primary: #00e676; 
+            --text-main: #ffffff; --text-muted: #a0a0a0;
+            --prio-1: #ff5252; --prio-2: #ffb142; --prio-3: #34ace0;
         }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .container {
-            max-width: 550px;
-            width: 100%;
-        }
-        h1 {
-            text-align: center;
-            font-size: 1.8rem;
-            margin-bottom: 5px;
-            color: var(--primary);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        .subtitle {
-            text-align: center;
-            color: var(--text-muted);
-            margin-bottom: 25px;
-            font-size: 0.9rem;
-        }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: var(--bg-color); color: var(--text-main); margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; }
+        .container { max-width: 550px; width: 100%; }
+        
+        h1 { text-align: center; font-size: 1.8rem; margin-bottom: 5px; color: var(--primary); text-transform: uppercase; letter-spacing: 1px; }
+        .subtitle { text-align: center; color: var(--text-muted); margin-bottom: 20px; font-size: 0.9rem; }
+
+        /* Top Navigation Bar */
+        .topbar { display: flex; gap: 6px; width: 100%; margin-bottom: 25px; }
+        .topbar a { flex: 1; text-align: center; background-color: var(--card-bg); border: 1px solid var(--primary); color: var(--primary); padding: 10px 4px; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 0.85rem; transition: all 0.2s; }
+        .topbar a:hover, .topbar a.active { background-color: var(--primary); color: #000; }
         
         /* Dropdown Button Styles */
-        .accordion-btn {
-            background-color: var(--card-bg);
-            color: var(--text-main);
-            cursor: pointer;
-            padding: 18px;
-            width: 100%;
-            border: 1px solid #333;
-            border-radius: 8px;
-            text-align: left;
-            outline: none;
-            font-size: 1.1rem;
-            font-weight: bold;
-            transition: 0.2s;
-            margin-bottom: 8px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .accordion-btn:hover, .accordion-btn.active {
-            background-color: #2a2a2a;
-            border-color: var(--primary);
-        }
-        .accordion-btn::after {
-            content: '+';
-            font-size: 1.5rem;
-            color: var(--primary);
-        }
-        .accordion-btn.active::after {
-            content: '-';
-        }
+        .accordion-btn { background-color: var(--card-bg); color: var(--text-main); cursor: pointer; padding: 18px; width: 100%; border: 1px solid #333; border-radius: 8px; text-align: left; outline: none; font-size: 1.1rem; font-weight: bold; transition: 0.2s; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
+        .accordion-btn:hover, .accordion-btn.active-acc { background-color: #2a2a2a; border-color: var(--primary); }
+        .accordion-btn::after { content: '+'; font-size: 1.5rem; color: var(--primary); }
+        .accordion-btn.active-acc::after { content: '-'; }
 
-        /* Dropdown Content */
-        .panel {
-            padding: 0 10px;
-            background-color: var(--bg-color);
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease-out;
-            margin-bottom: 10px;
-        }
+        .panel { padding: 0 10px; background-color: var(--bg-color); max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; margin-bottom: 10px; }
+        .task-card { background-color: var(--card-bg); padding: 15px; border-radius: 6px; margin-top: 10px; margin-bottom: 10px; line-height: 1.5; font-size: 0.95rem; }
+        .prio-1 { border-left: 5px solid var(--prio-1); } .prio-2 { border-left: 5px solid var(--prio-2); } .prio-3 { border-left: 5px solid var(--prio-3); }
+        .prio-label { font-size: 0.8rem; font-weight: bold; text-transform: uppercase; margin-bottom: 5px; display: inline-block; }
+        .prio-1 .prio-label { color: var(--prio-1); } .prio-2 .prio-label { color: var(--prio-2); } .prio-3 .prio-label { color: var(--prio-3); }
 
-        /* Priority Cards */
-        .task-card {
-            background-color: var(--card-bg);
-            padding: 15px;
-            border-radius: 6px;
-            margin-top: 10px;
-            margin-bottom: 10px;
-            line-height: 1.5;
-            font-size: 0.95rem;
-        }
-        .prio-1 { border-left: 5px solid var(--prio-1); }
-        .prio-2 { border-left: 5px solid var(--prio-2); }
-        .prio-3 { border-left: 5px solid var(--prio-3); }
-        
-        .prio-label {
-            font-size: 0.8rem;
-            font-weight: bold;
-            text-transform: uppercase;
-            margin-bottom: 5px;
-            display: inline-block;
-        }
-        .prio-1 .prio-label { color: var(--prio-1); }
-        .prio-2 .prio-label { color: var(--prio-2); }
-        .prio-3 .prio-label { color: var(--prio-3); }
+        .grammar-engine { background-color: #1a1a2e; border: 1px dashed var(--primary); padding: 15px; border-radius: 8px; margin-bottom: 25px; font-size: 0.9rem; }
+        .grammar-engine h3 { margin-top: 0; color: var(--primary); display: flex; align-items: center; }
+        .grammar-engine ul { padding-left: 20px; margin-top: 5px; } .grammar-engine li { margin-bottom: 8px; }
+        .conditional { background-color: #2d2d2d; padding: 10px; border-radius: 4px; border-left: 3px solid #ffb142; margin-top: 5px; font-size: 0.85rem; line-height: 1.4; }
 
-        /* Grammar Engine Box */
-        .grammar-engine {
-            background-color: #1a1a2e;
-            border: 1px dashed var(--primary);
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 25px;
-            font-size: 0.9rem;
-        }
-        .grammar-engine h3 {
-            margin-top: 0;
-            color: var(--primary);
-            display: flex;
-            align-items: center;
-        }
-        .grammar-engine ul {
-            padding-left: 20px;
-            margin-top: 5px;
-        }
-        .grammar-engine li {
-            margin-bottom: 8px;
-        }
-        .conditional {
-            background-color: #2d2d2d;
-            padding: 10px;
-            border-radius: 4px;
-            border-left: 3px solid #ffb142;
-            margin-top: 5px;
-            font-size: 0.85rem;
-            line-height: 1.4;
-        }
+        .prompt-trigger { background: #2a2a2a; color: var(--primary); border: 1px solid var(--primary); padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; cursor: pointer; margin-left: 8px; vertical-align: middle; font-weight: bold; display: inline-block; }
+        .prompt-box { display: none; background-color: #000; border: 1px solid #444; border-left: 3px solid var(--primary); border-radius: 4px; padding: 12px; margin-top: 10px; font-family: monospace; font-size: 0.8rem; color: #00e676; white-space: pre-wrap; line-height: 1.4; }
 
-        /* AI Prompt UI */
-        .prompt-trigger {
-            background: #2a2a2a;
-            color: var(--primary);
-            border: 1px solid var(--primary);
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 0.75rem;
-            cursor: pointer;
-            margin-left: 8px;
-            vertical-align: middle;
-            font-weight: bold;
-            display: inline-block;
-        }
-        .prompt-box {
-            display: none; 
-            background-color: #000;
-            border: 1px solid #444;
-            border-left: 3px solid var(--primary);
-            border-radius: 4px;
-            padding: 12px;
-            margin-top: 10px;
-            font-family: monospace;
-            font-size: 0.8rem;
-            color: #00e676;
-            white-space: pre-wrap;
-            line-height: 1.4;
-        }
-
-        /* Grammar Tooltip */
-        .tooltip {
-            position: relative;
-            display: inline-block;
-            cursor: pointer;
-            background: #333;
-            color: var(--primary);
-            border: 1px solid var(--primary);
-            border-radius: 50%;
-            width: 22px;
-            height: 22px;
-            text-align: center;
-            line-height: 22px;
-            font-size: 0.85rem;
-            margin-left: 10px;
-            font-weight: bold;
-        }
-        .tooltip .tooltiptext {
-            visibility: hidden;
-            width: 280px;
-            background-color: #222;
-            color: #fff;
-            text-align: left;
-            border-radius: 6px;
-            padding: 12px;
-            position: absolute;
-            z-index: 10;
-            top: 150%; 
-            left: 50%;
-            margin-left: -140px;
-            border: 1px solid var(--primary);
-            box-shadow: 0px 4px 12px rgba(0,0,0,0.8);
-            font-size: 0.85rem;
-            font-weight: normal;
-        }
-        .tooltip:hover .tooltiptext, .tooltip:active .tooltiptext {
-            visibility: visible;
-        }
+        .tooltip { position: relative; display: inline-block; cursor: pointer; background: #333; color: var(--primary); border: 1px solid var(--primary); border-radius: 50%; width: 22px; height: 22px; text-align: center; line-height: 22px; font-size: 0.85rem; margin-left: 10px; font-weight: bold; }
+        .tooltip .tooltiptext { visibility: hidden; width: 280px; background-color: #222; color: #fff; text-align: left; border-radius: 6px; padding: 12px; position: absolute; z-index: 10; top: 150%; left: 50%; margin-left: -140px; border: 1px solid var(--primary); box-shadow: 0px 4px 12px rgba(0,0,0,0.8); font-size: 0.85rem; font-weight: normal; }
+        .tooltip:hover .tooltiptext, .tooltip:active .tooltiptext { visibility: visible; }
         .method-highlight { color: var(--primary); font-weight: bold; }
     </style>
 </head>
@@ -220,6 +52,14 @@
 <div class="container">
     <h1>B2 Speedrun OS</h1>
     <div class="subtitle">Target: Nov 3 Internal Exam (49 Days)</div>
+
+    <!-- OS Navigation -->
+    <div class="topbar">
+        <a href="index.html" class="active">🏠 OS</a>
+        <a href="drill.html">⚡ Drills</a>
+        <a href="archive.html">📑 Archive</a>
+        <a href="performance.html">📊 Perf</a>
+    </div>
 
     <!-- GRAMMAR ALGORITHM -->
     <button class="accordion-btn">⚙️ The Dynamic Grammar Engine</button>
@@ -238,7 +78,6 @@
                     </span>
                 </div>
             </h3>
-
             <b>Milestone 1: MVG (Syntax Base)</b>
             <ul><li>Units 11 (V2), 5 & 7 (Brackets), 42 (Verb-Kickers)</li></ul>
             <div class="conditional">
@@ -365,11 +204,10 @@
 </div>
 
 <script>
-    // Accordion Logic
     var acc = document.getElementsByClassName("accordion-btn");
     for (var i = 0; i < acc.length; i++) {
         acc[i].addEventListener("click", function() {
-            this.classList.toggle("active");
+            this.classList.toggle("active-acc");
             var panel = this.nextElementSibling;
             if (panel.style.maxHeight) {
                 panel.style.maxHeight = null;
@@ -379,7 +217,6 @@
         });
     }
 
-    // Toggle Prompt Logic
     function togglePrompt(btn, promptId) {
         var promptBox = document.getElementById(promptId);
         if (promptBox.style.display === "block") {
@@ -391,7 +228,6 @@
             btn.style.background = "var(--primary)";
             btn.style.color = "#000";
         }
-        
         var panel = btn.closest('.panel');
         if (panel && panel.style.maxHeight) {
             panel.style.maxHeight = panel.scrollHeight + 500 + "px";
