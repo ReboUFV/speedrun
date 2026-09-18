@@ -16,12 +16,10 @@
         h1 { text-align: center; font-size: 1.8rem; margin-bottom: 5px; color: var(--primary); text-transform: uppercase; letter-spacing: 1px; }
         .subtitle { text-align: center; color: var(--text-muted); margin-bottom: 20px; font-size: 0.9rem; }
 
-        /* Top Navigation Bar */
         .topbar { display: flex; gap: 6px; width: 100%; margin-bottom: 25px; }
         .topbar a { flex: 1; text-align: center; background-color: var(--card-bg); border: 1px solid var(--primary); color: var(--primary); padding: 10px 4px; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 0.85rem; transition: all 0.2s; }
         .topbar a:hover, .topbar a.active { background-color: var(--primary); color: #000; }
         
-        /* Dropdown Button Styles */
         .accordion-btn { background-color: var(--card-bg); color: var(--text-main); cursor: pointer; padding: 18px; width: 100%; border: 1px solid #333; border-radius: 8px; text-align: left; outline: none; font-size: 1.1rem; font-weight: bold; transition: 0.2s; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
         .accordion-btn:hover, .accordion-btn.active-acc { background-color: #2a2a2a; border-color: var(--primary); }
         .accordion-btn::after { content: '+'; font-size: 1.5rem; color: var(--primary); }
@@ -33,28 +31,43 @@
         .prio-label { font-size: 0.8rem; font-weight: bold; text-transform: uppercase; margin-bottom: 5px; display: inline-block; }
         .prio-1 .prio-label { color: var(--prio-1); } .prio-2 .prio-label { color: var(--prio-2); } .prio-3 .prio-label { color: var(--prio-3); }
 
-        .grammar-engine { background-color: #1a1a2e; border: 1px dashed var(--primary); padding: 15px; border-radius: 8px; margin-bottom: 25px; font-size: 0.9rem; }
-        .grammar-engine h3 { margin-top: 0; color: var(--primary); display: flex; align-items: center; }
-        .grammar-engine ul { padding-left: 20px; margin-top: 5px; } .grammar-engine li { margin-bottom: 8px; }
-        .conditional { background-color: #2d2d2d; padding: 10px; border-radius: 4px; border-left: 3px solid #ffb142; margin-top: 5px; font-size: 0.85rem; line-height: 1.4; }
+        .grammar-engine { background-color: #1a1a2e; border: 1px dashed var(--primary); padding: 15px; border-radius: 8px; margin-bottom: 25px; font-size: 0.9rem; line-height: 1.5; }
+        .grammar-engine h3 { margin-top: 0; color: var(--primary); display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #333; padding-bottom: 10px; margin-bottom: 15px;}
+        
+        .milestone-block { margin-bottom: 20px; }
+        .milestone-title { font-weight: bold; font-size: 1.05rem; color: #fff; margin-bottom: 5px;}
+        .core-units { color: var(--primary); font-weight: bold; padding: 8px; background: rgba(0, 230, 118, 0.1); border-radius: 4px; border-left: 3px solid var(--primary); margin-bottom: 8px; }
+        
+        /* Expansion Track CSS */
+        .overflow-track { background: #111; border: 1px solid #333; padding: 10px; border-radius: 4px; font-size: 0.85rem; }
+        .overflow-title { color: #ffb142; font-weight: bold; margin-bottom: 5px; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 0.5px;}
+        .overflow-track ol { margin: 0; padding-left: 20px; color: #ccc; }
+        .overflow-track li { margin-bottom: 6px; }
+        .overflow-track li span { color: #fff; font-weight: bold; }
+        .saturation-warning { background: #2a0000; color: #ff5252; padding: 8px; border-radius: 4px; font-size: 0.8rem; font-weight: bold; margin-top: 8px; text-align: center; border: 1px dashed #ff5252;}
+
+        .conditional { background-color: #2d2d2d; padding: 10px; border-radius: 4px; border-left: 3px solid #ffb142; margin-top: 5px; font-size: 0.85rem; line-height: 1.4; margin-bottom: 15px;}
+        .conditional-vocab { border-left-color: #ff5252; background-color: #2a1a1a; margin-bottom: 20px;}
 
         .prompt-trigger { background: #2a2a2a; color: var(--primary); border: 1px solid var(--primary); padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; cursor: pointer; margin-left: 8px; vertical-align: middle; font-weight: bold; display: inline-block; }
         .prompt-box { display: none; background-color: #000; border: 1px solid #444; border-left: 3px solid var(--primary); border-radius: 4px; padding: 12px; margin-top: 10px; font-family: monospace; font-size: 0.8rem; color: #00e676; white-space: pre-wrap; line-height: 1.4; }
 
-        .tooltip { position: relative; display: inline-block; cursor: pointer; background: #333; color: var(--primary); border: 1px solid var(--primary); border-radius: 50%; width: 22px; height: 22px; text-align: center; line-height: 22px; font-size: 0.85rem; margin-left: 10px; font-weight: bold; }
-        .tooltip .tooltiptext { visibility: hidden; width: 280px; background-color: #222; color: #fff; text-align: left; border-radius: 6px; padding: 12px; position: absolute; z-index: 10; top: 150%; left: 50%; margin-left: -140px; border: 1px solid var(--primary); box-shadow: 0px 4px 12px rgba(0,0,0,0.8); font-size: 0.85rem; font-weight: normal; }
+        .tooltip { position: relative; display: inline-block; cursor: pointer; background: #2a2a2a; color: var(--primary); border: 1px solid var(--primary); border-radius: 4px; padding: 4px 8px; text-align: center; font-size: 0.75rem; font-weight: bold; text-transform: uppercase;}
+        .tooltip .tooltiptext { visibility: hidden; width: 280px; background-color: #111; color: #fff; text-align: left; border-radius: 6px; padding: 15px; position: absolute; z-index: 10; top: 150%; right: 0; border: 1px solid var(--primary); box-shadow: 0px 8px 16px rgba(0,0,0,0.9); font-size: 0.85rem; font-weight: normal; line-height: 1.5; text-transform: none; }
         .tooltip:hover .tooltiptext, .tooltip:active .tooltiptext { visibility: visible; }
-        .method-highlight { color: var(--primary); font-weight: bold; }
+        .method-highlight { color: var(--primary); font-weight: bold; display: block; border-bottom: 1px solid #333; padding-bottom: 5px; margin-bottom: 5px; text-transform: uppercase;}
+        
         .weekend-box { border-color: #34ace0 !important; }
+        .endgame-box { border-left: 4px solid #34ace0; background-color: #1e2730; padding: 15px; border-radius: 6px; margin-top: 15px; }
+        .endgame-box h4 { color: #34ace0; margin-top: 0; margin-bottom: 10px; text-transform: uppercase; }
     </style>
 </head>
 <body>
 
 <div class="container">
     <h1>B2 Speedrun OS</h1>
-    <div class="subtitle">Target: Nov 3 Internal Exam (49 Days)</div>
+    <div class="subtitle">Target Window: Nov 3 - Nov 7 (~49 Days)</div>
 
-    <!-- OS Navigation -->
     <div class="topbar">
         <a href="index.html" class="active">🏠 OS</a>
         <a href="drill.html">⚡ Drills</a>
@@ -63,78 +76,144 @@
     </div>
 
     <!-- GRAMMAR ALGORITHM -->
-    <button class="accordion-btn">⚙️ The Dynamic Grammar Engine</button>
+    <button class="accordion-btn">⚙️ Dynamic Knowledge Mapping</button>
     <div class="panel">
         <div class="grammar-engine">
-            <h3>Complete B2 Unit Flow 
-                <div class="tooltip">?
+            <h3>Chronological Engine
+                <div class="tooltip">📖 Methodology
                     <span class="tooltiptext">
-                        <span class="method-highlight">First Pass Method:</span><br>
+                        <span class="method-highlight">First Pass Method:</span>
                         1. Brief read (2 mins) of theory.<br>
-                        2. TYPE every sentence out fully.<br>
+                        2. <b>TYPE</b> every sentence out fully.<br>
                         3. Check answer key after EVERY exercise.<br><br>
-                        <span class="method-highlight">Repeat Pass Method:</span><br>
+                        <span class="method-highlight">Repeat Pass Method:</span>
                         1. Do NOT re-read theory.<br>
                         2. Do ONLY the exercises you failed previously.
                     </span>
                 </div>
             </h3>
-            <b>Milestone 1: MVG (Syntax Base)</b>
-            <ul><li>Units 11 (V2), 5 & 7 (Brackets), 42 (Verb-Kickers)</li></ul>
-            <div class="conditional">
-                <b>IF</b> test >90% accurate: Move to Milestone 2.<br>
-                <b>IF</b> <90% accurate: Execute <i>Repeat Pass Method</i>.
+
+            <div class="conditional conditional-vocab">
+                <b style="color: #ff5252;">IF Vocabulary blocks Grammar:</b><br>
+                Do not stall. DeepL instantly to translate the sentence so you can execute the syntax. <b>Only Anki IF:</b> Verb, Connector, or Noun where gender dictates the rule. Ignore fluff.
             </div>
 
-            <br><b>Milestone 2: Cases & Connectors</b>
-            <ul><li>Units 31 & 32 (Dativ/Akk), 33 & 34 (2-Way)</li>
-            <li>Units 40, 41, 72, 73 (und, aber, als, während)</li></ul>
-            <div class="conditional">
-                <b>IF</b> connectors are easy but prepositions are failing: Pause 72/73. Drill Anki case cards exclusively for 2 days.
+            <!-- WEEK 1 -->
+            <div class="milestone-block">
+                <div class="milestone-title">Week 1: Syntax Base</div>
+                <div class="core-units">Core Quota: Units 11, 5, 7, 42</div>
+                <div class="overflow-track">
+                    <div class="overflow-title">Expansion Track (Ranked by Importance)</div>
+                    <ol>
+                        <li><span>Grammar Reinforcement:</span> B2 Unit 43 (dass-Sätze extra) & Unit 44 (Infinitiv mit zu). No C1 yet; protect cognitive load.</li>
+                        <li><span>Output Drill:</span> 15-minute Rapid Fire AI translation drill (EN to DE) purely testing V2 and weil/dass word order.</li>
+                        <li><span>Input & Vocab:</span> Watch a 10-min Tagesschau/DW video. Extract exactly 5 high-utility verbs. Ignore all highly specific nouns.</li>
+                    </ol>
+                    <div class="saturation-warning">🚨 If you comfortably finish this queue, you are skimming. Stop reading and force more AI voice output.</div>
+                </div>
             </div>
 
-            <br><b>Milestone 3: B2 Output Structures</b>
-            <ul><li>Units 70 & 71 (Relativsätze), 74 (um...zu), 75 (Entweder/oder), 77 (Genitiv)</li></ul>
-
-            <br><b>Milestone 4: The Final Bosses</b>
-            <ul><li>Unit 79 (Adjektivdeklination)</li>
-            <li>Units 55 & 56 (Konjunktiv II)</li>
-            <li>Units 57 & 58 (Passiv), Unit 53 (Verben mit Präp)</li></ul>
-            <div class="conditional">
-                <b>IF</b> Adjective endings (79) drain your brain: Abandon them. Go straight to Passiv (57).
+            <!-- WEEK 2 -->
+            <div class="milestone-block">
+                <div class="milestone-title">Week 2: Cases & Connectors</div>
+                <div class="core-units">Core Quota: Units 31-34, 40-41</div>
+                <div class="overflow-track">
+                    <div class="overflow-title">Expansion Track (Ranked by Importance)</div>
+                    <ol>
+                        <li><span>Grammar Flex:</span> B2-C1 Unit 73 (Doppelkonnektoren)[cite: 7]. (Cheat code for scoring high in B2 writing).</li>
+                        <li><span>Output Drill:</span> Generate 5 AI C-Tests explicitly targeting Two-Way Prepositions (in, an, auf).</li>
+                        <li><span>Vocab Block:</span> Memorize the top 15 most common "Verb + Preposition" pairs (e.g., sich freuen auf/über).</li>
+                    </ol>
+                    <div class="saturation-warning">🚨 If you comfortably finish this queue, you are skimming. Stop reading and force more AI voice output.</div>
+                </div>
             </div>
 
-            <br><b style="color:var(--primary);">Milestone 5: The Endgame (Units 100% Done)</b>
-            <div class="conditional">
-                <b>1.</b> Stop reading the book.<br>
-                <b>2.</b> Grind 1 full Mock Exam / C-Test daily.<br>
-                <b>3.</b> Fix specific failed grammar holes using Repeat Pass Method.
+            <!-- WEEK 3 -->
+            <div class="milestone-block">
+                <div class="milestone-title">Week 3: B2 Output Structures</div>
+                <div class="core-units">Core Quota: Units 70, 71, 74, 75, 77</div>
+                <div class="overflow-track">
+                    <div class="overflow-title">Expansion Track (Ranked by Importance)</div>
+                    <ol>
+                        <li><span>Grammar Flex:</span> B2-C1 Unit 82 (Nominalisierung)[cite: 7] & B2 Unit 78 (Funktionsverbgefüge 1)[cite: 7]. High-end academic styling.</li>
+                        <li><span>Grammar Flex 2:</span> B2-C1 Unit 86 (Präposition-Adverb-Konnektor 3 - modal/final)[cite: 7].</li>
+                        <li><span>Output Drill:</span> Take a basic A2 essay you wrote in Week 1 and rewrite it using C1 Nominalizations and Relativsätze.</li>
+                    </ol>
+                    <div class="saturation-warning">🚨 If you comfortably finish this queue, you are skimming. Stop reading and force more AI voice output.</div>
+                </div>
+            </div>
+
+            <!-- WEEK 4 -->
+            <div class="milestone-block">
+                <div class="milestone-title">Week 4: The Bosses</div>
+                <div class="core-units">Core Quota: Units 57, 58 (Passiv), 55, 56 (Konj II)</div>
+                <div class="overflow-track">
+                    <div class="overflow-title">Expansion Track (Ranked by Importance)</div>
+                    <ol>
+                        <li><span>Grammar Flex:</span> B2-C1 Unit 14 (Passiv in allen Zeiten) & Unit 15 (Passiv mit Modalverben)[cite: 2].</li>
+                        <li><span>Speaking Flex:</span> B2-C1 Unit 88 (Besondere Formen der mündlichen Sprache)[cite: 8]. Vital for the oral exam.</li>
+                        <li><span>Output Drill:</span> Write a 200-word argumentative essay entirely in the Passive Voice. Let AI correct it.</li>
+                    </ol>
+                    <div class="saturation-warning">🚨 If you comfortably finish this queue, you are skimming. Stop reading and force more AI voice output.</div>
+                </div>
+            </div>
+
+            <!-- WEEK 5 -->
+            <div class="milestone-block">
+                <div class="milestone-title" style="color: #ffb142;">Week 5: Early Exam Prep (Synthesis)</div>
+                <div style="font-size: 0.9rem; color: #ccc;">
+                    <b>Grammar Quota: 0 Units.</b> The core book is closed. <br>
+                    <b>Task:</b> 3 C-Tests/week. 2 Full Mock Reading/Listening Exams. Transition daily essays to 175 words.
+                </div>
+                <div class="overflow-track" style="margin-top: 10px;">
+                    <div class="overflow-title">Expansion Track (Synthesis)</div>
+                    <ol>
+                        <li><span>Input Flex:</span> Translate full B2/C1 Reading mock exams line-by-line using DeepL to map exact test vocabulary.</li>
+                        <li><span>Output Flex:</span> Complete 5 extra C-Tests back-to-back under a strict 4-minute timer each.</li>
+                    </ol>
+                </div>
+            </div>
+
+            <!-- WEEK 6 -->
+            <div class="milestone-block">
+                <div class="milestone-title" style="color: #ff5252;">Week 6: The Gauntlet (Simulation)</div>
+                <div style="font-size: 0.9rem; color: #ccc;">
+                    <b>Task:</b> 1 Timed Mock Exam every 2 days. Writing modules strictly timed to 25 mins max. Replace standard AI chats with live simulated B2 speaking prompts.
+                </div>
+            </div>
+
+            <!-- WEEK 7 -->
+            <div class="milestone-block">
+                <div class="milestone-title" style="color: #34ace0;">Week 7: The Deload (Nov 3 - Nov 7)</div>
+                <div style="font-size: 0.9rem; color: #ccc;">
+                    <b>Task:</b> Zero new information. 72-Hour Wash active. Memorize 6 B2 essay skeletons perfectly. Await exact exam date and execute.
+                </div>
             </div>
         </div>
     </div>
 
     <!-- WEEKEND PROTOCOL -->
-    <button class="accordion-btn weekend-box">📅 No-Uni Days (Weekends)</button>
+    <button class="accordion-btn weekend-box">📅 Spaced Output Days (Weekends)</button>
     <div class="panel">
         <div class="task-card prio-1">
             <span class="prio-label">Morning: Synthetic Commute</span><br>
-            <b>Force a 40m Walk:</b> You lack a commute today. Manufacture one. Go outside and walk purely to run your Michel Thomas/Language Transfer active audio block.
+            <b>Force a 40m Walk:</b> Manufacture a commute. Walk purely to run your Michel Thomas/LT active audio block.
         </div>
         <div class="task-card prio-1">
-            <span class="prio-label">Mid-Day: The Mega-Block (2.5h)</span><br>
+            <span class="prio-label">Mid-Day: The Mega-Block (3.5h)</span><br>
             <b>Phase 1:</b> Clear all Anki reviews instantly.<br>
-            <b>Phase 2:</b> Advance the Grammar Engine. Type all Scriptorium syntax.<br>
+            <b>Phase 2:</b> Advance Core Quota. If Core is done, attack the <b>Expansion Track</b>.<br>
             <b>Phase 3:</b> Run 1 AI C-Test. <span class="prompt-trigger" onclick="togglePrompt(this, 'prompt-ctest-we')">🤖 Prompt</span>
-            <div id="prompt-ctest-we" class="prompt-box">Act as a Goethe B1 exam generator. Create a short, 75-word C-Test (Lückentext) paragraph about [Topic]. CRITICAL RULE: Use only A2/B1 vocabulary. Remove the second half of every second word (e.g., Gestern bin ich in die St___ gegangen). Wait for my answers, then grade my basic grammar.</div>
+            <div id="prompt-ctest-we" class="prompt-box">Act as a Goethe B1 exam generator. Create a short, 75-word C-Test (Lückentext) paragraph about [Topic]. CRITICAL RULE: Use only A2/B1 vocabulary. Remove the second half of every second word. Wait for my answers, then grade my basic grammar.</div>
         </div>
         <div class="task-card prio-2">
             <span class="prio-label">Afternoon: Life Admin</span><br>
-            <b>Passive Echo:</b> While doing chores, cooking, or at the gym, run the exact same audio you actively studied during your morning Synthetic Commute.
+            <b>Passive Echo:</b> While doing chores or gym, run the exact same audio you studied during your morning walk.
         </div>
         <div class="task-card prio-1">
-            <span class="prio-label">Night: Audit & Output</span><br>
-            <b>If Saturday:</b> Write 1 essay in the OS, log it in the Archive, then start B1/B2 deep immersion (games/shows).<br>
-            <b>If Sunday:</b> Open the <b>Performance OS</b>. Conduct your weekly audit. Read the Conditionals. Rest.
+            <span class="prio-label">Night: Daily Essay & Output (1h)</span><br>
+            <b>If Saturday:</b> Write 1 full 150-word Essay. Grade via AI. Log in Archive. Start deep immersion (games/shows).<br>
+            <b>If Sunday:</b> Write 1 full 150-word Essay. Grade via AI. Log in Archive. Open <b>Performance OS</b> for Weekly Audit. Read Conditionals.
         </div>
     </div>
 
@@ -147,11 +226,11 @@
         </div>
         <div class="task-card prio-3">
             <span class="prio-label">Mid-Day</span><br>
-            <b>Walk 2 (Passive Wash):</b> Listen to the exact same audio from Walk 1 (The Passive Echo trick). No active translating.
+            <b>Walk 2 (Passive Wash):</b> Listen to the exact same audio from Walk 1. No active translating.
         </div>
         <div class="task-card prio-1">
             <span class="prio-label">Night</span><br>
-            <b>Walk 3 (Verbal Output):</b> No headphones. Run "Clause Collisions" aloud (e.g., "Ich denke, dass das Auto schnell ist").
+            <b>Walk 3 (Verbal Output):</b> No headphones. Run "Clause Collisions" aloud.
         </div>
     </div>
 
@@ -183,11 +262,11 @@
     <div class="panel">
         <div class="task-card prio-3" style="border-left-color: #8c7ae6;">
             <span class="prio-label" style="color: #8c7ae6;">🎧 Audio Protocol</span><br>
-            <b>NO German Audio.</b> The cognitive load of typing syntax is too high. If you need background noise to focus, use non-vocal audio only (Lo-fi, Brown Noise, or Video Game OSTs).
+            <b>NO German Audio.</b> The cognitive load of typing syntax is too high. Use non-vocal audio only.
         </div>
         <div class="task-card prio-1">
             <span class="prio-label">Priority 1 (Deep Work)</span><br>
-            <b>Advance the Grammar Engine:</b> Complete current Milestone units. Type all answers.
+            <b>Advance the Grammar Engine:</b> Hit daily unit quota or attack Expansion Track. Type all answers.
         </div>
         <div class="task-card prio-2">
             <span class="prio-label">Priority 2 (Reality Check)</span> 
@@ -216,7 +295,7 @@
             <span class="prompt-trigger" onclick="togglePrompt(this, 'prompt-essay')">🤖 AI Prompt</span><br>
             <b>Hour 1:</b> Write a 150-word B2 essay. Let AI grade it.<br><br>
             <div id="prompt-essay" class="prompt-box">Act as a strict Goethe B2 Examiner. Grade my 150-word essay. Give me a score based on B2 rubrics. Highlight every grammar/case error, explain it briefly, and rewrite the sentence so it sounds natural and uses B2 connective structures (um...zu, weil, obwohl).</div>
-            <b>Hours 2-5:</b> Deep Immersion. Close textbooks. Play video games in German, watch Nicos Weg, dive down German YouTube rabbit holes.
+            <b>Hours 2-5:</b> Deep Immersion. Close textbooks. Play video games/watch Netflix in German.
         </div>
     </div>
 
