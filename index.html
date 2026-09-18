@@ -45,6 +45,7 @@
         .tooltip .tooltiptext { visibility: hidden; width: 280px; background-color: #222; color: #fff; text-align: left; border-radius: 6px; padding: 12px; position: absolute; z-index: 10; top: 150%; left: 50%; margin-left: -140px; border: 1px solid var(--primary); box-shadow: 0px 4px 12px rgba(0,0,0,0.8); font-size: 0.85rem; font-weight: normal; }
         .tooltip:hover .tooltiptext, .tooltip:active .tooltiptext { visibility: visible; }
         .method-highlight { color: var(--primary); font-weight: bold; }
+        .weekend-box { border-color: #34ace0 !important; }
     </style>
 </head>
 <body>
@@ -112,8 +113,33 @@
         </div>
     </div>
 
-    <!-- DAILY DECISION TREE -->
-    <button class="accordion-btn">🚶 Walking / Commuting</button>
+    <!-- WEEKEND PROTOCOL -->
+    <button class="accordion-btn weekend-box">📅 No-Uni Days (Weekends)</button>
+    <div class="panel">
+        <div class="task-card prio-1">
+            <span class="prio-label">Morning: Synthetic Commute</span><br>
+            <b>Force a 40m Walk:</b> You lack a commute today. Manufacture one. Go outside and walk purely to run your Michel Thomas/Language Transfer active audio block.
+        </div>
+        <div class="task-card prio-1">
+            <span class="prio-label">Mid-Day: The Mega-Block (2.5h)</span><br>
+            <b>Phase 1:</b> Clear all Anki reviews instantly.<br>
+            <b>Phase 2:</b> Advance the Grammar Engine. Type all Scriptorium syntax.<br>
+            <b>Phase 3:</b> Run 1 AI C-Test. <span class="prompt-trigger" onclick="togglePrompt(this, 'prompt-ctest-we')">🤖 Prompt</span>
+            <div id="prompt-ctest-we" class="prompt-box">Act as a Goethe B1 exam generator. Create a short, 75-word C-Test (Lückentext) paragraph about [Topic]. CRITICAL RULE: Use only A2/B1 vocabulary. Remove the second half of every second word (e.g., Gestern bin ich in die St___ gegangen). Wait for my answers, then grade my basic grammar.</div>
+        </div>
+        <div class="task-card prio-2">
+            <span class="prio-label">Afternoon: Life Admin</span><br>
+            <b>Passive Echo:</b> While doing chores, cooking, or at the gym, run the exact same audio you actively studied during your morning Synthetic Commute.
+        </div>
+        <div class="task-card prio-1">
+            <span class="prio-label">Night: Audit & Output</span><br>
+            <b>If Saturday:</b> Write 1 essay in the OS, log it in the Archive, then start B1/B2 deep immersion (games/shows).<br>
+            <b>If Sunday:</b> Open the <b>Performance OS</b>. Conduct your weekly audit. Read the Conditionals. Rest.
+        </div>
+    </div>
+
+    <!-- WEEKDAY: DAILY DECISION TREE -->
+    <button class="accordion-btn">🚶 Weekday Commuting</button>
     <div class="panel">
         <div class="task-card prio-1">
             <span class="prio-label">Morning</span><br>
@@ -153,7 +179,7 @@
         </div>
     </div>
 
-    <button class="accordion-btn">☀️ Free Time (Daytime Desk)</button>
+    <button class="accordion-btn">☀️ Weekday Free Time (Desk)</button>
     <div class="panel">
         <div class="task-card prio-3" style="border-left-color: #8c7ae6;">
             <span class="prio-label" style="color: #8c7ae6;">🎧 Audio Protocol</span><br>
@@ -167,7 +193,7 @@
             <span class="prio-label">Priority 2 (Reality Check)</span> 
             <span class="prompt-trigger" onclick="togglePrompt(this, 'prompt-ctest')">🤖 AI Prompt</span><br>
             <b>C-Test Grind:</b> Let AI generate a Lückentext to expose your missing endings.
-            <div id="prompt-ctest" class="prompt-box">Act as a Goethe B2 exam generator. Create a 100-word C-Test (Lückentext) paragraph about [Insert Topic: Environment, Tech, Work]. Remove the second half of every second word (e.g., Gestern bin ich in die St___ gegangen). Give me the text, wait for my answers, and then grade my grammar and adjective endings.</div>
+            <div id="prompt-ctest" class="prompt-box">Act as a Goethe B1 exam generator. Create a short, 75-word C-Test (Lückentext) paragraph about [Topic]. CRITICAL RULE: Use only A2/B1 vocabulary. Remove the second half of every second word. Wait for my answers, then grade my basic grammar.</div>
         </div>
         <div class="task-card prio-2">
             <span class="prio-label">Priority 2 (Output)</span>
@@ -177,7 +203,7 @@
         </div>
     </div>
 
-    <button class="accordion-btn">🌙 Free Time (Night)</button>
+    <button class="accordion-btn">🌙 Weekday Free Time (Night)</button>
     <div class="panel">
         <div class="task-card prio-2">
             <span class="prio-label">If Mon/Tue (Short Time)</span>
