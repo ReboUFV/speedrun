@@ -44,6 +44,8 @@
         .today-box { background: #1a1a2e; border: 1px solid var(--primary); border-radius: 8px; padding: 15px; margin-bottom: 20px; font-size: 0.9rem; line-height: 1.5; }
         .today-box h3 { margin: 0 0 8px 0; color: var(--primary); font-size: 0.95rem; text-transform: uppercase; display: flex; justify-content: space-between; gap: 8px; }
         .today-box .phase-tag { font-size: 0.7rem; color: #000; background: var(--primary); border-radius: 4px; padding: 2px 6px; white-space: nowrap; }
+        .today-box .now { margin-top: 10px; padding-top: 10px; border-top: 1px solid #333; font-size: 0.85rem; color: #ccc; }
+        .today-box .now b { color: var(--primary); }
 
         /* Calendar */
         .phase-head { font-weight: bold; font-size: 0.95rem; margin: 18px 0 4px 0; }
@@ -59,6 +61,19 @@
         .day.is-done .what { text-decoration: line-through; }
         .day.mock { border-left-color: var(--prio-2); }
         .day.audit { border-left-color: var(--prio-4); }
+
+        /* Full-day timetable */
+        .sched { width: 100%; border-collapse: collapse; font-size: 0.84rem; line-height: 1.4; }
+        .sched td { padding: 8px 6px; border-bottom: 1px solid #2a2a2a; vertical-align: top; }
+        .sched td:first-child { color: var(--text-muted); white-space: nowrap; font-variant-numeric: tabular-nums; width: 1%; }
+        .sched td b { color: #fff; }
+        .sched tr.deep td:nth-child(2) { border-left: 3px solid var(--prio-1); }
+        .sched tr.out td:nth-child(2) { border-left: 3px solid var(--prio-2); }
+        .sched tr.light td:nth-child(2) { border-left: 3px solid var(--prio-3); }
+        .sched tr.off td:nth-child(2) { border-left: 3px solid #555; color: #999; }
+        .sched tr.is-now td { background: #16261c; }
+        .legend { display: flex; flex-wrap: wrap; gap: 10px; font-size: 0.75rem; color: var(--text-muted); margin: 10px 0; }
+        .legend span::before { content: ''; display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 4px; vertical-align: -1px; background: var(--c); }
 
         .core-units { color: var(--primary); font-weight: bold; padding: 8px; background: rgba(0, 230, 118, 0.1); border-radius: 4px; border-left: 3px solid var(--primary); margin-bottom: 8px; font-size: 0.9rem; }
 
@@ -81,7 +96,7 @@
 
 <div class="container">
     <h1>B2 Speedrun Reboot</h1>
-    <div class="subtitle">Recalculated Oct 10 · −14 days lost · Start level: A2 · Target: Nov 3–7</div>
+    <div class="subtitle">Recalculated Oct 10 · Full-time mode · Start: A2 · Target: Erasmus B2 test, Nov 3–7</div>
 
     <div class="topbar">
         <a href="index.html">🏠 OS</a>
@@ -94,24 +109,24 @@
     <div class="hud">
         <div><b id="hud-days">–</b><span>Days to Nov 3</span></div>
         <div><b id="hud-done">0</b><span>Days cleared</span></div>
-        <div><b>16</b><span>Core units</span></div>
+        <div><b>~250</b><span>Hours available</span></div>
     </div>
 
     <div class="today-box" id="today-box">
         <h3><span>Today's Mission</span><span class="phase-tag" id="today-phase">–</span></h3>
         <div id="today-text">Loading…</div>
+        <div class="now" id="now-block"></div>
     </div>
 
     <div class="reality">
         <h3>⚠️ Reality Check</h3>
-        A2 → B2 normally takes <b>~300–400 hours</b>. You have <b>~24 days</b>. At 4–5 h/day that's <b>~110 h</b>.
-        So this run is no longer "learn B2". It's <b>"score 60% per module"</b>: Goethe B2 grades each module (Lesen, Hören, Schreiben, Sprechen) separately and 60% passes it.
+        A2 → B2 normally takes <b>~300–400 hours</b>. Full-time mode gives you <b>~10 h/day × 24 days ≈ 250 h</b>. That's close enough to make it a real fight.
         <br><br>
-        <b>Schreiben + Sprechen</b> are the gameable modules (memorized skeletons + clean B1 grammar). <b>Lesen + Hören</b> depend on vocabulary you can't fully build in 3 weeks — those get strategy, not grammar.
+        It's an <b>internal Erasmus exam</b>, not Goethe. Internal exams are usually shorter and check whether you can <b>function</b>: talk about yourself and your studies, write a clear text, understand normal speech, and get the grammar mostly right. That's good news. A clean B1+ with B2 connectors often passes.
         <br><br>
-        The <b>Oct 25 checkpoint mock</b> decides whether you sit all 4 modules, only the strong ones, or rebook. Decide with data, not hope.
+        <b>Biggest unknown: the format.</b> Until you know it, the plan trains all 4 skills + grammar equally. On Monday Oct 12, get the format (see 🕵️ Exam Intel) and re-weight.
         <br><br>
-        <b>Which B2?</b> If your requirement accepts any B2 certificate, compare <b>telc Deutsch B2</b> and <b>ÖSD B2</b> before booking. telc has a "Sprachbausteine" grammar cloze, which suits someone strong at grammar rules. Check what your uni/employer accepts first: some only accept Goethe.
+        <b>Second risk: burnout.</b> Nobody does 10 h of deep work a day. The day mixes ~6 h of hard blocks with ~4 h of lighter input. Respect the breaks and the weekly half-day off, or you lose days 15–24.
     </div>
 
     <!-- CALENDAR -->
@@ -120,70 +135,141 @@
         <div id="calendar"></div>
     </div>
 
-    <!-- WHAT CHANGED -->
-    <button class="accordion-btn">✂️ What Got Cut (vs. old OS)</button>
+    <!-- FULL DAY -->
+    <button class="accordion-btn">⏱️ Full-Day Protocol</button>
     <div class="panel">
-        <div class="task-card prio-3">
-            <span class="prio-label">Kept: 16 core units, in this order</span>
-            <div class="core-units">Sprint 1: 11, 5, 7, 42 → 31, 32, 33, 34</div>
-            <div class="core-units">Sprint 2: 40, 41, 70, 71, 57, 55</div>
-            <div class="core-units">Sprint 3: 0 new. Only the 1–2 units your mocks prove you fail.</div>
+        <div class="legend">
+            <span style="--c: var(--prio-1)">Deep work</span>
+            <span style="--c: var(--prio-2)">Output</span>
+            <span style="--c: var(--prio-3)">Light input</span>
+            <span style="--c: #555">Off</span>
         </div>
-        <div class="task-card prio-1">
-            <span class="prio-label">Cut completely</span>
-            <ul class="cut-list">
-                <li><s>All B2-C1 Flex units</s> (73, 78, 82, 86, 14, 15, 88). C1 styling on A2 foundations = errors with extra steps.</li>
-                <li><s>Units 43, 44, 74, 75, 77 (Genitiv), 56, 58</s>. Re-open only if Sprint 2 ends early.</li>
-                <li><s>Unit 79 Adjective endings</s>. Learn the endings inside your skeleton phrases only.</li>
-                <li><s>Expansion Tracks</s>. There is no overflow time anymore.</li>
-                <li><s>"Hours 2–5 Deep Immersion"</s> → max 1 h. The other hours go to mocks.</li>
-                <li><s>6 essay skeletons</s> → 4 skeletons (below), memorized perfectly.</li>
-            </ul>
-        </div>
-        <div class="task-card prio-2">
-            <span class="prio-label">Kept from old OS (unchanged)</span><br>
-            The daily routines in <a href="index.html" style="color:var(--primary);">🏠 OS</a> (walks, uni class stealth, gym audio, weekend Mega-Block) still apply. This page only replaces the <b>Grammar Engine timeline</b> and <b>quotas</b>.
+        <table class="sched" id="sched">
+            <tr class="off" data-t="0730"><td>07:30</td><td>Wake. Water, daylight. <b>No phone</b> for the first 30 min.</td></tr>
+            <tr class="light" data-t="0745"><td>07:45</td><td><b>Synthetic Commute (45 min walk):</b> active audio. Sprint 1: Michel Thomas / Language Transfer, answer out loud. Sprint 2+: Easy German / B2 listening material.</td></tr>
+            <tr class="light" data-t="0830"><td>08:30</td><td>Breakfast + <b>Anki reviews</b> (all due cards).</td></tr>
+            <tr class="deep" data-t="0900"><td>09:00</td><td><b>Deep Block 1 · Grammar (2.5 h):</b> Unit A of the day, First Pass Method. Type everything. 50 min work / 10 min break, standing up.</td></tr>
+            <tr class="out" data-t="1130"><td>11:30</td><td><b>Writing rep (45 min):</b> 1 text with a skeleton, AI-graded, logged in Archive. Rewrite the 3 worst sentences by hand.</td></tr>
+            <tr class="light" data-t="1215"><td>12:15</td><td><b>Vocab (45 min):</b> Anki new cards + run new words through the 🧬 decoder rules.</td></tr>
+            <tr class="off" data-t="1300"><td>13:00</td><td>Lunch. Real break, no German, no screens if you can.</td></tr>
+            <tr class="deep" data-t="1400"><td>14:00</td><td><b>Deep Block 2 · Reading + Listening (1.5 h):</b> one practice exam part of each, timed, then a post-mortem with the transcript.</td></tr>
+            <tr class="light" data-t="1530"><td>15:30</td><td><b>Walk / gym (30–45 min):</b> Passive Echo. Same audio as the morning, or recite skeletons.</td></tr>
+            <tr class="out" data-t="1615"><td>16:15</td><td><b>Speaking (45 min):</b> AI voice sim (interview + monologue + discussion), then 10 min shadowing.</td></tr>
+            <tr class="deep" data-t="1700"><td>17:00</td><td><b>Deep Block 3 · Grammar (1.5 h):</b> Unit B of the day, OR the Repeat Pass of yesterday's failed exercises + 2 AI C-Tests.</td></tr>
+            <tr class="off" data-t="1830"><td>18:30</td><td>Exercise + dinner.</td></tr>
+            <tr class="out" data-t="1930"><td>19:30</td><td><b>Output 2 (45 min):</b> second text (the other skeleton) OR 15 min AI interrogation + skeleton recital from memory.</td></tr>
+            <tr class="light" data-t="2015"><td>20:15</td><td><b>Immersion (1.5 h):</b> series with German subtitles, Easy German, games in German. Low effort, still counts.</td></tr>
+            <tr class="light" data-t="2145"><td>21:45</td><td><b>Shutdown (15 min):</b> write 5 sentences about your day in German, tick the calendar, check tomorrow's units.</td></tr>
+            <tr class="off" data-t="2200"><td>22:00</td><td>Screens off. In bed by 23:00. <b>Sleep is when vocab sticks</b>; don't trade it for study.</td></tr>
+        </table>
+        <div class="task-card prio-4">
+            <span class="prio-label">Guardrails</span><br>
+            <b>Mock days:</b> the mock replaces Deep Blocks 1+2. Do the post-mortem in Block 3.<br>
+            <b>Half-day off:</b> every Sunday from 16:00. Non-negotiable.<br>
+            <b>Fried brain</b> (rereading the same line 3 times): skip to the next <i>light</i> block, then come back. Don't push through a dead block.<br>
+            <b>ADHD rotation:</b> no block is longer than 2.5 h, and every block switches skill. If one drags, set a 25-min timer and just start.
         </div>
     </div>
 
-    <!-- DAILY STACK -->
-    <button class="accordion-btn">🧱 Daily Minimum Stack</button>
+    <!-- EXAM INTEL -->
+    <button class="accordion-btn">🕵️ Exam Intel (do Monday)</button>
     <div class="panel">
         <div class="task-card prio-1">
-            <span class="prio-label">1 · Unit of the day (60–75 min)</span><br>
-            Grammatik aktiv, First Pass Method. Type every sentence. Check after every exercise. Do it in uni (device allowed) or at the desk.
-        </div>
-        <div class="task-card prio-1">
-            <span class="prio-label">2 · One Schreiben rep (30 min)</span>
-            <span class="prompt-trigger" onclick="togglePrompt(this, 'p-write')">🤖 Prompt</span><br>
-            Alternate days: <b>Teil 1 Forumsbeitrag</b> (~150 words) / <b>Teil 2 formal email</b> (~100 words). Always start from the skeleton. Log in Archive.
-            <div id="p-write" class="prompt-box">Act as a strict Goethe-Zertifikat B2 examiner. First give me one realistic Schreiben task (alternate between Teil 1 "Forumsbeitrag" ~150 words and Teil 2 "formelle Nachricht" ~100 words). Wait for my text. Then grade it with the official B2 criteria (Aufgabenerfüllung, Kohärenz, Wortschatz, Strukturen) with a score per criterion and an estimated %. List every error as: my sentence → corrected sentence → 5-word rule. Finally, give me 3 phrases I should add to my skeleton. Keep the correction in simple German with English explanations.</div>
-        </div>
-        <div class="task-card prio-1">
-            <span class="prio-label">3 · Sprechen sim (15 min, voice)</span>
-            <span class="prompt-trigger" onclick="togglePrompt(this, 'p-speak')">🤖 Prompt</span><br>
-            Voice mode. Vortrag one day, Diskussion the next. Use the skeleton and Redemittel. Fluency &gt; complexity.
-            <div id="p-speak" class="prompt-box">Act as a Goethe-Zertifikat B2 speaking examiner. Run the oral exam with me. Teil 1: give me two topics, I pick one and give a ~4 minute Vortrag; afterwards ask me 1 follow-up question. Teil 2: start a ~5 minute Diskussion about a controversial topic, take the opposite side, interrupt me naturally. Do NOT correct me during the exam. At the end, give me: an estimated score, my 5 most frequent errors (my sentence → correct), and 3 Redemittel I should have used.</div>
+            <span class="prio-label">Find out by Mon Oct 12</span><br>
+            Ask the international / Erasmus office or the language centre:
+            <ul class="cut-list">
+                <li>Which parts: grammar test? reading? listening? writing? oral interview?</li>
+                <li>Duration and weight of each part. Is there a minimum per part?</li>
+                <li>Writing: what kind of text, and how many words?</li>
+                <li>Oral: interview, presentation, or conversation? Alone or in pairs?</li>
+                <li>Is there a sample exam or past paper? Can you retake if you fail?</li>
+                <li>The exact date and time.</li>
+            </ul>
         </div>
         <div class="task-card prio-2">
-            <span class="prio-label">4 · Anki (cap: 20–25 min)</span><br>
-            <b>Setup:</b> FSRS on, desired retention <b>0.85</b> (higher retention costs far more review time). Deck: Goethe B2 Wortliste + words from mocks and AI corrections.<br>
-            <b>Cram mode</b> (it only has to survive until the exam): 30 new/day in Sprints 1–2, 15/day in Sprint 3, <b>0 from Nov 1</b>. Instantly delete cognates you decode with the 🧬 rules. Suspend leeches after 4 lapses; don't fight them.<br>
-            Backlog first: if it's over ~300, do 100 reviews/day with 0 new until it's gone.
+            <span class="prio-label">Then re-weight the day</span><br>
+            <b>Grammar test exists:</b> Deep Block 3 becomes C-Tests / cloze tests every day.<br>
+            <b>Oral = interview:</b> Skeleton E (Erasmus interview) becomes your #1 priority. Rehearse it daily.<br>
+            <b>No listening part:</b> move the listening time to speaking.<br>
+            <b>Sample exam available:</b> do it untimed now and timed on Oct 25.
         </div>
         <div class="task-card prio-3">
-            <span class="prio-label">5 · Walks / Audio</span><br>
-            <b>Sprint 1:</b> keep Michel Thomas / Language Transfer (your A2 base).<br>
-            <b>Sprint 2+:</b> switch to Goethe B2 Hören practice audio, Easy German, DW "Top-Thema". Night walk: recite skeletons aloud, no headphones.
+            <span class="prio-label">Practice material until then</span><br>
+            Free B2 practice papers (Goethe / telc / ÖSD Modellsätze) are good <b>training</b> material for reading and listening, even if your exam isn't one of those. Ignore their exact task formats.
+        </div>
+    </div>
+
+    <!-- UNITS -->
+    <button class="accordion-btn">📚 Unit Plan (Grammatik aktiv)</button>
+    <div class="panel">
+        <div class="task-card prio-3">
+            <span class="prio-label">Full-time mode: ~2 units/day, everything back in</span>
+            <div class="core-units">Sprint 1: 11, 5, 7, 42, 43, 44 → 31, 32, 33, 34 → 40, 41</div>
+            <div class="core-units">Sprint 2: 70, 71, 74, 75, 79 (adj. endings), 57, 58, 55, 56, 77</div>
+            <div class="core-units">Sprint 3: B2-C1 Unit 73 (Doppelkonnektoren) + 88 (spoken German), and fix-it days.</div>
+        </div>
+        <div class="task-card prio-1">
+            <span class="prio-label">Still cut</span>
+            <ul class="cut-list">
+                <li><s>B2-C1 Units 78, 82, 86, 14, 15</s>. Nominalisierung and Funktionsverbgefüge are C1 polish; an Erasmus examiner won't miss them.</li>
+                <li><s>Expansion Tracks</s>. The full-day protocol replaces them.</li>
+            </ul>
+        </div>
+        <div class="task-card prio-2">
+            <span class="prio-label">Rule</span><br>
+            Every unit gets a <b>First Pass</b> on its day and a <b>Repeat Pass</b> (failed exercises only) 2–3 days later in Deep Block 3. A unit isn't done until the Repeat Pass is clean.
+        </div>
+    </div>
+
+    <!-- DAILY TOOLS -->
+    <button class="accordion-btn">🤖 AI Prompts</button>
+    <div class="panel">
+        <div class="task-card prio-1">
+            <span class="prio-label">Writing grader</span>
+            <span class="prompt-trigger" onclick="togglePrompt(this, 'p-write')">🤖 Prompt</span><br>
+            For the 11:30 and 19:30 output blocks.
+            <div id="p-write" class="prompt-box">Act as a strict CEFR B2 German examiner for a university Erasmus language test. First give me one realistic writing task (alternate between an opinion text ~150 words and a semi-formal email ~100 words). Wait for my text. Then grade it on: task completion, coherence, vocabulary range, grammar accuracy, with a score per criterion and an estimated CEFR level (A2/B1/B1+/B2). List every error as: my sentence → corrected sentence → 5-word rule. Finally, give me 3 phrases to add to my skeleton. Explain in English.</div>
+        </div>
+        <div class="task-card prio-1">
+            <span class="prio-label">Speaking sim</span>
+            <span class="prompt-trigger" onclick="togglePrompt(this, 'p-speak')">🤖 Prompt</span><br>
+            Voice mode, 16:15 block.
+            <div id="p-speak" class="prompt-box">Act as the examiner of a university B2 German oral test for Erasmus students. Run a ~12 minute oral exam in 3 parts: (1) interview: ask about me, my studies, why I want to do Erasmus, where and what I plan to do there; (2) give me a topic and let me speak ~3 minutes alone; (3) a short discussion where you take the opposite opinion. Speak at natural B2 speed. Do NOT correct me during the exam. At the end, give me: an estimated CEFR level, my 5 most frequent errors (my sentence → correct), and 3 phrases I should have used.</div>
+        </div>
+        <div class="task-card prio-2">
+            <span class="prio-label">C-Test / cloze</span>
+            <span class="prompt-trigger" onclick="togglePrompt(this, 'p-ctest')">🤖 Prompt</span><br>
+            For Deep Block 3.
+            <div id="p-ctest" class="prompt-box">Act as a B2 German test generator. Create a ~90-word C-Test (Lückentext) about [topic]. Remove the second half of every second word. Focus the gaps on: adjective endings, articles after prepositions, verb position after weil/dass/obwohl, and the grammar topic [today's unit]. Wait for my answers, then grade and explain each mistake in one line.</div>
+        </div>
+        <div class="task-card prio-2">
+            <span class="prio-label">Syntax interrogation</span>
+            <span class="prompt-trigger" onclick="togglePrompt(this, 'p-interrog')">🤖 Prompt</span><br>
+            For the 19:30 block.
+            <div id="p-interrog" class="prompt-box">Act as a strict German Syntax Drill Master. Ask me one B1/B2-level question at a time about [topic]. Wait for my answer. If I make a mistake with V2, verb-final clauses (dass/weil/obwohl/wenn), cases (Akk/Dat) or adjective endings, give me a 1-sentence correction. Then ask the next question. Every 5 questions, force me to use one of: zwar…aber, je…desto, nicht nur…sondern auch, Konjunktiv II, Passiv.</div>
+        </div>
+    </div>
+
+    <!-- ANKI -->
+    <button class="accordion-btn">🗂️ Anki Setup</button>
+    <div class="panel">
+        <div class="task-card prio-2">
+            <span class="prio-label">Settings</span><br>
+            FSRS on, desired retention <b>0.85</b> (higher retention costs far more review time). Deck: a B1/B2 frequency list + words from practice exams and AI corrections. Suspend leeches after 4 lapses.
+        </div>
+        <div class="task-card prio-2">
+            <span class="prio-label">Dose (full-time mode)</span><br>
+            <b>Sprint 1–2:</b> 40 new/day. <b>Sprint 3:</b> 20/day. <b>From Nov 1:</b> 0.<br>
+            Delete cognates you can decode with the 🧬 rules. Backlog first: if it's over ~300, clear it at 150 reviews/day before adding new cards.
         </div>
     </div>
 
     <!-- SKELETONS -->
-    <button class="accordion-btn">🦴 The 4 Skeletons</button>
+    <button class="accordion-btn">🦴 The 5 Skeletons</button>
     <div class="panel">
         <div class="task-card prio-3">
-            <span class="prio-label">Skeleton 1 · Schreiben Teil 1 (Forumsbeitrag, ~150 words)</span><br>
-            <span style="font-size:0.8rem;color:var(--text-muted);">Markers the rubric rewards: zwar…aber, je…desto, nicht nur…sondern auch, Konj II, Passiv + Modal. A forum post is <b>not a letter</b>: no "Sehr geehrte Damen und Herren" here.</span>
+            <span class="prio-label">Skeleton A · Opinion text (~150 words)</span><br>
+            <span style="font-size:0.8rem;color:var(--text-muted);">Packs in the markers B2 graders look for: zwar…aber, je…desto, nicht nur…sondern auch, Konj II, Passiv + Modal.</span>
             <div class="skeleton">
                 In letzter Zeit wird immer häufiger über das Thema „<i>[X]</i>" diskutiert. Ich möchte dazu meine Meinung äußern.<br>
                 <b>Einerseits</b> spricht für <i>[X]</i>, dass <i>[Grund … Verb]</i>. Ein gutes Beispiel dafür ist <i>[Beispiel]</i>.<br>
@@ -194,7 +280,7 @@
             </div>
         </div>
         <div class="task-card prio-3">
-            <span class="prio-label">Skeleton 2 · Schreiben Teil 2 (formelle Nachricht, ~100 words)</span>
+            <span class="prio-label">Skeleton B · Formal email (~100 words)</span>
             <div class="skeleton">
                 Sehr geehrte Frau <i>[Name]</i>, / Sehr geehrte Damen und Herren,<br>
                 vielen Dank für Ihre Nachricht. Ich wende mich an Sie, <b>weil</b> <i>[…]</i>.<br>
@@ -206,26 +292,35 @@
             </div>
         </div>
         <div class="task-card prio-3">
-            <span class="prio-label">Skeleton 3 · Sprechen Teil 1 (Vortrag, ~4 min)</span>
+            <span class="prio-label">Skeleton C · Monologue (~3–4 min)</span>
             <div class="skeleton">
-                Ich möchte heute über das Thema „<i>[X]</i>" sprechen. Mein Vortrag besteht aus drei Teilen: <b>Zuerst</b> <i>[…]</i>, <b>dann</b> <i>[…]</i> und <b>zum Schluss</b> <i>[…]</i>.<br>
+                Ich möchte heute über das Thema „<i>[X]</i>" sprechen. <b>Zuerst</b> <i>[…]</i>, <b>dann</b> <i>[…]</i> und <b>zum Schluss</b> <i>[…]</i>.<br>
                 In meinem Heimatland ist es so, dass <i>[…]</i>. Ich persönlich habe die Erfahrung gemacht, dass <i>[…]</i>.<br>
-                Es gibt verschiedene Möglichkeiten: <b>Die erste Möglichkeit ist</b> <i>[…]</i>. Der Vorteil dabei ist, dass <i>[…]</i>. <b>Ein Nachteil ist allerdings</b> <i>[…]</i>.<br>
-                <b>Brücke</b> (if the topic is weak for you): Das ist ein wichtiges Thema, und man muss es auch im Zusammenhang mit <i>[Gesundheit / Digitalisierung / Wirtschaft]</i> betrachten. → bridge to your prepared vocab, but come back to the task's points. Fully off-topic loses Aufgabenerfüllung points.<br>
-                <b>Damit komme ich zum Schluss.</b> Meiner Meinung nach ist <i>[…]</i> die beste Lösung, weil <i>[…]</i>.<br>
-                Vielen Dank für Ihre Aufmerksamkeit. Haben Sie Fragen?
+                <b>Ein Vorteil ist</b>, dass <i>[…]</i>. <b>Ein Nachteil ist allerdings</b> <i>[…]</i>.<br>
+                <b>Brücke</b> (weak topic): Man muss das auch im Zusammenhang mit <i>[Gesundheit / Digitalisierung / Studium]</i> betrachten. → bridge to vocab you know, then come back to the question.<br>
+                <b>Damit komme ich zum Schluss.</b> Meiner Meinung nach <i>[…]</i>, weil <i>[…]</i>.
             </div>
         </div>
         <div class="task-card prio-3">
-            <span class="prio-label">Skeleton 4 · Sprechen Teil 2 (Diskussion Redemittel)</span>
+            <span class="prio-label">Skeleton D · Discussion phrases</span>
             <div class="skeleton">
                 <b>Zustimmen:</b> Da bin ich ganz Ihrer Meinung. / Das finde ich auch.<br>
-                <b>Widersprechen:</b> Das sehe ich etwas anders, weil <i>[…]</i>. / Ich verstehe Ihren Punkt, aber <i>[…]</i>.<br>
+                <b>Widersprechen:</b> Das sehe ich etwas anders, weil <i>[…]</i>. / Das stimmt zwar, aber man sollte auch bedenken, dass <i>[…]</i>.<br>
                 <b>Nachfragen:</b> Was halten Sie davon? / Wie meinen Sie das genau?<br>
                 <b>Zeit gewinnen:</b> Das ist eine gute Frage … Lassen Sie mich kurz überlegen.<br>
-                <b>Eröffnen:</b> Lassen Sie uns zunächst die Vor- und Nachteile abwägen.<br>
-                <b>Vorschlagen:</b> Wie wäre es, wenn wir <i>[…]</i>? / Das stimmt zwar, aber man sollte auch bedenken, dass <i>[…]</i>.<br>
-                <b>Einigen:</b> Sollen wir uns darauf einigen, dass <i>[…]</i>?
+                <b>Vorschlagen:</b> Wie wäre es, wenn wir <i>[…]</i>?
+            </div>
+        </div>
+        <div class="task-card prio-1">
+            <span class="prio-label">Skeleton E · Erasmus interview (most likely oral question)</span><br>
+            <span style="font-size:0.8rem;color:var(--text-muted);">Write your own answers, get them AI-corrected, then memorize them. Expect these questions almost for sure.</span>
+            <div class="skeleton">
+                <b>Wer sind Sie?</b> Ich heiße <i>[…]</i>, bin <i>[…]</i> Jahre alt und studiere <i>[Fach]</i> an der <i>[Uni]</i> in <i>[Stadt]</i>.<br>
+                <b>Warum Erasmus?</b> Ich möchte ein Auslandssemester machen, <b>weil</b> ich <i>[…]</i>. <b>Außerdem</b> ist es für meine Zukunft wichtig, <b>dass</b> <i>[…]</i>.<br>
+                <b>Warum diese Stadt / Uni?</b> Die Uni ist bekannt für <i>[…]</i>. <b>Je</b> länger ich mich damit beschäftigt habe, <b>desto</b> mehr <i>[…]</i>.<br>
+                <b>Was erwarten Sie?</b> Ich hoffe, <i>[…] zu [Infinitiv]</i>. <b>Wenn</b> ich zurückkomme, <b>würde</b> ich gern <i>[…]</i>.<br>
+                <b>Sorgen?</b> <b>Zwar</b> habe ich ein bisschen Angst vor <i>[…]</i>, <b>aber</b> ich bin sicher, dass <i>[…]</i>.<br>
+                <b>Ihr Deutsch?</b> Ich lerne seit <i>[…]</i> Deutsch. Am schwierigsten finde ich <i>[…]</i>, aber ich übe jeden Tag.
             </div>
         </div>
     </div>
@@ -271,19 +366,19 @@
     </div>
 
     <!-- EXAM TACTICS -->
-    <button class="accordion-btn">🎯 Lesen &amp; Hören Tactics</button>
+    <button class="accordion-btn">🎯 Reading &amp; Listening Tactics</button>
     <div class="panel">
         <div class="task-card prio-2">
-            <span class="prio-label">Lesen (65 min)</span><br>
-            Read the <b>questions first</b>, then scan for them. Never translate whole texts in the exam. <b>Paraphrase hunt:</b> the correct answer almost never reuses the question's words (Arbeit → Beruf, schnell → rasch). Identical words in text and option are often the trap. If a statement sounds logical but isn't actually in the text → it's wrong. Hard time-box per Teil; if stuck &gt;90 s, guess and move. <b>Never leave a blank.</b>
+            <span class="prio-label">Reading</span><br>
+            Read the <b>questions first</b>, then scan for them. Never translate whole texts in the exam. <b>Paraphrase hunt:</b> the correct answer rarely reuses the question's words (Arbeit → Beruf, schnell → rasch). Identical words in text and option are often the trap. If a statement sounds logical but isn't actually in the text, it's wrong. Stuck &gt;90 s → guess and move. <b>Never leave a blank.</b>
         </div>
         <div class="task-card prio-2">
-            <span class="prio-label">Hören (~40 min)</span><br>
-            Use the pause before each audio to underline key words in the questions. Expect distractors: speakers often mention several options. Listen for the turn after <b>aber / jedoch / trotzdem / eigentlich</b>; the real answer often comes right after it. Mark an answer during the first play; only confirm on replay.
+            <span class="prio-label">Listening</span><br>
+            Use the pause before each audio to underline key words in the questions. Speakers often mention several options; the real answer often comes right after <b>aber / jedoch / trotzdem / eigentlich</b>. Mark during the first play, confirm on the replay.
         </div>
         <div class="task-card prio-3">
-            <span class="prio-label">Mock post-mortem (after every mock)</span><br>
-            For every wrong answer write: <b>why</b> (vocab / grammar / trap / time). Anki the vocab ones. The most frequent "why" decides your next fix-it day.
+            <span class="prio-label">Post-mortem (after every practice part)</span><br>
+            For every wrong answer write <b>why</b>: vocab / grammar / trap / time. Anki the vocab ones. The most frequent "why" decides your next fix-it block.
         </div>
     </div>
 
@@ -292,19 +387,19 @@
     <div class="panel">
         <div class="task-card prio-4">
             <span class="prio-label">Gate 1 · Sun Oct 18</span>
-            <div class="gate"><span class="c-green"><b>Pass:</b></span> 8 units done, 4+ AI-graded texts with no verb-position errors after weil/dass. → Sprint 2.</div>
-            <div class="gate"><span class="c-orange"><b>Partial:</b></span> 5–7 units. → Drop Unit 71 from Sprint 2 and finish the missing ones Mon/Tue.</div>
-            <div class="gate"><span class="c-red"><b>Miss:</b></span> &lt;5 units. → Sprint 2 becomes: finish 31–34 + only 40 and 57. Skeletons take priority over units.</div>
+            <div class="gate"><span class="c-green"><b>Pass:</b></span> 12 units first-passed, Repeat Passes clean, 0 verb-position errors after weil/dass in the last 3 texts. → Sprint 2 as planned.</div>
+            <div class="gate"><span class="c-orange"><b>Partial:</b></span> 8–11 units. → Move 74 + 75 to Sprint 3 and finish Sprint 1 first.</div>
+            <div class="gate"><span class="c-red"><b>Miss:</b></span> &lt;8 units or dreading every block. → The day is too heavy: cut Output 2 and Deep Block 3 for 3 days, sleep more, then rebuild.</div>
         </div>
         <div class="task-card prio-4">
             <span class="prio-label">Gate 2 · Sun Oct 25 (Checkpoint Mock)</span>
-            <div class="gate"><span class="c-green"><b>≥55% in a module:</b></span> On track. Maintain it with 1 mock part every 2 days.</div>
-            <div class="gate"><span class="c-orange"><b>40–55%:</b></span> This module gets 60% of Sprint 3 time.</div>
-            <div class="gate"><span class="c-red"><b>&lt;40% in 2+ modules:</b></span> Honest decision time. Options: sit only the modules you can pass now (Goethe B2 is modular) and retake the rest later, move the exam date, or take B1 first. Pick one before Oct 27.</div>
+            <div class="gate"><span class="c-green"><b>B2 estimate on most parts:</b></span> Keep the protocol. Shift 1 grammar block/day to more mocks.</div>
+            <div class="gate"><span class="c-orange"><b>B1+ on a part:</b></span> That part gets Deep Block 3 every day of Sprint 3.</div>
+            <div class="gate"><span class="c-red"><b>B1 or lower on 2+ parts:</b></span> Ask the Erasmus office: is there a later sitting or a retake? Is B1 enough for your destination? Then double down on Skeleton E + writing; they're the most trainable.</div>
         </div>
         <div class="task-card prio-4">
             <span class="prio-label">Gate 3 · Sun Nov 1</span>
-            <div class="gate">Last full mock score per module. Anything ≥60% → zero work on it, just maintenance. Anything below → skeletons + tactics only. <b>No new grammar after this day.</b></div>
+            <div class="gate">Type all 5 skeletons from memory. <b>No new grammar after this day.</b> From now on it's consolidation, sleep and confidence.</div>
         </div>
     </div>
 
@@ -314,54 +409,54 @@
         <div class="task-card prio-1">
             <span class="prio-label">Do this today</span>
             <span class="prompt-trigger" onclick="togglePrompt(this, 'p-diag')">🤖 Prompt</span><br>
-            1. Goethe B2 Modellsatz (free on goethe.de): <b>Lesen Teil 1</b> + <b>Hören Teil 1</b>, timed. Write down the %.<br>
-            2. One Forumsbeitrag (~150 words), no help, 50 min timer, graded with the prompt.<br>
-            3. Write the 3 numbers in Performance → they're your baseline for Gate 2.
-            <div id="p-diag" class="prompt-box">I'm learning German, roughly A2 level, and I sit the Goethe-Zertifikat B2 in about 3.5 weeks. Diagnose me. Ask me 10 short questions one at a time, mixing: V2 word order, weil/dass verb-final, Perfekt, Akkusativ vs Dativ (incl. two-way prepositions), Relativsätze, Passiv, Konjunktiv II. Don't correct me until the end. Then give me: my estimated level (A2/B1/B1+), a table of the 7 topics ranked from weakest to strongest, and which 3 topics give me the most exam points per hour of study.</div>
+            1. A free B2 practice paper (Goethe / telc Modellsatz): <b>1 reading part</b> + <b>1 listening part</b>, timed. Write down the %.<br>
+            2. One ~150-word opinion text, no help, 45 min timer, graded with the writing prompt.<br>
+            3. 5 min of the speaking sim (interview part only).<br>
+            4. Run the diagnostic prompt. Log everything in Perf; this is your baseline for Gate 2.
+            <div id="p-diag" class="prompt-box">I'm learning German, roughly A2 level, and I have a B2 German exam for an Erasmus placement in about 3.5 weeks. I'll study full-time. Diagnose me. Ask me 12 short questions one at a time, mixing: V2 word order, weil/dass verb-final, Perfekt, Akkusativ vs Dativ (incl. two-way prepositions), adjective endings, Relativsätze, Passiv, Konjunktiv II. Don't correct me until the end. Then give me: my estimated level (A2/B1/B1+), a table of the 8 topics ranked from weakest to strongest, and which 3 topics give me the most exam points per hour of study.</div>
         </div>
     </div>
 </div>
 
 <script>
-    // [date ISO, phase key, text]
     var PHASES = {
-        p0: { name: "Phase 0 · Re-Entry", short: "Re-Entry", goal: "Measure where you really are and restart the habit. No heroics." },
-        s1: { name: "Sprint 1 · Syntax + Cases (Oct 12–18)", short: "Sprint 1", goal: "Units 11, 5, 7, 42, 31–34. Goal: zero verb-position errors and stable Akk/Dat. This is B1's skeleton." },
-        s2: { name: "Sprint 2 · B2 Output (Oct 19–25)", short: "Sprint 2", goal: "Units 40, 41, 70, 71, 57, 55. Skeletons 2–4 memorized. Ends with the Checkpoint Mock." },
-        s3: { name: "Sprint 3 · Gauntlet (Oct 26–Nov 1)", short: "Sprint 3", goal: "0 new units. Mock every 2 days, timed Schreiben, daily Sprechen sims." },
-        dl: { name: "Deload + Exam Window (Nov 2–7)", short: "Deload", goal: "Zero new information. 72-Hour Wash. Recite skeletons. Sleep." }
+        p0: { name: "Phase 0 · Re-Entry (Oct 10–11)", short: "Re-Entry", goal: "Measure where you really are, test-drive the full-day protocol, and prepare the format questions." },
+        s1: { name: "Sprint 1 · Syntax + Cases (Oct 12–18)", short: "Sprint 1", goal: "Units 11, 5, 7, 42, 43, 44, 31–34, 40, 41. Goal: zero verb-position errors and stable Akk/Dat." },
+        s2: { name: "Sprint 2 · B2 Structures (Oct 19–25)", short: "Sprint 2", goal: "Units 70, 71, 74, 75, 79, 57, 58, 55, 56, 77. All 5 skeletons memorized. Ends with the Checkpoint Mock." },
+        s3: { name: "Sprint 3 · Gauntlet (Oct 26–Nov 1)", short: "Sprint 3", goal: "A full mock every 2 days, Flex Units 73 + 88, fix-it days, daily speaking sims." },
+        dl: { name: "Deload + Exam Window (Nov 2–7)", short: "Deload", goal: "No new information. Max 2–3 light hours a day. Skeletons, interview answers, sleep." }
     };
     var DAYS = [
-        ["2026-10-10", "p0", "<b>Baseline Diagnostic</b> (see 🩺 below). Anki: triage the 2-week backlog. Read the Reality Check."],
-        ["2026-10-11", "p0", "<b>Memorize Skeleton 1.</b> Write 1 Forumsbeitrag with it, AI-grade, log in Archive. Plan the week's uni stealth slots."],
+        ["2026-10-10", "p0", "<b>Baseline Diagnostic</b> (🩺). Anki: triage the backlog. Write the format questions (🕵️). Afternoon: <b>Unit 11</b>. Evening: memorize Skeleton A."],
+        ["2026-10-11", "p0", "Full-day protocol test run. <b>Units 5 + 7.</b> Draft your Skeleton E answers and get them AI-corrected. Half-day off from 16:00."],
 
-        ["2026-10-12", "s1", "<b>Unit 11.</b> Schreiben Teil 2 (email). Sprechen: Vortrag."],
-        ["2026-10-13", "s1", "<b>Unit 5.</b> Schreiben Teil 1. Sprechen: Diskussion. (Short night: 15 min only.)"],
-        ["2026-10-14", "s1", "<b>Unit 7.</b> Schreiben Teil 2. Sprechen: Vortrag. Memorize Skeleton 2."],
-        ["2026-10-15", "s1", "<b>Unit 42.</b> Schreiben Teil 1. 1 AI C-Test on weil/dass/obwohl."],
-        ["2026-10-16", "s1", "<b>Unit 31.</b> Schreiben Teil 2. Sprechen: Diskussion."],
-        ["2026-10-17", "s1", "<b>Units 32 + 33</b> (Mega-Block). Schreiben Teil 1. 1 AI C-Test on two-way prepositions."],
-        ["2026-10-18", "audit", "<b>Unit 34.</b> Schreiben Teil 2. <b>Gate 1 audit</b> (🚦)."],
+        ["2026-10-12", "s1", "<b>Get the exam format</b> (email / visit the office). <b>Units 42 + 43.</b>"],
+        ["2026-10-13", "s1", "<b>Units 44 + 31.</b> Repeat Pass: 11, 5, 7."],
+        ["2026-10-14", "s1", "<b>Units 32 + 33.</b> Repeat Pass: 42, 43. Memorize Skeleton B."],
+        ["2026-10-15", "s1", "<b>Unit 34.</b> Repeat Pass: 44, 31. Re-weight the day if the format is known."],
+        ["2026-10-16", "s1", "<b>Unit 40.</b> Repeat Pass: 32, 33, 34. Memorize Skeleton E."],
+        ["2026-10-17", "mock", "<b>Mini-mock</b> (1 reading + 1 listening part + 1 text, timed) in the morning. <b>Unit 41</b> in the afternoon."],
+        ["2026-10-18", "audit", "Repeat Pass: 40, 41. <b>Gate 1 audit</b> (🚦). Half-day off from 16:00."],
 
-        ["2026-10-19", "s2", "<b>Unit 40.</b> Schreiben Teil 1. Switch walk audio to B2 Hören material. Memorize Skeleton 3."],
-        ["2026-10-20", "s2", "<b>Unit 41.</b> Sprechen: Vortrag with Skeleton 3 (record yourself). Short night."],
-        ["2026-10-21", "s2", "<b>Unit 70.</b> Schreiben Teil 2. <b>Mock: Lesen</b> (full module, timed)."],
-        ["2026-10-22", "s2", "<b>Unit 71.</b> Schreiben Teil 1. Memorize Skeleton 4. Sprechen: Diskussion."],
-        ["2026-10-23", "s2", "<b>Unit 57</b> (Passiv core only: wird + Partizip II). <b>Mock: Hören</b> (full module)."],
-        ["2026-10-24", "s2", "<b>Unit 55</b> (Konj II: würde / hätte / wäre / könnte only). Schreiben Teil 1 + 2 back-to-back, timed 75 min."],
-        ["2026-10-25", "mock", "<b>CHECKPOINT: Full Mock</b> (all 4 modules, timed; Sprechen with AI). <b>Gate 2</b> decision (🚦)."],
+        ["2026-10-19", "s2", "<b>Units 70 + 71.</b> Switch the walk audio to B2 material."],
+        ["2026-10-20", "s2", "<b>Units 74 + 75.</b> Memorize Skeleton C."],
+        ["2026-10-21", "s2", "<b>Unit 79</b> (adjective endings, gets the full day's grammar time). Repeat Pass: 70, 71."],
+        ["2026-10-22", "s2", "<b>Units 57 + 58</b> (Passiv). Repeat Pass: 74, 75. Memorize Skeleton D."],
+        ["2026-10-23", "s2", "<b>Units 55 + 56</b> (Konj II). Repeat Pass: 79."],
+        ["2026-10-24", "s2", "<b>Unit 77.</b> Repeat Pass: 57, 58, 55, 56. Recite all 5 skeletons from memory."],
+        ["2026-10-25", "mock", "<b>CHECKPOINT: full mock</b> (all parts, timed; speaking with AI). <b>Gate 2</b> (🚦). Half-day off from 16:00."],
 
-        ["2026-10-26", "s3", "<b>Fix-it day:</b> re-do failed exercises of the 1–2 weakest units from the mock. Sprechen: Vortrag."],
-        ["2026-10-27", "mock", "<b>Mock: Lesen + Hören.</b> Post-mortem. Short night: skeleton recital only."],
-        ["2026-10-28", "s3", "<b>Schreiben timed</b> (Teil 1 + 2, 75 min). Sprechen: Diskussion ×2."],
-        ["2026-10-29", "mock", "<b>Mock: Full</b> (different Modellsatz). Post-mortem."],
-        ["2026-10-30", "s3", "<b>Sprechen ×3 sims</b> (voice). Fix-it on the most frequent post-mortem error."],
-        ["2026-10-31", "mock", "<b>Mock: Full</b> (last one). Then 1 h immersion, guilt-free."],
-        ["2026-11-01", "audit", "<b>Gate 3.</b> Type all 4 skeletons from memory. No new grammar from now on."],
+        ["2026-10-26", "s3", "<b>Fix-it day:</b> Repeat Pass of the 2–3 weakest units from the mock. <b>B2-C1 Unit 73</b> (Doppelkonnektoren)."],
+        ["2026-10-27", "mock", "<b>Full mock #2.</b> Post-mortem in Block 3."],
+        ["2026-10-28", "s3", "<b>B2-C1 Unit 88</b> (spoken German). Speaking sims ×3. Timed writing ×2."],
+        ["2026-10-29", "mock", "<b>Full mock #3.</b> Post-mortem."],
+        ["2026-10-30", "s3", "Fix-it on the most frequent post-mortem error. C-Tests rapid fire. Interview sim ×2."],
+        ["2026-10-31", "mock", "<b>Full mock #4</b> (last one). Evening off, guilt-free."],
+        ["2026-11-01", "audit", "<b>Gate 3.</b> Type all 5 skeletons from memory. No new grammar from now on. Half-day off."],
 
-        ["2026-11-02", "dl", "Recite skeletons aloud on walks. Light listening only. Pack documents / check exam venue + time."],
-        ["2026-11-03", "dl", "Exam window opens. 72-Hour Wash: skeletons + Redemittel only. Sleep 8 h."],
-        ["2026-11-04", "dl", "Exam window. Same as yesterday. No mocks."],
+        ["2026-11-02", "dl", "Half day max. Recite skeletons on walks, light listening. Check the exam time, place and documents."],
+        ["2026-11-03", "dl", "Exam window. 2–3 h max: Skeleton E out loud, 1 short text, light listening. Sleep 8 h."],
+        ["2026-11-04", "dl", "Exam window. Same. No mocks."],
         ["2026-11-05", "dl", "Exam window. Same. Trust the system."],
         ["2026-11-06", "dl", "Exam window."],
         ["2026-11-07", "dl", "Exam window closes."]
@@ -382,6 +477,7 @@
     }
     function phaseOf(key, iso) {
         if (key === "mock" || key === "audit") {
+            if (iso <= "2026-10-11") return "p0";
             if (iso <= "2026-10-18") return "s1";
             if (iso <= "2026-10-25") return "s2";
             return "s3";
@@ -446,6 +542,24 @@
         }
     }
 
+    // Highlight the current block of the full-day protocol
+    function renderNow() {
+        var d = new Date();
+        var hhmm = String(d.getHours()).padStart(2, "0") + String(d.getMinutes()).padStart(2, "0");
+        var rows = document.querySelectorAll("#sched tr"), current = null;
+        rows.forEach(function (r) {
+            r.classList.remove("is-now");
+            if (r.dataset.t <= hhmm) current = r;
+        });
+        var box = document.getElementById("now-block");
+        if (current && hhmm < "2300") {
+            current.classList.add("is-now");
+            box.innerHTML = "<b>Right now (" + current.cells[0].textContent + "):</b> " + current.cells[1].innerHTML;
+        } else {
+            box.innerHTML = "<b>Right now:</b> sleep. Tomorrow starts at 07:30.";
+        }
+    }
+
     var acc = document.getElementsByClassName("accordion-btn");
     for (var i = 0; i < acc.length; i++) {
         acc[i].addEventListener("click", function () {
@@ -477,6 +591,8 @@
     }
 
     renderToday();
+    renderNow();
+    setInterval(renderNow, 60000);
     document.getElementById("calendar-panel").style.maxHeight = "1px";
     render();
     document.getElementById("calendar-panel").style.maxHeight = document.getElementById("calendar-panel").scrollHeight + 500 + "px";
