@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grammar Test · Speedrun OS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/style.css">
+    <script src="assets/app.js"></script>
+    <script src="assets/plan.js"></script>
+    <script src="assets/units.js"></script>
+    <style>
+        .page { padding-top: 14px; }
+        .progress { height: 8px; background: var(--surface-2); border-radius: 999px; overflow: hidden; margin: 10px 0 18px; }
+        .progress span { display: block; height: 100%; background: var(--accent); border-radius: 999px; transition: width 0.2s; }
+        .qhead { display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; color: var(--text-3); font-weight: 600; }
+        .qtext { font-size: 1.25rem; font-weight: 650; line-height: 1.45; margin-bottom: 16px; }
+        .opts { display: grid; gap: 10px; }
+        .opt {
+            font: inherit; font-size: 1.02rem; text-align: left; cursor: pointer;
+            background: var(--surface); color: var(--text); border: 1.5px solid var(--border); border-radius: var(--radius-sm);
+            padding: 14px 16px; min-height: 54px; display: flex; gap: 12px; align-items: center;
+        }
+        .opt:hover { border-color: var(--accent); }
+        .opt[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); }
+        .opt__key { font-weight: 700; color: var(--text-3); width: 18px; flex-shrink: 0; }
+        .opt--idk { color: var(--text-2); border-style: dashed; }
+        .qnav { display: flex; justify-content: space-between; margin-top: 16px; gap: 10px; }
+
+        .bar { display: grid; grid-template-columns: 1fr 64px; gap: 4px 10px; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
+        .bar:last-child { border-bottom: none; }
+        .bar__track { grid-column: 1 / -1; height: 8px; background: var(--surface-2); border-radius: 999px; overflow: hidden; }
+        .bar__fill { height: 100%; border-radius: 999px; }
+        .bar__val { text-align: right; font-weight: 700; font-variant-numeric: tabular-nums; }
+        .urow { display: grid; grid-template-columns: 56px 1fr auto; gap: 2px 10px; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border); }
+        .urow:last-child { border-bottom: none; }
+        .urow__id { font-weight: 800; font-variant-numeric: tabular-nums; }
+        .urow__title { font-weight: 600; }
+        .urow__meta { grid-column: 2 / 4; font-size: 0.82rem; color: var(--text-3); }
+        .big-score { font-size: 2.6rem; font-weight: 800; color: var(--accent-strong); line-height: 1; }
+        .math { font-family: var(--mono); font-size: 0.82rem; background: var(--surface-2); border-radius: var(--radius-sm); padding: 12px; white-space: pre-wrap; margin: 0; }
+    </style>
+</head>
+<body>
+
+<main class="page page--narrow" id="main">
+
+    <!-- INTRO -->
+    <section id="screen-intro">
+        <div class="page-head">
+            <span class="eyebrow">Placement</span>
+            <h1>Grammar Test</h1>
+            <p class="lede">30 quick questions, 2 for each of 15 topics. About 6 minutes. The result ranks units from both Grammatik aktiv books and builds your unit queue.</p>
+        </div>
+        <div class="callout callout--info" style="margin-bottom:16px">
+            <h2>Rules</h2>
+            <ul>
+                <li>No looking things up. Go with your first instinct.</li>
+                <li>Not sure? Pick <b>"I don't know"</b>. A lucky guess fakes mastery and hides a unit you need.</li>
+                <li>Keys: <span class="kbd">1</span>–<span class="kbd">3</span> answer, <span class="kbd">0</span> I don't know, <span class="kbd">←</span> back.</li>
+            </ul>
+        </div>
+        <div class="row">
+            <button class="btn btn--primary" type="button" id="start">Start test</button>
+            <button class="btn" type="button" id="see-last" hidden>See last result</button>
+        </div>
+    </section>
+
+    <!-- QUESTION -->
+    <section id="screen-q" hidden>
+        <div class="qhead"><span id="q-count">1 / 30</span><span id="q-topic"></span></div>
+        <div class="progress" aria-hidden="true"><span id="q-bar" style="width:0%"></span></div>
+        <div class="qtext" id="q-text" lang="de" aria-live="polite"></div>
+        <div class="opts" id="q-opts" role="group" aria-label="Answers"></div>
+        <div class="qnav">
+            <button class="btn" type="button" id="q-back">← Back</button>
+            <button class="btn" type="button" id="q-quit">Quit</button>
+        </div>
+    </section>
+
+    <!-- RESULT -->
+    <section id="screen-r" hidden>
+        <div class="page-head">
+            <span class="eyebrow">Result · <span id="r-date"></span></span>
+            <div class="row" style="align-items:flex-end;gap:14px">
+                <div class="big-score" id="r-score">–</div>
+                <div class="muted" id="r-level"></div>
+            </div>
+        </div>
+
+        <div class="stack-lg">
+            <div class="row">
+                <button class="btn btn--primary" type="button" id="use-queue">Use this queue on Today</button>
+                <button class="btn" type="button" id="copy-sum">Copy summary</button>
+                <button class="btn" type="button" id="retake">Retake</button>
+            </div>
+
+            <section class="card">
+                <h2 style="font-size:1.05rem;margin-bottom:4px">Recommended units</h2>
+                <p class="subtle" id="r-budget"></p>
+                <div class="segmented" role="radiogroup" aria-label="Show tier" style="margin:8px 0 6px">
+                    <input type="radio" name="tier" id="tier-plan" value="plan" checked><label for="tier-plan">Core</label>
+                    <input type="radio" name="tier" id="tier-extra" value="extra"><label for="tier-extra">Extra</label>
+                    <input type="radio" name="tier" id="tier-skip" value="skip"><label for="tier-skip">Not needed</label>
+                </div>
+                <div id="r-units"></div>
+            </section>
+
+            <section class="card">
+                <h2 style="font-size:1.05rem;margin-bottom:6px">By topic</h2>
+                <div id="r-topics"></div>
+            </section>
+
+            <details class="section" id="math">
+                <summary><span class="section__icon" aria-hidden="true">🧮</span><span class="section__title">How the math works</span></summary>
+                <div class="section__body">
+<pre class="math">mastery m = (correct + 1) / (questions + 2)
+            2/2 → 0.75 · 1/2 → 0.50 · 0/2 → 0.25
+need      = topic weight (1–3, exam relevance) × (1 − m)
+fit       = A1–B1 unit: 1 if m &lt; 0.75, else 0.35
+            B2–C1 unit: 1.2 if m ≥ 0.5, else 0.25
+done      = 0.5 if you already did the unit
+cost      = 1 slot (½ for a repeat of a done unit)
+score     = need × fit × done ÷ cost
+
+Your pace: 2 core + 1 optional extra unit per day
+(mock days 1 + 0) until Gate 3 on Nov 1.
+Highest scores fill the core slots, the next ones
+the extra slots. Score &lt; 0.3 or no slot left
+→ not needed.</pre>
+                    <p class="subtle">The fit rule stops you jumping to B2–C1 units on a topic where the A-level basics are still broken. That's the most common way to waste hours.</p>
+                </div>
+            </details>
+        </div>
+    </section>
+</main>
+
+<script>
+(function () {
+    var U = window.Units, store = window.SpeedrunStore;
+    var Q = U.QUESTIONS;
+    var $ = function (id) { return document.getElementById(id); };
+    var answers = [], idx = 0, result = null;
+
+    function show(id) {
+        ["screen-intro", "screen-q", "screen-r"].forEach(function (s) { $(s).hidden = s !== id; });
+        window.scrollTo(0, 0);
+    }
+
+    function doneSet() {
+        var s = new Set(U.DONE_BEFORE);
+        var st = U.loadState();
+        Object.keys(st).forEach(function (k) { if (st[k].s && st[k].s !== "todo") s.add(k); });
+        return s;
+    }
+
+    // ---------- Questions ----------
+    function renderQ() {
+        var q = Q[idx];
+        $("q-count").textContent = (idx + 1) + " / " + Q.length;
+        $("q-topic").textContent = U.TOPICS[q.t].name;
+        $("q-bar").style.width = (idx / Q.length * 100) + "%";
+        $("q-text").textContent = q.q;
+        var box = $("q-opts");
+        box.innerHTML = "";
+        q.o.concat(["I don't know"]).forEach(function (txt, i) {
+            var isIdk = i === q.o.length;
+            var b = document.createElement("button");
+            b.type = "button";
+            b.className = "opt" + (isIdk ? " opt--idk" : "");
+            var val = isIdk ? -1 : i;
+            b.setAttribute("aria-pressed", answers[idx] === val ? "true" : "false");
+            b.innerHTML = '<span class="opt__key">' + (isIdk ? "0" : i + 1) + "</span><span" + (isIdk ? "" : ' lang="de"') + "></span>";
+            b.lastChild.textContent = txt;
+            b.addEventListener("click", function () { answer(val); });
+            box.appendChild(b);
+        });
+        $("q-back").disabled = idx === 0;
+        box.firstChild.focus({ preventScroll: true });
+    }
+
+    function answer(val) {
+        answers[idx] = val;
+        store("test:answers", JSON.stringify(answers));
+        if (idx < Q.length - 1) { idx++; renderQ(); }
+        else finish();
+    }
+
+    function finish() {
+        var res = U.recommend(answers, doneSet(), U.today());
+        result = { date: U.today(), answers: answers.slice(), res: res };
+        store("test:last", JSON.stringify(result));
+        store("test:answers", null);
+        renderResult();
+        show("screen-r");
+    }
+
+    // ---------- Result ----------
+    function level(pct) {
+        if (pct >= 85) return "Strong B1+ base. B2–C1 units are your main work.";
+        if (pct >= 65) return "Around B1. Mix of A-level repairs and B2 structures.";
+        if (pct >= 45) return "A2–B1. Fix the A-level foundations first.";
+        return "A2. Foundations first; the queue is mostly book A.";
+    }
+
+    function renderResult() {
+        var r = result.res;
+        var pct = Math.round(r.correct / r.total * 100);
+        $("r-date").textContent = new Date(result.date + "T12:00:00").toLocaleDateString("en-GB", { day: "numeric", month: "short" });
+        $("r-score").textContent = r.correct + "/" + r.total;
+        $("r-level").textContent = pct + "% · " + level(pct);
+        $("r-budget").textContent = "Your pace: 2 core units + 1 optional extra per day. Slots left before Nov 1: " + r.cap.core + " core + " + r.cap.extra + " extra (a repeat of a unit you already did counts as ½).";
+
+        var tp = $("r-topics");
+        tp.innerHTML = "";
+        r.topics.slice().sort(function (a, b) { return b.need - a.need; }).forEach(function (t) {
+            var pctT = Math.round(t.c / t.n * 100);
+            var color = t.c === t.n ? "var(--accent)" : t.c === 0 ? "var(--danger)" : "var(--warn)";
+            var row = document.createElement("div");
+            row.className = "bar";
+            row.innerHTML = "<span>" + t.name + ' <span class="subtle">· weight ' + t.w + '</span></span><span class="bar__val">' + t.c + "/" + t.n + '</span><div class="bar__track"><div class="bar__fill" style="width:' + Math.max(pctT, 4) + "%;background:" + color + '"></div></div>';
+            tp.appendChild(row);
+        });
+        renderUnits();
+        $("see-last").hidden = false;
+    }
+
+    function renderUnits() {
+        var tier = document.querySelector("input[name=tier]:checked").value;
+        var list = result.res.units.filter(function (u) { return u.tier === tier; });
+        var box = $("r-units");
+        box.innerHTML = list.length ? "" : '<p class="subtle" style="margin:8px 0 0">Nothing in this tier.</p>';
+        list.forEach(function (u, i) {
+            var row = document.createElement("div");
+            row.className = "urow";
+            row.innerHTML =
+                '<span class="urow__id">' + U.label(u.id) + "</span>" +
+                '<span class="urow__title" lang="de">' + u.title + "</span>" +
+                '<span class="badge ' + (u.done ? "badge--info" : u.id[0] === "B" ? "badge--purple" : "badge--ok") + '">' + (u.done ? "Repeat" : u.id[0] === "B" ? "B2–C1" : "A1–B1") + "</span>" +
+                '<span class="urow__meta">' + (tier === "plan" ? "#" + (i + 1) + " · " : "") + u.topic + " · " + u.hours + " h · score " + u.score + "</span>";
+            box.appendChild(row);
+        });
+    }
+    document.querySelectorAll("input[name=tier]").forEach(function (r) { r.addEventListener("change", renderUnits); });
+
+    function summary() {
+        var r = result.res;
+        var lines = ["Grammar test " + result.date + ": " + r.correct + "/" + r.total];
+        lines.push("Topics (correct/2): " + r.topics.map(function (t) { return t.name + " " + t.c + "/" + t.n; }).join("; "));
+        lines.push("Core queue (" + r.core + " of " + r.cap.core + " slots): " + r.units.filter(function (u) { return u.tier === "plan"; }).map(function (u) { return U.label(u.id) + (u.done ? " (repeat)" : ""); }).join(", "));
+        var wrong = [];
+        Q.forEach(function (q, i) { if (result.answers[i] !== q.a) wrong.push((i + 1) + ") " + q.q + " → I said: " + (result.answers[i] === -1 ? "don't know" : q.o[result.answers[i]]) + " · correct: " + q.o[q.a]); });
+        if (wrong.length) lines.push("Mistakes:\n" + wrong.join("\n"));
+        return lines.join("\n");
+    }
+
+    // ---------- Buttons ----------
+    $("start").addEventListener("click", function () {
+        var saved = null;
+        try { saved = JSON.parse(store("test:answers") || "null"); } catch (e) {}
+        answers = saved && saved.length ? saved : [];
+        idx = Math.min(answers.length, Q.length - 1);
+        show("screen-q"); renderQ();
+    });
+    $("retake").addEventListener("click", function () { answers = []; idx = 0; store("test:answers", null); show("screen-q"); renderQ(); });
+    $("q-back").addEventListener("click", function () { if (idx > 0) { idx--; renderQ(); } });
+    $("q-quit").addEventListener("click", function () { show("screen-intro"); toast("Progress saved. Start again to continue."); });
+    $("see-last").addEventListener("click", function () { renderResult(); show("screen-r"); });
+
+    $("use-queue").addEventListener("click", function () {
+        var ids = result.res.units.filter(function (u) { return u.tier === "plan" || u.tier === "extra"; }).map(function (u) { return u.id; });
+        // Keep units already in progress at the front so nothing half-done gets lost
+        var st = U.loadState();
+        var active = U.loadQueue().filter(function (id) { var s = U.stateOf(st, id).s; return s === "first" || s === "repeat" || s === "red"; });
+        var q = active.concat(ids.filter(function (id) { return active.indexOf(id) === -1; }));
+        U.saveQueue(q);
+        toast("Queue saved: " + q.length + " units");
+        setTimeout(function () { location.href = "index.html#units"; }, 600);
+    });
+    $("copy-sum").addEventListener("click", function () {
+        window.copyText(summary()).then(function () { toast("Summary copied. Paste it to Claude."); }, function () { toast("Couldn't copy"); });
+    });
+
+    document.addEventListener("keydown", function (e) {
+        if ($("screen-q").hidden || e.ctrlKey || e.metaKey || e.altKey) return;
+        var n = Q[idx].o.length;
+        if (/^[1-9]$/.test(e.key) && +e.key <= n) { e.preventDefault(); answer(+e.key - 1); }
+        else if (e.key === "0") { e.preventDefault(); answer(-1); }
+        else if (e.key === "ArrowLeft" && idx > 0) { e.preventDefault(); idx--; renderQ(); }
+    });
+
+    // Restore last result
+    try { result = JSON.parse(store("test:last") || "null"); } catch (e) { result = null; }
+    if (result) $("see-last").hidden = false;
+    if (store("test:answers")) $("start").textContent = "Continue test";
+})();
+</script>
+
+</body>
+</html>

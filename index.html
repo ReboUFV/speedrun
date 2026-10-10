@@ -9,6 +9,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/style.css">
     <script src="assets/app.js"></script>
+    <script src="assets/plan.js"></script>
+    <script src="assets/units.js"></script>
     <style>
         .page { padding-top: 14px; }
 
@@ -52,10 +54,32 @@
         .mission__actions .btn { flex: 1; }
 
         /* Tabs */
-        .tabbar { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; background: var(--surface-2); padding: 4px; border-radius: 999px; margin-bottom: 12px; position: sticky; top: 61px; z-index: 5; }
-        .tab { font: inherit; font-weight: 650; font-size: 0.86rem; border: none; background: none; color: var(--text-2); border-radius: 999px; min-height: 42px; cursor: pointer; padding: 0 4px; }
+        .tabbar { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; background: var(--surface-2); padding: 4px; border-radius: 999px; margin-bottom: 12px; position: sticky; top: 61px; z-index: 5; }
+        .tab { font: inherit; font-weight: 650; font-size: 0.82rem; border: none; background: none; color: var(--text-2); border-radius: 999px; min-height: 42px; cursor: pointer; padding: 0 4px; }
         .tab[aria-selected="true"] { background: var(--surface); color: var(--text); box-shadow: var(--shadow); }
         .tabpanel > * + * { margin-top: 10px; }
+
+        /* Grammar line in the mission card */
+        .mission__grammar { padding: 0 16px 14px; font-size: 0.9rem; color: var(--text-2); }
+        .mission__grammar a { font-weight: 650; }
+
+        /* Units */
+        .unit { padding: 12px 0; border-bottom: 1px solid var(--border); }
+        .unit:last-child { border-bottom: none; padding-bottom: 0; }
+        .unit__top { display: flex; gap: 10px; align-items: center; }
+        .unit__id { font-weight: 800; font-variant-numeric: tabular-nums; }
+        .unit__title { flex: 1; font-weight: 600; min-width: 0; }
+        .unit__meta { font-size: 0.8rem; color: var(--text-3); margin: 3px 0 0; }
+        .unit__log { display: flex; gap: 6px; margin: 8px 0 0; align-items: center; }
+        .unit__log .label { font-size: 0.8rem; color: var(--text-3); font-weight: 600; margin-right: 2px; }
+        .log-btn { flex: 1; white-space: nowrap; padding-left: 6px !important; padding-right: 6px !important; font: inherit; font-size: 0.84rem; font-weight: 650; border-radius: 999px; padding: 6px 12px; min-height: 36px; cursor: pointer; border: 1px solid var(--border); background: var(--surface); color: var(--text); }
+        .log-btn--hi { color: var(--accent-strong); border-color: color-mix(in srgb, var(--accent) 50%, transparent); }
+        .log-btn--mid { color: var(--warn); border-color: color-mix(in srgb, var(--warn) 50%, transparent); }
+        .log-btn--lo { color: var(--danger); border-color: color-mix(in srgb, var(--danger) 50%, transparent); }
+        .log-btn:hover { background: var(--surface-2); }
+        .steps { counter-reset: step; list-style: none; padding: 0; margin: 0; }
+        .steps li { counter-increment: step; position: relative; padding: 0 0 10px 34px; margin: 0; }
+        .steps li::before { content: counter(step); position: absolute; left: 0; top: 0; width: 24px; height: 24px; border-radius: 50%; background: var(--surface-2); font-size: 0.8rem; font-weight: 700; display: grid; place-items: center; }
 
         /* Timetable */
         .sched { list-style: none; margin: 0; padding: 0; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
@@ -108,6 +132,7 @@
             <span class="badge badge--warn" id="m-kind" hidden></span>
         </div>
         <div class="mission__text" id="m-text">Loading…</div>
+        <div class="mission__grammar" id="m-grammar"></div>
         <div class="mission__now" id="m-now">
             <span class="mission__now-time" id="now-time">–</span>
             <div><div id="now-text">–</div><div class="mission__next" id="now-next"></div></div>
@@ -120,7 +145,8 @@
 
     <div class="tabbar" role="tablist" aria-label="Plan sections">
         <button class="tab" role="tab" id="tab-day" aria-controls="panel-day" aria-selected="true">Day</button>
-        <button class="tab" role="tab" id="tab-skel" aria-controls="panel-skel" aria-selected="false" tabindex="-1">Skeletons</button>
+        <button class="tab" role="tab" id="tab-units" aria-controls="panel-units" aria-selected="false" tabindex="-1">Units</button>
+        <button class="tab" role="tab" id="tab-skel" aria-controls="panel-skel" aria-selected="false" tabindex="-1">Skel.</button>
         <button class="tab" role="tab" id="tab-ai" aria-controls="panel-ai" aria-selected="false" tabindex="-1">Prompts</button>
         <button class="tab" role="tab" id="tab-guide" aria-controls="panel-guide" aria-selected="false" tabindex="-1">Guide</button>
     </div>
@@ -137,14 +163,14 @@
             <li class="off" data-t="0730"><time>07:30</time><span>Wake. Water, daylight. <b>No phone</b> for 30 min.</span></li>
             <li class="light" data-t="0745"><time>07:45</time><span><b>Walk (45 min):</b> active audio. Sprint 1: Michel Thomas / Language Transfer, answer out loud. Sprint 2+: Easy German / B2 listening.</span></li>
             <li class="light" data-t="0830"><time>08:30</time><span>Breakfast + <b>Anki reviews</b>.</span></li>
-            <li class="deep" data-t="0900"><time>09:00</time><span><b>Grammar (2.5 h):</b> unit A of the day, First Pass. Type everything. 50/10 min cycles.</span></li>
+            <li class="deep" data-t="0900"><time>09:00</time><span><b>Grammar (2.5 h):</b> today's new units (Units tab), First Pass. Type everything. 50/10 min cycles.</span></li>
             <li class="out" data-t="1130"><time>11:30</time><span><b>Writing (45 min):</b> 1 text from a skeleton, AI-graded, saved in Essays.</span></li>
             <li class="light" data-t="1215"><time>12:15</time><span><b>Vocab (45 min):</b> new cards from <a href="words.html">Core Words</a> + decoder rules.</span></li>
             <li class="off" data-t="1300"><time>13:00</time><span>Lunch. Real break, no screens.</span></li>
             <li class="deep" data-t="1400"><time>14:00</time><span><b>Reading + Listening (1.5 h):</b> one practice part each, timed, then post-mortem.</span></li>
             <li class="light" data-t="1530"><time>15:30</time><span><b>Walk / gym:</b> same audio as the morning, or recite skeletons.</span></li>
             <li class="out" data-t="1615"><time>16:15</time><span><b>Speaking (45 min):</b> AI voice sim + 10 min shadowing.</span></li>
-            <li class="deep" data-t="1700"><time>17:00</time><span><b>Grammar (1.5 h):</b> unit B, or Repeat Pass of failed exercises + 2 C-Tests.</span></li>
+            <li class="deep" data-t="1700"><time>17:00</time><span><b>Grammar (1.5 h):</b> due Repeat Passes, checks and red flags (Units tab), then 1 C-Test.</span></li>
             <li class="off" data-t="1830"><time>18:30</time><span>Exercise + dinner.</span></li>
             <li class="out" data-t="1930"><time>19:30</time><span><b>Output 2 (45 min):</b> the other skeleton, or AI interrogation + recital.</span></li>
             <li class="light" data-t="2015"><time>20:15</time><span><b>Immersion (1.5 h):</b> series with German subtitles, games, Easy German.</span></li>
@@ -163,6 +189,59 @@
                 </ul>
             </div>
         </details>
+    </section>
+
+    <!-- UNITS -->
+    <section class="tabpanel" role="tabpanel" id="panel-units" aria-labelledby="tab-units" hidden>
+        <div class="callout callout--info" id="u-empty" hidden>
+            <h3>No unit queue yet</h3>
+            <p>Take the 30-question grammar test. It ranks units from both books and fills this list.</p>
+            <a class="btn btn--primary" href="test.html">Take the test (6 min)</a>
+        </div>
+
+        <section class="card" id="u-today">
+            <h3>Today's grammar</h3>
+            <p class="subtle" style="margin:0">Your pace: 2 units + 1 optional extra. Log each with the % of exercises you got right; the next step is scheduled automatically.</p>
+            <div id="u-today-list"></div>
+        </section>
+
+        <details class="section" id="u-all">
+            <summary><span class="section__icon" aria-hidden="true">📚</span><span class="section__title">Whole queue <small id="u-count">–</small></span></summary>
+            <div class="section__body"><div id="u-all-list"></div></div>
+        </details>
+
+        <details class="section" id="u-solid">
+            <summary><span class="section__icon" aria-hidden="true">🟢</span><span class="section__title">Solidify protocol <small>How every unit becomes "solid"</small></span></summary>
+            <div class="section__body">
+                <ol class="steps">
+                    <li><b>First Pass (day 0, 45–60 min):</b> 2-minute theory skim, then type every exercise and check after each one. Log the % right.</li>
+                    <li><b>Make it yours (same day, 10 min):</b> write 5 sentences with the structure about your own life or Erasmus. Check them with the "5 own sentences" prompt.</li>
+                    <li><b>Repeat Pass (day +2):</b> only the exercises you got wrong. No theory. Log it.</li>
+                    <li><b>Check (day +5):</b> the 10-item "Unit check" prompt, cold. ≥80% → <span class="badge badge--ok">Solid</span>.</li>
+                    <li><b>Use it:</b> put the structure into your next skeleton text on purpose.</li>
+                </ol>
+                <p class="subtle">Bands: <b class="t-ok">≥80%</b> next step (a ≥80% first pass skips straight to the check) · <b class="t-warn">60–79%</b> Repeat Pass in 2 days · <b class="t-danger">&lt;60%</b> failure protocol.</p>
+            </div>
+        </details>
+
+        <details class="section" id="u-fail">
+            <summary><span class="section__icon" aria-hidden="true">🔴</span><span class="section__title">Failure protocol <small>When a unit scores under 60%</small></span></summary>
+            <div class="section__body">
+                <ol class="steps">
+                    <li><b>Freeze the topic:</b> don't start a harder unit of the same topic until this one is fixed. Other topics continue.</li>
+                    <li><b>Diagnose (5 min):</b> sort your mistakes into <b>form</b> (endings, conjugation), <b>position</b> (word order) or <b>choice</b> (wrong case/structure). Fix the biggest pile only.</li>
+                    <li><b>Go one level down:</b> a red B2–C1 unit → do its easier A1–B1 sibling first (shown on the unit). A red A1–B1 unit → write the rule in one line, compared with Spanish/English, plus a mini table.</li>
+                    <li><b>Targeted drill (20 min):</b> the "Failure drill" prompt with minimal pairs until 8 of 10 in a row are right.</li>
+                    <li><b>Retry next day:</b> only the failed exercises. ≥60% → back to the normal cycle.</li>
+                    <li><b>Still &lt;60%? Park it.</b> Max ~3 h per unit. In the exam, say it with a structure you do know. Revisit only if a gate says so.</li>
+                </ol>
+            </div>
+        </details>
+
+        <div class="row">
+            <a class="btn btn--sm" href="test.html">Retake the test</a>
+            <span class="subtle">Retake on gate days (Oct 18, Oct 25) to re-rank the queue.</span>
+        </div>
     </section>
 
     <!-- SKELETONS -->
@@ -239,6 +318,9 @@
         <details class="prompt"><summary>Speaking sim · 16:15 (voice mode)</summary><pre class="prompt__text">Act as the examiner of a university B2 German oral test for Erasmus students. Run a ~12 minute oral exam in 3 parts: (1) interview: ask about me, my studies, why I want to do Erasmus, where and what I plan to do there; (2) give me a topic and let me speak ~3 minutes alone; (3) a short discussion where you take the opposite opinion. Speak at natural B2 speed. Do NOT correct me during the exam. At the end, give me: an estimated CEFR level, my 5 most frequent errors (my sentence → correct), and 3 phrases I should have used.</pre></details>
         <details class="prompt"><summary>C-Test / cloze · 17:00</summary><pre class="prompt__text">Act as a B2 German test generator. Create a ~90-word C-Test (Lückentext) about [topic]. Remove the second half of every second word. Focus the gaps on: adjective endings, articles after prepositions, verb position after weil/dass/obwohl, and the grammar topic [today's unit]. Wait for my answers, then grade and explain each mistake in one line.</pre></details>
         <details class="prompt"><summary>Syntax interrogation · 19:30</summary><pre class="prompt__text">Act as a strict German Syntax Drill Master. Ask me one B1/B2-level question at a time about [topic]. Wait for my answer. If I make a mistake with V2, verb-final clauses (dass/weil/obwohl/wenn), cases (Akk/Dat) or adjective endings, give me a 1-sentence correction. Then ask the next question. Every 5 questions, force me to use one of: zwar…aber, je…desto, nicht nur…sondern auch, Konjunktiv II, Passiv.</pre></details>
+        <details class="prompt"><summary>5 own sentences · after a first pass</summary><pre class="prompt__text">I just studied this German grammar structure: [unit topic, e.g. Relativsätze im Dativ]. Here are 5 sentences I wrote with it about my own life: [sentences]. Correct each one. For every mistake: my sentence → corrected sentence → which rule I broke (one line). Then give me 3 new sentences in English to translate using the same structure, and correct those too.</pre></details>
+        <details class="prompt"><summary>Unit check · day +5</summary><pre class="prompt__text">Test me on this German grammar structure: [unit topic]. Give me 10 short items, one at a time (mix gap-fill, transformation and translation from English). Don't explain anything before I answer. After all 10, give me my score out of 10 and list my mistakes with the correct version.</pre></details>
+        <details class="prompt"><summary>Failure drill · red units</summary><pre class="prompt__text">I keep failing this German structure: [unit topic]. My typical mistakes are: [paste 3–5 wrong sentences]. First explain the rule in 3 lines, comparing it with Spanish and English. Then drill me with minimal pairs: give me one sentence at a time where I must choose between two forms (e.g. dem/den, weil…ist/weil ist…). Keep going until I get 8 in a row right, then tell me I'm done.</pre></details>
         <details class="prompt"><summary>Audio drill · short evenings</summary><pre class="prompt__text">Act as a strict German Drill Master. Give me sentences from the first 3 hours of Michel Thomas or first 17 lessons of Language Transfer in English. Wait for my German translation. Correct my V2/Modal grammar brutally, then give the next sentence.</pre></details>
         <details class="prompt"><summary>Baseline diagnostic · day 0</summary><pre class="prompt__text">I'm learning German, roughly A2 level, and I have a B2 German exam for an Erasmus placement in about 3.5 weeks. I'll study full-time. Diagnose me. Ask me 12 short questions one at a time, mixing: V2 word order, weil/dass verb-final, Perfekt, Akkusativ vs Dativ (incl. two-way prepositions), adjective endings, Relativsätze, Passiv, Konjunktiv II. Don't correct me until the end. Then give me: my estimated level (A2/B1/B1+), a table of the 8 topics ranked from weakest to strongest, and which 3 topics give me the most exam points per hour of study.</pre></details>
     </section>
@@ -280,27 +362,14 @@
             </div>
         </details>
 
-        <details class="section" id="g-units">
-            <summary><span class="section__icon" aria-hidden="true">📚</span><span class="section__title">Unit plan <small>Grammatik aktiv · ~2 units/day</small></span></summary>
-            <div class="section__body">
-                <div class="units">
-                    <div>Sprint 1: 11, 5, 7, 42, 43, 44 → 31–34 → 40, 41</div>
-                    <div>Sprint 2: 70, 71, 74, 75, 79, 57, 58, 55, 56, 77</div>
-                    <div>Sprint 3: B2-C1 73 + 88, fix-it days</div>
-                </div>
-                <p><b>Rule:</b> First Pass on its day, Repeat Pass (failed exercises only) 2–3 days later. A unit isn't done until the Repeat Pass is clean.</p>
-                <p class="subtle">Cut: B2-C1 78, 82, 86, 14, 15 (C1 polish) and the old Expansion Tracks.</p>
-            </div>
-        </details>
-
         <details class="section" id="g-gates">
             <summary><span class="section__icon" aria-hidden="true">🚦</span><span class="section__title">Sunday gates <small>Oct 18 · Oct 25 · Nov 1</small></span></summary>
             <div class="section__body">
                 <div class="card card--purple">
                     <h3>Gate 1 · Sun Oct 18</h3>
-                    <div class="gate"><span class="badge badge--ok">Pass</span> 12 units done, Repeat Passes clean, no verb-position errors after weil/dass → Sprint 2.</div>
-                    <div class="gate"><span class="badge badge--warn">Partial</span> 8–11 units → move 74 + 75 to Sprint 3.</div>
-                    <div class="gate"><span class="badge badge--danger">Miss</span> &lt;8 units or dreading every block → cut Output 2 and the 17:00 block for 3 days, sleep more.</div>
+                    <div class="gate"><span class="badge badge--ok">Pass</span> ≥10 units at Repeat Pass or better, no red flag older than 2 days → retake the test, continue.</div>
+                    <div class="gate"><span class="badge badge--warn">Partial</span> 6–9 units, or 2+ open red flags → Monday is a fix-it day (failure protocol) before new units.</div>
+                    <div class="gate"><span class="badge badge--danger">Miss</span> &lt;6 units or dreading every block → 1 new unit/day for 3 days instead of 2, more sleep, and keep the output blocks.</div>
                 </div>
                 <div class="card card--purple">
                     <h3>Gate 2 · Sun Oct 25 (checkpoint mock)</h3>
@@ -310,7 +379,7 @@
                 </div>
                 <div class="card card--purple">
                     <h3>Gate 3 · Sun Nov 1</h3>
-                    <p>Type all 5 skeletons from memory. <b>No new grammar after this.</b></p>
+                    <p>Type all 5 skeletons from memory. <b>No new units after this</b>; only due checks.</p>
                 </div>
             </div>
         </details>
@@ -379,40 +448,8 @@
     var store = window.SpeedrunStore;
     var $ = function (id) { return document.getElementById(id); };
 
-    var PHASES = {
-        p0: "Re-entry", s1: "Sprint 1 · Syntax + cases", s2: "Sprint 2 · B2 structures", s3: "Sprint 3 · Gauntlet", dl: "Deload + exam"
-    };
-    var DAYS = [
-        ["2026-10-10", "p0", "", "<b>Baseline diagnostic</b> (Guide → 🩺). Triage the Anki backlog. Write the exam-format questions. Afternoon: <b>Unit 11</b>. Evening: memorize Skeleton A."],
-        ["2026-10-11", "p0", "", "Full-day test run. <b>Units 5 + 7.</b> Draft your Skeleton E answers, get them AI-corrected. From 16:00: passive mode (series, podcasts, Anki reviews)."],
-        ["2026-10-12", "s1", "", "<b>Get the exam format</b> (email / visit the office). <b>Units 42 + 43.</b>"],
-        ["2026-10-13", "s1", "", "<b>Units 44 + 31.</b> Repeat Pass: 11, 5, 7."],
-        ["2026-10-14", "s1", "", "<b>Units 32 + 33.</b> Repeat Pass: 42, 43. Memorize Skeleton B."],
-        ["2026-10-15", "s1", "", "<b>Unit 34.</b> Repeat Pass: 44, 31. Re-weight the day if the format is known."],
-        ["2026-10-16", "s1", "", "<b>Unit 40.</b> Repeat Pass: 32, 33, 34. Memorize Skeleton E."],
-        ["2026-10-17", "s1", "Mock", "<b>Mini-mock</b> in the morning (1 reading + 1 listening + 1 text, timed). <b>Unit 41</b> in the afternoon."],
-        ["2026-10-18", "s1", "Gate", "Repeat Pass: 40, 41. <b>Gate 1</b> (Guide → 🚦). From 16:00: passive mode (series, podcasts, Anki reviews)."],
-        ["2026-10-19", "s2", "", "<b>Units 70 + 71.</b> Switch walk audio to B2 material."],
-        ["2026-10-20", "s2", "", "<b>Units 74 + 75.</b> Memorize Skeleton C."],
-        ["2026-10-21", "s2", "", "<b>Unit 79</b> (adjective endings, both grammar blocks). Repeat Pass: 70, 71."],
-        ["2026-10-22", "s2", "", "<b>Units 57 + 58</b> (Passiv). Repeat Pass: 74, 75. Memorize Skeleton D."],
-        ["2026-10-23", "s2", "", "<b>Units 55 + 56</b> (Konj II). Repeat Pass: 79."],
-        ["2026-10-24", "s2", "", "<b>Unit 77.</b> Repeat Pass: 57, 58, 55, 56. Recite all 5 skeletons from memory."],
-        ["2026-10-25", "s2", "Mock", "<b>Checkpoint: full mock</b> (all parts, timed; speaking with AI). <b>Gate 2</b>. From 16:00: passive mode (series, podcasts, Anki reviews)."],
-        ["2026-10-26", "s3", "", "<b>Fix-it:</b> Repeat Pass of the 2–3 weakest units from the mock. <b>B2-C1 Unit 73</b>."],
-        ["2026-10-27", "s3", "Mock", "<b>Full mock #2.</b> Post-mortem at 17:00."],
-        ["2026-10-28", "s3", "", "<b>B2-C1 Unit 88</b> (spoken German). Speaking sims ×3. Timed writing ×2."],
-        ["2026-10-29", "s3", "Mock", "<b>Full mock #3.</b> Post-mortem."],
-        ["2026-10-30", "s3", "", "Fix-it on the most frequent post-mortem error. C-Tests rapid fire. Interview sim ×2."],
-        ["2026-10-31", "s3", "Mock", "<b>Full mock #4</b> (last one). Evening: passive immersion."],
-        ["2026-11-01", "s3", "Gate", "<b>Gate 3.</b> Type all 5 skeletons from memory. No new grammar from now on. Afternoon: passive mode."],
-        ["2026-11-02", "dl", "", "Half day max. Recite skeletons on walks, light listening. Check exam time, place, documents."],
-        ["2026-11-03", "dl", "Exam", "Exam window. 2–3 h max: Skeleton E out loud, 1 short text, light listening. Sleep 8 h."],
-        ["2026-11-04", "dl", "Exam", "Exam window. Same. No mocks."],
-        ["2026-11-05", "dl", "Exam", "Exam window. Same. Trust the system."],
-        ["2026-11-06", "dl", "Exam", "Exam window."],
-        ["2026-11-07", "dl", "Exam", "Exam window closes."]
-    ];
+    var PHASES = window.PLAN.phases;
+    var DAYS = window.PLAN.days;
     var byDate = {};
     DAYS.forEach(function (d) { byDate[d[0]] = d; });
 
@@ -468,6 +505,8 @@
         $("m-kind").hidden = !row[2];
         $("m-kind").textContent = row[2];
         $("m-text").innerHTML = row[3];
+        $("m-grammar").hidden = !isToday;
+        if (isToday) $("m-grammar").innerHTML = grammarLine();
         $("m-now").hidden = !isToday;
         $("m-today").hidden = isToday || !byDate[today];
         var btn = $("m-done");
@@ -502,6 +541,83 @@
         }
     }
 
+    // ---------- Units ----------
+    var U = window.Units;
+    var STATUS = {
+        todo: ["New", ""], first: ["Repeat Pass due", "badge--warn"], repeat: ["Check due", "badge--info"],
+        solid: ["Solid", "badge--ok"], red: ["Red flag", "badge--danger"], parked: ["Parked", ""]
+    };
+    var STEP = { todo: "1st pass:", first: "Repeat:", repeat: "Check:", red: "Retry:" };
+    function shortDate(d) { return d ? new Date(d + "T12:00:00").toLocaleDateString("en-GB", { day: "numeric", month: "short" }) : ""; }
+    function topicOf(id) {
+        var keys = Object.keys(U.TOPICS);
+        for (var i = 0; i < keys.length; i++) if (U.TOPICS[keys[i]].units.indexOf(id) !== -1) return U.TOPICS[keys[i]];
+        return null;
+    }
+    function unitRow(id, withLog) {
+        var st = U.loadState(), u = U.stateOf(st, id);
+        var doneBefore = U.DONE_BEFORE.indexOf(id) !== -1 && u.s === "todo";
+        var info = STATUS[u.s];
+        var badge = doneBefore ? '<span class="badge badge--info">Repeat</span>' : '<span class="badge ' + info[1] + '">' + info[0] + (u.due && u.s !== "solid" ? " " + shortDate(u.due) : "") + "</span>";
+        var t = topicOf(id), meta = (t ? t.name : "") + " · " + U.bookName(id) + " · ~" + U.hours(id) + " h";
+        if (u.s === "red" && id[0] === "B" && t) {
+            var sib = t.units.filter(function (x) { return x[0] === "A"; }).map(U.label).join(", ");
+            if (sib) meta += " · easier sibling: " + sib;
+        }
+        var el = document.createElement("div");
+        el.className = "unit";
+        el.innerHTML = '<div class="unit__top"><span class="unit__id">' + U.label(id) + '</span><span class="unit__title" lang="de">' + (U.UNITS[id] || "") + "</span>" + badge + "</div>" +
+            '<div class="unit__meta">' + meta + "</div>";
+        if (withLog && STEP[u.s]) {
+            var log = document.createElement("div");
+            log.className = "unit__log";
+            log.innerHTML = '<span class="label">' + (doneBefore ? "Repeat:" : STEP[u.s]) + "</span>";
+            [["hi", "≥80%"], ["mid", "60–79%"], ["lo", "<60%"]].forEach(function (b) {
+                var btn = document.createElement("button");
+                btn.type = "button"; btn.className = "log-btn log-btn--" + b[0]; btn.textContent = b[1];
+                btn.setAttribute("aria-label", "Log " + U.label(id) + ": " + b[1]);
+                btn.addEventListener("click", function () {
+                    var r = U.logResult(id, b[0]);
+                    toast(U.label(id) + " → " + STATUS[r.s][0] + (r.due ? " " + shortDate(r.due) : ""));
+                    renderUnits(); renderMission();
+                });
+                log.appendChild(btn);
+            });
+            el.appendChild(log);
+        }
+        return el;
+    }
+    function renderUnits() {
+        var q = U.loadQueue();
+        $("u-empty").hidden = q.length > 0;
+        $("u-today").hidden = q.length === 0;
+        $("u-all").hidden = q.length === 0;
+        if (!q.length) return;
+        var ag = U.agenda(), list = $("u-today-list");
+        list.innerHTML = "";
+        ag.due.concat(ag.fresh).forEach(function (id) { list.appendChild(unitRow(id, true)); });
+        ag.extra.forEach(function (id) {
+            var r = unitRow(id, true);
+            r.querySelector(".unit__top").insertAdjacentHTML("beforeend", '<span class="badge badge--purple">Extra</span>');
+            list.appendChild(r);
+        });
+        ag.doneToday.forEach(function (id) { var r = unitRow(id, false); r.style.opacity = "0.6"; list.appendChild(r); });
+        if (!ag.due.length && !ag.fresh.length) list.insertAdjacentHTML("afterbegin", '<p class="subtle" style="margin:10px 0 0">All grammar for today is logged. 🎉</p>');
+        var all = $("u-all-list"), st = U.loadState(), solid = 0;
+        all.innerHTML = "";
+        q.forEach(function (id) { all.appendChild(unitRow(id, true)); if (U.stateOf(st, id).s === "solid") solid++; });
+        $("u-count").textContent = q.length + " units · " + solid + " solid";
+    }
+    function grammarLine() {
+        var q = U.loadQueue();
+        if (!q.length) return '📚 Grammar: <a href="test.html">take the 30-question test</a> to build your unit queue.';
+        var ag = U.agenda(), parts = [];
+        if (ag.due.length) parts.push("due: " + ag.due.map(U.label).join(", "));
+        if (ag.fresh.length) parts.push("new: " + ag.fresh.map(U.label).join(", "));
+        if (ag.extra.length) parts.push("extra: " + ag.extra.map(U.label).join(", "));
+        return '📚 Grammar today · ' + (parts.length ? parts.join(" · ") : "nothing due") + ' · <a href="#units" id="go-units">open Units</a>';
+    }
+
     function render() { renderWeek(); renderMission(); }
 
     // ---------- Tabs ----------
@@ -523,8 +639,12 @@
             if (n) { e.preventDefault(); selectTab(tabs[(i + n + tabs.length) % tabs.length], true); }
         });
     });
-    var savedTab = $(store("home:tab") || "");
+    var savedTab = $(location.hash === "#units" ? "tab-units" : (store("home:tab") || ""));
     if (savedTab && tabs.indexOf(savedTab) !== -1) selectTab(savedTab);
+    document.addEventListener("click", function (e) {
+        if (e.target.id === "go-units") { e.preventDefault(); selectTab($("tab-units")); $("tab-units").scrollIntoView({ behavior: "smooth", block: "start" }); }
+    });
+    renderUnits();
 
     // ---------- Skeleton chips ----------
     var chips = Array.prototype.slice.call(document.querySelectorAll(".chip[data-skel]"));
