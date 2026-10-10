@@ -1,8 +1,7 @@
 /* Speedrun OS · shared shell: theme, navigation, collapsibles, copy buttons, toast. */
 (function () {
     var NAV = [
-        { href: "index.html", icon: "🏠", label: "Home" },
-        { href: "reboot.html", icon: "📆", label: "Plan" },
+        { href: "index.html", icon: "📆", label: "Today" },
         { href: "drill.html", icon: "⚡", label: "Drill" },
         { href: "words.html", icon: "🔤", label: "Words" },
         { href: "anki.html", icon: "🗂️", label: "Anki" },
@@ -32,6 +31,7 @@
     function currentPage() {
         var file = location.pathname.split("/").pop() || "index.html";
         if (/^essay-/.test(file)) return "archive.html";
+        if (file === "reboot.html") return "index.html";
         return file;
     }
 

@@ -10,154 +10,535 @@
     <link rel="stylesheet" href="assets/style.css">
     <script src="assets/app.js"></script>
     <style>
-        .tiles { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
-        @media (min-width: 640px) { .tiles { grid-template-columns: repeat(3, 1fr); } }
-        .tile {
-            display: flex; flex-direction: column; gap: 4px; text-decoration: none; color: var(--text);
-            background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; box-shadow: var(--shadow);
-            min-height: 110px;
+        .page { padding-top: 14px; }
+
+        /* Top line: date + countdown */
+        .topline { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+        .topline h1 { font-size: 1.35rem; font-weight: 750; flex: 1; }
+        .countdown { text-align: right; line-height: 1.15; }
+        .countdown b { font-size: 1.35rem; color: var(--accent-strong); font-variant-numeric: tabular-nums; }
+        .countdown span { display: block; font-size: 0.72rem; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; }
+
+        /* Week strip */
+        .week { display: flex; align-items: center; gap: 6px; margin-bottom: 12px; }
+        .week__days { flex: 1; display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+        .wday {
+            font: inherit; border: 1px solid var(--border); background: var(--surface); color: var(--text-2);
+            border-radius: 12px; padding: 6px 0; min-height: 52px; cursor: pointer;
+            display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px;
         }
-        .tile:hover { border-color: var(--accent); color: var(--text); }
-        .tile__icon { font-size: 1.5rem; }
-        .tile__title { font-weight: 700; }
-        .tile__desc { font-size: 0.84rem; color: var(--text-3); }
-        .tile--hero { grid-column: 1 / -1; background: var(--accent); border-color: var(--accent); color: var(--on-accent); min-height: 0; }
-        .tile--hero:hover { color: var(--on-accent); background: var(--accent-strong); }
-        .tile--hero .tile__desc { color: var(--on-accent); opacity: 0.85; }
-        .milestone + .milestone { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border); }
-        .milestone h4 { font-size: 0.98rem; margin-bottom: 6px; }
+        .wday small { font-size: 0.66rem; text-transform: uppercase; font-weight: 700; color: var(--text-3); }
+        .wday b { font-size: 1rem; font-variant-numeric: tabular-nums; }
+        .wday .dot { width: 6px; height: 6px; border-radius: 50%; background: transparent; }
+        .wday.is-done .dot { background: var(--accent); }
+        .wday.is-mock .dot { background: var(--warn); }
+        .wday.is-done.is-mock .dot { background: var(--accent); }
+        .wday.is-today { border-color: var(--accent); }
+        .wday[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+        .wday[aria-pressed="true"] small { color: var(--on-accent); opacity: 0.85; }
+        .wday:disabled { opacity: 0.35; cursor: default; }
+        .week__nav { width: 36px; min-height: 52px; border-radius: 12px; border: 1px solid var(--border); background: var(--surface); color: var(--text-2); cursor: pointer; font-size: 1.1rem; }
+        .week__nav:disabled { opacity: 0.3; cursor: default; }
+
+        /* Mission card */
+        .mission { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; margin-bottom: 14px; }
+        .mission__head { display: flex; align-items: center; gap: 8px; padding: 14px 16px 0; flex-wrap: wrap; }
+        .mission__day { font-weight: 700; flex: 1; }
+        .mission__text { padding: 8px 16px 14px; font-size: 1.02rem; }
+        .mission__now { background: var(--accent-soft); padding: 12px 16px; font-size: 0.92rem; display: flex; gap: 10px; align-items: flex-start; }
+        .mission__now-time { font-weight: 800; color: var(--accent-strong); font-variant-numeric: tabular-nums; white-space: nowrap; }
+        .mission__next { font-size: 0.82rem; color: var(--text-3); margin-top: 3px; }
+        .mission__actions { display: flex; gap: 8px; padding: 12px 16px; border-top: 1px solid var(--border); }
+        .mission__actions .btn { flex: 1; }
+
+        /* Tabs */
+        .tabbar { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; background: var(--surface-2); padding: 4px; border-radius: 999px; margin-bottom: 12px; position: sticky; top: 61px; z-index: 5; }
+        .tab { font: inherit; font-weight: 650; font-size: 0.86rem; border: none; background: none; color: var(--text-2); border-radius: 999px; min-height: 42px; cursor: pointer; padding: 0 4px; }
+        .tab[aria-selected="true"] { background: var(--surface); color: var(--text); box-shadow: var(--shadow); }
+        .tabpanel > * + * { margin-top: 10px; }
+
+        /* Timetable */
+        .sched { list-style: none; margin: 0; padding: 0; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+        .sched li { display: grid; grid-template-columns: 52px 1fr; gap: 10px; padding: 11px 14px; border-bottom: 1px solid var(--border); margin: 0; font-size: 0.9rem; border-left: 4px solid transparent; }
+        .sched li:last-child { border-bottom: none; }
+        .sched time { font-weight: 700; color: var(--text-3); font-variant-numeric: tabular-nums; }
+        .sched .deep { border-left-color: var(--danger); }
+        .sched .out { border-left-color: var(--warn); }
+        .sched .light { border-left-color: var(--info); }
+        .sched .off { color: var(--text-3); }
+        .sched li.is-now { background: var(--accent-soft); }
+        .sched li.is-now time { color: var(--accent-strong); }
+        .legend { display: flex; flex-wrap: wrap; gap: 12px; font-size: 0.8rem; color: var(--text-2); }
+        .legend span::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 5px; vertical-align: -1px; background: var(--c); }
+
+        /* Chips (skeleton picker) */
+        .chips { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 2px; scrollbar-width: none; }
+        .chips::-webkit-scrollbar { display: none; }
+        .chip { font: inherit; font-weight: 650; font-size: 0.86rem; white-space: nowrap; border: 1px solid var(--border); background: var(--surface); color: var(--text-2); border-radius: 999px; padding: 8px 14px; min-height: 40px; cursor: pointer; }
+        .chip[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+
+        .units div { background: var(--accent-soft); color: var(--accent-strong); border-radius: var(--radius-sm); padding: 9px 12px; font-weight: 600; font-size: 0.9rem; }
+        .units div + div { margin-top: 6px; }
+        .gate { padding: 9px 0; border-bottom: 1px solid var(--border); font-size: 0.92rem; }
+        .gate:last-child { border-bottom: none; padding-bottom: 0; }
+        .section + .section { margin-top: 8px; }
+        .section > summary { min-height: 54px; padding: 12px 16px; }
+
     </style>
 </head>
 <body>
 
 <main class="page page--narrow" id="main">
-    <div class="page-head">
-        <span class="eyebrow">B2 German · Erasmus</span>
-        <h1>Speedrun OS</h1>
-        <p class="lede">Everything for the run in one place. Start with today's mission.</p>
+
+    <div class="topline">
+        <h1 id="today-title">Today</h1>
+        <div class="countdown"><b id="days-left">–</b><span>days to exam</span></div>
     </div>
 
-    <div class="stack-lg">
-        <nav class="tiles" aria-label="Tools">
-            <a class="tile tile--hero" href="reboot.html">
-                <span class="tile__title">📆 Open today's plan →</span>
-                <span class="tile__desc" id="hero-desc">Calendar, full-day timetable, skeletons and gates.</span>
-            </a>
-            <a class="tile" href="drill.html"><span class="tile__icon" aria-hidden="true">⚡</span><span class="tile__title">Drill</span><span class="tile__desc">Word-order flashcards</span></a>
-            <a class="tile" href="words.html"><span class="tile__icon" aria-hidden="true">🔤</span><span class="tile__title">Core Words</span><span class="tile__desc">Top nouns, adjectives, adverbs</span></a>
-            <a class="tile" href="anki.html"><span class="tile__icon" aria-hidden="true">🗂️</span><span class="tile__title">Card Maker</span><span class="tile__desc">Send cards to Anki</span></a>
-            <a class="tile" href="archive.html"><span class="tile__icon" aria-hidden="true">📑</span><span class="tile__title">Essays</span><span class="tile__desc">Graded writing archive</span></a>
-            <a class="tile" href="performance.html"><span class="tile__icon" aria-hidden="true">📊</span><span class="tile__title">Audit</span><span class="tile__desc">Weekly KPIs and fixes</span></a>
-        </nav>
+    <div class="week" aria-label="Week">
+        <button class="week__nav" type="button" id="week-prev" aria-label="Previous week">‹</button>
+        <div class="week__days" id="week-days"></div>
+        <button class="week__nav" type="button" id="week-next" aria-label="Next week">›</button>
+    </div>
 
-        <div>
-            <h2 style="font-size:1.1rem;margin-bottom:10px">Routines</h2>
+    <section class="mission" aria-live="polite">
+        <div class="mission__head">
+            <span class="mission__day" id="m-day">–</span>
+            <span class="badge badge--ok" id="m-phase">–</span>
+            <span class="badge badge--warn" id="m-kind" hidden></span>
+        </div>
+        <div class="mission__text" id="m-text">Loading…</div>
+        <div class="mission__now" id="m-now">
+            <span class="mission__now-time" id="now-time">–</span>
+            <div><div id="now-text">–</div><div class="mission__next" id="now-next"></div></div>
+        </div>
+        <div class="mission__actions">
+            <button class="btn btn--primary" type="button" id="m-done">✓ Mark day done</button>
+            <button class="btn" type="button" id="m-today" hidden>Back to today</button>
+        </div>
+    </section>
 
-            <details class="section" id="r-weekend">
-                <summary><span class="section__icon" aria-hidden="true">📅</span><span class="section__title">Weekends <small>Spaced output days</small></span></summary>
-                <div class="section__body">
-                    <div class="card card--danger"><span class="badge badge--danger">Morning · Synthetic commute</span><p style="margin-top:8px"><b>Force a 40 min walk.</b> Manufacture a commute; walk purely to run your Michel Thomas / Language Transfer active audio block.</p></div>
-                    <div class="card card--danger">
-                        <span class="badge badge--danger">Mid-day · Mega-block (3.5 h)</span>
-                        <p style="margin-top:8px"><b>Phase 1:</b> clear all Anki reviews.<br><b>Phase 2:</b> advance the day's units in the plan.<br><b>Phase 3:</b> run 1 AI C-Test.</p>
-                        <details class="prompt"><summary>C-Test prompt</summary><pre class="prompt__text">Act as a B1/B2 German exam generator. Create a short, 75-word C-Test (Lückentext) paragraph about [Topic]. CRITICAL RULE: Use only A2/B1 vocabulary. Remove the second half of every second word. Wait for my answers, then grade my basic grammar.</pre></details>
-                    </div>
-                    <div class="card card--warn"><span class="badge badge--warn">Afternoon · Life admin</span><p style="margin-top:8px"><b>Passive echo:</b> while doing chores or gym, run the same audio you studied on your morning walk.</p></div>
-                    <div class="card card--danger"><span class="badge badge--danger">Night · Essay &amp; output (1 h)</span><p style="margin-top:8px"><b>Saturday:</b> 1 full 150-word essay, AI-graded, logged in Essays. Then deep immersion (games/shows).<br><b>Sunday:</b> 1 essay, graded, logged. Open <a href="performance.html">Audit</a> for the weekly review.</p></div>
-                </div>
-            </details>
+    <div class="tabbar" role="tablist" aria-label="Plan sections">
+        <button class="tab" role="tab" id="tab-day" aria-controls="panel-day" aria-selected="true">Day</button>
+        <button class="tab" role="tab" id="tab-skel" aria-controls="panel-skel" aria-selected="false" tabindex="-1">Skeletons</button>
+        <button class="tab" role="tab" id="tab-ai" aria-controls="panel-ai" aria-selected="false" tabindex="-1">Prompts</button>
+        <button class="tab" role="tab" id="tab-guide" aria-controls="panel-guide" aria-selected="false" tabindex="-1">Guide</button>
+    </div>
 
-            <details class="section" id="r-commute">
-                <summary><span class="section__icon" aria-hidden="true">🚶</span><span class="section__title">Walks &amp; commuting</span></summary>
-                <div class="section__body">
-                    <div class="card card--danger"><span class="badge badge--danger">Morning · Active input</span><p style="margin-top:8px">Michel Thomas or Language Transfer. Say the answers out loud.</p></div>
-                    <div class="card card--info"><span class="badge badge--info">Mid-day · Passive wash</span><p style="margin-top:8px">The same audio as the morning. No active translating.</p></div>
-                    <div class="card card--danger"><span class="badge badge--danger">Night · Verbal output</span><p style="margin-top:8px">No headphones. Run "clause collisions" or your skeletons aloud.</p></div>
-                </div>
-            </details>
+    <!-- DAY: timetable -->
+    <section class="tabpanel" role="tabpanel" id="panel-day" aria-labelledby="tab-day">
+        <div class="legend">
+            <span style="--c: var(--danger)">Deep work</span>
+            <span style="--c: var(--warn)">Output</span>
+            <span style="--c: var(--info)">Light</span>
+            <span style="--c: var(--border)">Off</span>
+        </div>
+        <ol class="sched" id="sched">
+            <li class="off" data-t="0730"><time>07:30</time><span>Wake. Water, daylight. <b>No phone</b> for 30 min.</span></li>
+            <li class="light" data-t="0745"><time>07:45</time><span><b>Walk (45 min):</b> active audio. Sprint 1: Michel Thomas / Language Transfer, answer out loud. Sprint 2+: Easy German / B2 listening.</span></li>
+            <li class="light" data-t="0830"><time>08:30</time><span>Breakfast + <b>Anki reviews</b>.</span></li>
+            <li class="deep" data-t="0900"><time>09:00</time><span><b>Grammar (2.5 h):</b> unit A of the day, First Pass. Type everything. 50/10 min cycles.</span></li>
+            <li class="out" data-t="1130"><time>11:30</time><span><b>Writing (45 min):</b> 1 text from a skeleton, AI-graded, saved in Essays.</span></li>
+            <li class="light" data-t="1215"><time>12:15</time><span><b>Vocab (45 min):</b> new cards from <a href="words.html">Core Words</a> + decoder rules.</span></li>
+            <li class="off" data-t="1300"><time>13:00</time><span>Lunch. Real break, no screens.</span></li>
+            <li class="deep" data-t="1400"><time>14:00</time><span><b>Reading + Listening (1.5 h):</b> one practice part each, timed, then post-mortem.</span></li>
+            <li class="light" data-t="1530"><time>15:30</time><span><b>Walk / gym:</b> same audio as the morning, or recite skeletons.</span></li>
+            <li class="out" data-t="1615"><time>16:15</time><span><b>Speaking (45 min):</b> AI voice sim + 10 min shadowing.</span></li>
+            <li class="deep" data-t="1700"><time>17:00</time><span><b>Grammar (1.5 h):</b> unit B, or Repeat Pass of failed exercises + 2 C-Tests.</span></li>
+            <li class="off" data-t="1830"><time>18:30</time><span>Exercise + dinner.</span></li>
+            <li class="out" data-t="1930"><time>19:30</time><span><b>Output 2 (45 min):</b> the other skeleton, or AI interrogation + recital.</span></li>
+            <li class="light" data-t="2015"><time>20:15</time><span><b>Immersion (1.5 h):</b> series with German subtitles, games, Easy German.</span></li>
+            <li class="light" data-t="2145"><time>21:45</time><span><b>Shutdown:</b> 5 sentences about your day in German, tick the day.</span></li>
+            <li class="off" data-t="2200"><time>22:00</time><span>Screens off. Bed by 23:00. <b>Sleep is when vocab sticks.</b></span></li>
+        </ol>
+        <details class="section" id="h-guardrails">
+            <summary><span class="section__icon" aria-hidden="true">🛡️</span><span class="section__title">Guardrails</span></summary>
+            <div class="section__body">
+                <ul>
+                    <li><b>Mock days:</b> the mock replaces the 09:00 and 14:00 blocks. Post-mortem at 17:00.</li>
+                    <li><b>Half-day off</b> every Sunday from 16:00. Non-negotiable.</li>
+                    <li><b>Fried brain</b> (rereading a line 3×): jump to the next light block, come back later.</li>
+                    <li><b>ADHD rotation:</b> no block over 2.5 h, every block switches skill. If one drags, 25-min timer and just start.</li>
+                </ul>
+            </div>
+        </details>
+    </section>
 
-            <details class="section" id="r-class-device">
-                <summary><span class="section__icon" aria-hidden="true">💻</span><span class="section__title">Class with a device</span></summary>
-                <div class="section__body">
-                    <div class="card card--danger"><span class="badge badge--danger">Priority 1 · Stealth</span><p style="margin-top:8px"><b>Grammatik aktiv:</b> open the PDF, type the day's exercises in a doc.</p></div>
-                    <div class="card card--warn"><span class="badge badge--warn">Priority 2 · Grind</span><p style="margin-top:8px"><b>Anki:</b> clear reviews. Say the article (der/die/das) silently every time.</p></div>
-                </div>
-            </details>
-
-            <details class="section" id="r-class-nodevice">
-                <summary><span class="section__icon" aria-hidden="true">📝</span><span class="section__title">Class without a device</span></summary>
-                <div class="section__body">
-                    <div class="card card--danger"><span class="badge badge--danger">Priority 1 · Worksheets</span><p style="margin-top:8px">Pre-printed exercises hidden in your notebook.</p></div>
-                    <div class="card card--warn"><span class="badge badge--warn">Priority 2 · Live translation</span><p style="margin-top:8px">Every 15 min, translate one sentence the professor says into German in the margin.</p></div>
-                </div>
-            </details>
-
-            <details class="section" id="r-desk">
-                <summary><span class="section__icon" aria-hidden="true">☀️</span><span class="section__title">Desk time</span></summary>
-                <div class="section__body">
-                    <div class="card card--purple"><span class="badge badge--purple">Audio rule</span><p style="margin-top:8px"><b>No German audio</b> while typing grammar. Non-vocal music only.</p></div>
-                    <div class="card card--danger"><span class="badge badge--danger">Priority 1 · Deep work</span><p style="margin-top:8px">The day's units from the plan. Type every answer.</p></div>
-                    <div class="card card--warn">
-                        <span class="badge badge--warn">Priority 2 · Reality check</span>
-                        <p style="margin-top:8px"><b>C-Test grind:</b> let AI generate a Lückentext to expose missing endings.</p>
-                        <details class="prompt"><summary>C-Test prompt</summary><pre class="prompt__text">Act as a B1/B2 German exam generator. Create a short, 75-word C-Test (Lückentext) paragraph about [Topic]. CRITICAL RULE: Use only A2/B1 vocabulary. Remove the second half of every second word. Wait for my answers, then grade my basic grammar.</pre></details>
-                    </div>
-                    <div class="card card--warn">
-                        <span class="badge badge--warn">Priority 2 · Output</span>
-                        <p style="margin-top:8px"><b>AI interrogation (20 min):</b> text chat in German.</p>
-                        <details class="prompt"><summary>Interrogation prompt</summary><pre class="prompt__text">Act as a strict German Syntax Drill Master. Ask me one B2-level question at a time about [Insert Topic]. Wait for my answer. If I make a mistake with the V2 rule, Verb-Kickers (dass/weil), or cases (Acc/Dat), give me a brutal 1-sentence correction. Then ask the next question.</pre></details>
-                    </div>
-                </div>
-            </details>
-
-            <details class="section" id="r-night">
-                <summary><span class="section__icon" aria-hidden="true">🌙</span><span class="section__title">Evenings</span></summary>
-                <div class="section__body">
-                    <div class="card card--warn">
-                        <span class="badge badge--warn">Short evening</span>
-                        <p style="margin-top:8px">15 min audio-drill chat, then 1 episode of a German series. Sleep.</p>
-                        <details class="prompt"><summary>Audio-drill prompt</summary><pre class="prompt__text">Act as a strict German Drill Master. Give me sentences from the first 3 hours of Michel Thomas or first 17 lessons of Language Transfer in English. Wait for my German translation. Correct my V2/Modal grammar brutally, then give the next sentence.</pre></details>
-                    </div>
-                    <div class="card card--danger">
-                        <span class="badge badge--danger">Long evening (3–5 h)</span>
-                        <p style="margin-top:8px"><b>Hour 1:</b> write a 150-word text, let AI grade it.<br><b>Then:</b> deep immersion. Close the books; games / series in German.</p>
-                        <details class="prompt"><summary>Essay grader prompt</summary><pre class="prompt__text">Act as a strict CEFR B2 German examiner. Grade my 150-word text. Give me a score based on B2 criteria. Highlight every grammar/case error, explain it briefly, and rewrite the sentence so it sounds natural and uses B2 connective structures (um...zu, weil, obwohl).</pre></details>
-                    </div>
-                </div>
-            </details>
-
-            <details class="section" id="r-hands">
-                <summary><span class="section__icon" aria-hidden="true">🏋️</span><span class="section__title">Hands busy <small>Gym, cooking</small></span></summary>
-                <div class="section__body">
-                    <div class="card card--warn"><span class="badge badge--warn">Acoustic &amp; mental</span><p style="margin-top:8px">Easy German without pausing. Between sets, run preposition cases in your head.</p></div>
-                </div>
-            </details>
+    <!-- SKELETONS -->
+    <section class="tabpanel" role="tabpanel" id="panel-skel" aria-labelledby="tab-skel" hidden>
+        <div class="chips" role="group" aria-label="Choose a skeleton">
+            <button class="chip" type="button" data-skel="E" aria-pressed="true">E · Interview</button>
+            <button class="chip" type="button" data-skel="A" aria-pressed="false">A · Opinion</button>
+            <button class="chip" type="button" data-skel="B" aria-pressed="false">B · Email</button>
+            <button class="chip" type="button" data-skel="C" aria-pressed="false">C · Monologue</button>
+            <button class="chip" type="button" data-skel="D" aria-pressed="false">D · Discussion</button>
         </div>
 
-        <details class="section" id="r-legacy">
-            <summary><span class="section__icon" aria-hidden="true">🗄️</span><span class="section__title">Original 7-week timeline <small>Superseded on Oct 10 by the Plan</small></span></summary>
+        <div class="card" data-skel-panel="E">
+            <h3>Erasmus interview <span class="badge badge--danger">Most likely question</span></h3>
+            <p class="subtle">Write your own answers, get them AI-corrected, memorize them.</p>
+            <div class="skeleton" lang="de">
+                <b>Wer sind Sie?</b> Ich heiße <span class="slot">[…]</span>, bin <span class="slot">[…]</span> Jahre alt und studiere <span class="slot">[Fach]</span> an der <span class="slot">[Uni]</span> in <span class="slot">[Stadt]</span>.<br>
+                <b>Warum Erasmus?</b> Ich möchte ein Auslandssemester machen, <b>weil</b> ich <span class="slot">[…]</span>. <b>Außerdem</b> ist es für meine Zukunft wichtig, <b>dass</b> <span class="slot">[…]</span>.<br>
+                <b>Warum diese Stadt / Uni?</b> Die Uni ist bekannt für <span class="slot">[…]</span>. <b>Je</b> länger ich mich damit beschäftigt habe, <b>desto</b> mehr <span class="slot">[…]</span>.<br>
+                <b>Was erwarten Sie?</b> Ich hoffe, <span class="slot">[…] zu [Infinitiv]</span>. <b>Wenn</b> ich zurückkomme, <b>würde</b> ich gern <span class="slot">[…]</span>.<br>
+                <b>Sorgen?</b> <b>Zwar</b> habe ich ein bisschen Angst vor <span class="slot">[…]</span>, <b>aber</b> ich bin sicher, dass <span class="slot">[…]</span>.<br>
+                <b>Ihr Deutsch?</b> Ich lerne seit <span class="slot">[…]</span> Deutsch. Am schwierigsten finde ich <span class="slot">[…]</span>, aber ich übe jeden Tag.
+            </div>
+        </div>
+        <div class="card" data-skel-panel="A" hidden>
+            <h3>Opinion text (~150 words)</h3>
+            <p class="subtle">Packs zwar…aber, je…desto, nicht nur…sondern auch, Konj II, Passiv + Modal. Your own middle sentences must be clean too, or it reads as a "Frankenstein" text.</p>
+            <div class="skeleton" lang="de">
+                In letzter Zeit wird immer häufiger über das Thema „<span class="slot">[X]</span>" diskutiert. Ich möchte dazu meine Meinung äußern.<br>
+                <b>Einerseits</b> spricht für <span class="slot">[X]</span>, dass <span class="slot">[Grund … Verb]</span>. Ein gutes Beispiel dafür ist <span class="slot">[Beispiel]</span>.<br>
+                <b>Andererseits</b> darf man nicht außer Acht lassen, dass <span class="slot">[Nachteil … Verb]</span>. <b>Zwar</b> <span class="slot">[Gegenargument]</span>, <b>aber</b> <span class="slot">[dein Argument]</span>.<br>
+                In meinem Heimatland ist die Situation <b>nicht nur</b> <span class="slot">[…]</span>, <b>sondern auch</b> <span class="slot">[…]</span>. <b>Je</b> mehr man darüber nachdenkt, <b>desto</b> klarer wird, dass <span class="slot">[…]</span>.<br>
+                <b>Wenn ich die Wahl hätte, würde ich</b> vorschlagen, dass <span class="slot">[Alternative]</span>.<br>
+                <b>Zusammenfassend</b> lässt sich sagen, dass für <span class="slot">[X]</span> eine Lösung gefunden werden <b>muss</b>, <b>um</b> <span class="slot">[…]</span> <b>zu</b> <span class="slot">[Infinitiv]</span>.
+            </div>
+        </div>
+        <div class="card" data-skel-panel="B" hidden>
+            <h3>Formal email (~100 words)</h3>
+            <div class="skeleton" lang="de">
+                Sehr geehrte Frau <span class="slot">[Name]</span>, / Sehr geehrte Damen und Herren,<br>
+                vielen Dank für Ihre Nachricht. Ich wende mich an Sie, <b>weil</b> <span class="slot">[…]</span>.<br>
+                Leider muss ich Ihnen mitteilen, <b>dass</b> <span class="slot">[…]</span>.<br>
+                <b>Könnten Sie mir bitte mitteilen, ob</b> <span class="slot">[…]</span>? Außerdem <b>würde ich gern wissen</b>, <span class="slot">[W-Frage … Verb]</span>.<br>
+                Ich schlage vor, dass <span class="slot">[…]</span>. <b>Wäre es möglich</b>, <span class="slot">[…] zu [Infinitiv]</span>?<br>
+                Für Ihr Verständnis bedanke ich mich im Voraus.<br>
+                Mit freundlichen Grüßen<br><span class="slot">[Name]</span>
+            </div>
+        </div>
+        <div class="card" data-skel-panel="C" hidden>
+            <h3>Monologue (~3–4 min)</h3>
+            <div class="skeleton" lang="de">
+                Ich möchte heute über das Thema „<span class="slot">[X]</span>" sprechen. <b>Zuerst</b> <span class="slot">[…]</span>, <b>dann</b> <span class="slot">[…]</span> und <b>zum Schluss</b> <span class="slot">[…]</span>.<br>
+                In meinem Heimatland ist es so, dass <span class="slot">[…]</span>. Ich persönlich habe die Erfahrung gemacht, dass <span class="slot">[…]</span>.<br>
+                <b>Ein Vorteil ist</b>, dass <span class="slot">[…]</span>. <b>Ein Nachteil ist allerdings</b> <span class="slot">[…]</span>.<br>
+                <b>Brücke</b> (weak topic): Man muss das auch im Zusammenhang mit <span class="slot">[Gesundheit / Digitalisierung / Studium]</span> betrachten. <span lang="en" class="subtle">→ bridge to vocab you know, then come back to the question.</span><br>
+                <b>Damit komme ich zum Schluss.</b> Meiner Meinung nach <span class="slot">[…]</span>, weil <span class="slot">[…]</span>.
+            </div>
+        </div>
+        <div class="card" data-skel-panel="D" hidden>
+            <h3>Discussion phrases</h3>
+            <div class="skeleton" lang="de">
+                <b>Zustimmen:</b> Da bin ich ganz Ihrer Meinung. / Das finde ich auch.<br>
+                <b>Widersprechen:</b> Das sehe ich etwas anders, weil <span class="slot">[…]</span>. / Das stimmt zwar, aber man sollte auch bedenken, dass <span class="slot">[…]</span>.<br>
+                <b>Nachfragen:</b> Was halten Sie davon? / Wie meinen Sie das genau?<br>
+                <b>Zeit gewinnen:</b> Das ist eine gute Frage … Lassen Sie mich kurz überlegen.<br>
+                <b>Vorschlagen:</b> Wie wäre es, wenn wir <span class="slot">[…]</span>?
+            </div>
+        </div>
+    </section>
+
+    <!-- PROMPTS -->
+    <section class="tabpanel" role="tabpanel" id="panel-ai" aria-labelledby="tab-ai" hidden>
+        <details class="prompt"><summary>Writing grader · 11:30 / 19:30</summary><pre class="prompt__text">Act as a strict CEFR B2 German examiner for a university Erasmus language test. First give me one realistic writing task (alternate between an opinion text ~150 words and a semi-formal email ~100 words). Wait for my text. Then grade it on: task completion, coherence, vocabulary range, grammar accuracy, with a score per criterion and an estimated CEFR level (A2/B1/B1+/B2). List every error as: my sentence → corrected sentence → 5-word rule. Finally, give me 3 phrases to add to my skeleton. Explain in English.</pre></details>
+        <details class="prompt"><summary>Speaking sim · 16:15 (voice mode)</summary><pre class="prompt__text">Act as the examiner of a university B2 German oral test for Erasmus students. Run a ~12 minute oral exam in 3 parts: (1) interview: ask about me, my studies, why I want to do Erasmus, where and what I plan to do there; (2) give me a topic and let me speak ~3 minutes alone; (3) a short discussion where you take the opposite opinion. Speak at natural B2 speed. Do NOT correct me during the exam. At the end, give me: an estimated CEFR level, my 5 most frequent errors (my sentence → correct), and 3 phrases I should have used.</pre></details>
+        <details class="prompt"><summary>C-Test / cloze · 17:00</summary><pre class="prompt__text">Act as a B2 German test generator. Create a ~90-word C-Test (Lückentext) about [topic]. Remove the second half of every second word. Focus the gaps on: adjective endings, articles after prepositions, verb position after weil/dass/obwohl, and the grammar topic [today's unit]. Wait for my answers, then grade and explain each mistake in one line.</pre></details>
+        <details class="prompt"><summary>Syntax interrogation · 19:30</summary><pre class="prompt__text">Act as a strict German Syntax Drill Master. Ask me one B1/B2-level question at a time about [topic]. Wait for my answer. If I make a mistake with V2, verb-final clauses (dass/weil/obwohl/wenn), cases (Akk/Dat) or adjective endings, give me a 1-sentence correction. Then ask the next question. Every 5 questions, force me to use one of: zwar…aber, je…desto, nicht nur…sondern auch, Konjunktiv II, Passiv.</pre></details>
+        <details class="prompt"><summary>Audio drill · short evenings</summary><pre class="prompt__text">Act as a strict German Drill Master. Give me sentences from the first 3 hours of Michel Thomas or first 17 lessons of Language Transfer in English. Wait for my German translation. Correct my V2/Modal grammar brutally, then give the next sentence.</pre></details>
+        <details class="prompt"><summary>Baseline diagnostic · day 0</summary><pre class="prompt__text">I'm learning German, roughly A2 level, and I have a B2 German exam for an Erasmus placement in about 3.5 weeks. I'll study full-time. Diagnose me. Ask me 12 short questions one at a time, mixing: V2 word order, weil/dass verb-final, Perfekt, Akkusativ vs Dativ (incl. two-way prepositions), adjective endings, Relativsätze, Passiv, Konjunktiv II. Don't correct me until the end. Then give me: my estimated level (A2/B1/B1+), a table of the 8 topics ranked from weakest to strongest, and which 3 topics give me the most exam points per hour of study.</pre></details>
+    </section>
+
+    <!-- GUIDE -->
+    <section class="tabpanel" role="tabpanel" id="panel-guide" aria-labelledby="tab-guide" hidden>
+        <details class="section" id="g-reality">
+            <summary><span class="section__icon" aria-hidden="true">⚠️</span><span class="section__title">Reality check <small>Why the plan looks like this</small></span></summary>
             <div class="section__body">
-                <div class="callout callout--warn"><p>Kept for reference only. The current schedule lives in <a href="reboot.html">Plan</a>.</p></div>
-                <div class="card">
-                    <div class="milestone"><h4>Week 1 · Syntax base</h4><p class="muted">Units 11, 5, 7, 42 · Expansion: 43, 44, rapid-fire V2 drills, 5 verbs from a news video.</p></div>
-                    <div class="milestone"><h4>Week 2 · Cases &amp; connectors</h4><p class="muted">Units 31–34, 40–41 · Expansion: B2-C1 73, two-way preposition C-Tests, top 15 verb + preposition pairs.</p></div>
-                    <div class="milestone"><h4>Week 3 · B2 output structures</h4><p class="muted">Units 70, 71, 74, 75, 77 · Expansion: B2-C1 82, 78, 86, essay rewrites.</p></div>
-                    <div class="milestone"><h4>Week 4 · The bosses</h4><p class="muted">Units 57, 58 (Passiv), 55, 56 (Konj II) · Expansion: B2-C1 14, 15, 88, passive essay.</p></div>
-                    <div class="milestone"><h4>Week 5 · Synthesis</h4><p class="muted">0 units. 3 C-Tests/week, 2 mock exams, 175-word essays.</p></div>
-                    <div class="milestone"><h4>Week 6 · The gauntlet</h4><p class="muted">A timed mock every 2 days, 25-min writing, live speaking prompts.</p></div>
-                    <div class="milestone"><h4>Week 7 · Deload</h4><p class="muted">No new information. Essay skeletons memorized. Exam.</p></div>
+                <p>A2 → B2 normally takes <b>~300–400 h</b>. Full-time gives you <b>~10 h × 24 days ≈ 250 h</b>: close enough to fight for.</p>
+                <p>It's an <b>internal Erasmus exam</b>: usually shorter, checking that you can <b>function</b> (talk about yourself, write a clear text, follow normal speech, mostly correct grammar). A clean B1+ with B2 connectors often passes.</p>
+                <p><b>Risks:</b> the unknown format (fix it Monday, see Exam intel) and burnout (keep the guardrails).</p>
+            </div>
+        </details>
+
+        <details class="section" id="g-intel">
+            <summary><span class="section__icon" aria-hidden="true">🕵️</span><span class="section__title">Exam intel <small>Get the format by Mon Oct 12</small></span></summary>
+            <div class="section__body">
+                <div class="card card--danger">
+                    <h3>Ask the Erasmus office / language centre</h3>
+                    <ul>
+                        <li>Which parts: grammar? reading? listening? writing? oral interview?</li>
+                        <li>Duration and weight of each. Minimum per part?</li>
+                        <li>Writing: text type and word count?</li>
+                        <li>Oral: interview, presentation or conversation? Alone or in pairs?</li>
+                        <li>Sample exam? Retake if you fail? Exact date and time?</li>
+                    </ul>
+                </div>
+                <div class="card card--warn">
+                    <h3>Then re-weight the day</h3>
+                    <ul>
+                        <li><b>Grammar test:</b> the 17:00 block becomes C-Tests / cloze daily.</li>
+                        <li><b>Oral = interview:</b> Skeleton E is priority #1, rehearse daily.</li>
+                        <li><b>No listening part:</b> move that time to speaking.</li>
+                        <li><b>Sample exam:</b> untimed now, timed on Oct 25.</li>
+                    </ul>
+                </div>
+                <p class="subtle">Until then, free Goethe / telc / ÖSD B2 Modellsätze are good reading and listening practice.</p>
+            </div>
+        </details>
+
+        <details class="section" id="g-units">
+            <summary><span class="section__icon" aria-hidden="true">📚</span><span class="section__title">Unit plan <small>Grammatik aktiv · ~2 units/day</small></span></summary>
+            <div class="section__body">
+                <div class="units">
+                    <div>Sprint 1: 11, 5, 7, 42, 43, 44 → 31–34 → 40, 41</div>
+                    <div>Sprint 2: 70, 71, 74, 75, 79, 57, 58, 55, 56, 77</div>
+                    <div>Sprint 3: B2-C1 73 + 88, fix-it days</div>
+                </div>
+                <p><b>Rule:</b> First Pass on its day, Repeat Pass (failed exercises only) 2–3 days later. A unit isn't done until the Repeat Pass is clean.</p>
+                <p class="subtle">Cut: B2-C1 78, 82, 86, 14, 15 (C1 polish) and the old Expansion Tracks.</p>
+            </div>
+        </details>
+
+        <details class="section" id="g-gates">
+            <summary><span class="section__icon" aria-hidden="true">🚦</span><span class="section__title">Sunday gates <small>Oct 18 · Oct 25 · Nov 1</small></span></summary>
+            <div class="section__body">
+                <div class="card card--purple">
+                    <h3>Gate 1 · Sun Oct 18</h3>
+                    <div class="gate"><span class="badge badge--ok">Pass</span> 12 units done, Repeat Passes clean, no verb-position errors after weil/dass → Sprint 2.</div>
+                    <div class="gate"><span class="badge badge--warn">Partial</span> 8–11 units → move 74 + 75 to Sprint 3.</div>
+                    <div class="gate"><span class="badge badge--danger">Miss</span> &lt;8 units or dreading every block → cut Output 2 and the 17:00 block for 3 days, sleep more.</div>
+                </div>
+                <div class="card card--purple">
+                    <h3>Gate 2 · Sun Oct 25 (checkpoint mock)</h3>
+                    <div class="gate"><span class="badge badge--ok">B2 on most parts</span> Keep going; swap 1 grammar block/day for mocks.</div>
+                    <div class="gate"><span class="badge badge--warn">B1+ on a part</span> That part gets the 17:00 block all of Sprint 3.</div>
+                    <div class="gate"><span class="badge badge--danger">B1 or lower on 2+</span> Ask about a later sitting / retake, or whether B1 is enough. Double down on Skeleton E + writing.</div>
+                </div>
+                <div class="card card--purple">
+                    <h3>Gate 3 · Sun Nov 1</h3>
+                    <p>Type all 5 skeletons from memory. <b>No new grammar after this.</b></p>
                 </div>
             </div>
         </details>
-    </div>
+
+        <details class="section" id="g-anki">
+            <summary><span class="section__icon" aria-hidden="true">🗂️</span><span class="section__title">Anki setup <small>FSRS · 40/day · backlog</small></span></summary>
+            <div class="section__body">
+                <p>FSRS on, desired retention <b>0.85</b>. Cards from <a href="words.html">Core Words</a>, mocks and AI corrections via the <a href="anki.html">card maker</a>. Suspend leeches after 4 lapses.</p>
+                <p><b>Sprints 1–2:</b> 40 new/day · <b>Sprint 3:</b> 20 · <b>From Nov 1:</b> 0. Backlog over ~300 → clear it at 150 reviews/day first.</p>
+            </div>
+        </details>
+
+        <details class="section" id="g-decoder">
+            <summary><span class="section__icon" aria-hidden="true">🧬</span><span class="section__title">Vocab decoder <small>EN/ES → DE rules</small></span></summary>
+            <div class="section__body">
+                <p lang="de"><b class="t-danger">die:</b> -ung, -heit, -keit, -schaft, -ion, -tät, -ik, -ie, -enz/-anz · <b class="t-ok">das:</b> -chen, -lein, -ment, -um, -nis, das Lernen · <b class="t-info">der:</b> -ling, -ismus, -or, -er (people/tools)</p>
+                <p><b>Suffixes:</b> -weise ≈ -mente (glücklicherweise) · -bar ≈ -able (machbar) · -los ≈ -less (arbeitslos) · -lich/-ig ≈ -ly/-y</p>
+                <p><b>Sound shift:</b> t→z/s (two→zwei, water→Wasser) · p→f/pf (apple→Apfel, sleep→schlafen) · d→t (day→Tag) · th→d (think→denken)</p>
+                <p><b>Prefixes:</b> auf ≈ up/open (aufgeben) · zu = closed · an/aus = on/off (ausmachen) · ab ≈ off (absagen) · ein ≈ in (einschlafen) · um = change (umziehen) · vor = fore (vorbereiten) · ver- = wrong/changed (vergessen) · er- = result (erreichen)</p>
+                <p><b>Compounds:</b> last part = meaning + gender: Hand + Schuh = der Handschuh.</p>
+            </div>
+        </details>
+
+        <details class="section" id="g-tactics">
+            <summary><span class="section__icon" aria-hidden="true">🎯</span><span class="section__title">Reading &amp; listening tactics</span></summary>
+            <div class="section__body">
+                <p><b>Reading:</b> questions first, then scan. Hunt paraphrases (Arbeit → Beruf); identical words are often the trap. Not in the text = wrong. Stuck &gt;90 s → guess. Never leave a blank.</p>
+                <p><b>Listening:</b> underline key words in the pause. The real answer often comes after <b>aber / jedoch / trotzdem / eigentlich</b>. Mark on the first play, confirm on the replay.</p>
+                <p><b>Post-mortem:</b> for each wrong answer write why: vocab / grammar / trap / time.</p>
+            </div>
+        </details>
+
+        <details class="section" id="g-diag">
+            <summary><span class="section__icon" aria-hidden="true">🩺</span><span class="section__title">Baseline diagnostic <small>Day 0</small></span></summary>
+            <div class="section__body">
+                <ol>
+                    <li>A free B2 practice paper: 1 reading + 1 listening part, timed.</li>
+                    <li>One ~150-word opinion text, 45 min, graded with the writing prompt.</li>
+                    <li>5 min of the speaking sim (interview only).</li>
+                    <li>The diagnostic prompt. Log everything in <a href="performance.html">Audit</a>.</li>
+                </ol>
+            </div>
+        </details>
+
+        <details class="section" id="g-routines">
+            <summary><span class="section__icon" aria-hidden="true">🚶</span><span class="section__title">Routines <small>Walks, gym, class days</small></span></summary>
+            <div class="section__body">
+                <p><b>Walks:</b> morning = active audio out loud · mid-day = same audio, passive · night = no headphones, recite skeletons.</p>
+                <p><b>Gym / cooking:</b> Easy German without pausing; run preposition cases between sets.</p>
+                <p><b>Desk:</b> no German audio while typing grammar; non-vocal music only.</p>
+                <p><b>If you have class:</b> type Grammatik aktiv exercises (device) or fill printed worksheets and translate one sentence the professor says every 15 min (no device).</p>
+            </div>
+        </details>
+
+        <details class="section" id="g-legacy">
+            <summary><span class="section__icon" aria-hidden="true">🗄️</span><span class="section__title">Original 7-week timeline <small>Superseded Oct 10</small></span></summary>
+            <div class="section__body">
+                <p class="muted"><b>W1</b> Units 11, 5, 7, 42 · <b>W2</b> 31–34, 40–41 · <b>W3</b> 70, 71, 74, 75, 77 · <b>W4</b> 57, 58, 55, 56 · <b>W5</b> synthesis, 2 mocks · <b>W6</b> mock every 2 days · <b>W7</b> deload.</p>
+            </div>
+        </details>
+    </section>
 </main>
 
 <script>
-    // Show today's mission teaser from the plan's stored progress
-    (function () {
-        var days = Math.round((new Date("2026-11-03T00:00:00") - new Date(new Date().toDateString())) / 86400000);
-        if (days > 0) document.getElementById("hero-desc").textContent = days + " days to the exam window. Calendar, full-day timetable, skeletons and gates.";
-    })();
+(function () {
+    var store = window.SpeedrunStore;
+    var $ = function (id) { return document.getElementById(id); };
+
+    var PHASES = {
+        p0: "Re-entry", s1: "Sprint 1 · Syntax + cases", s2: "Sprint 2 · B2 structures", s3: "Sprint 3 · Gauntlet", dl: "Deload + exam"
+    };
+    var DAYS = [
+        ["2026-10-10", "p0", "", "<b>Baseline diagnostic</b> (Guide → 🩺). Triage the Anki backlog. Write the exam-format questions. Afternoon: <b>Unit 11</b>. Evening: memorize Skeleton A."],
+        ["2026-10-11", "p0", "", "Full-day test run. <b>Units 5 + 7.</b> Draft your Skeleton E answers, get them AI-corrected. Half-day off from 16:00."],
+        ["2026-10-12", "s1", "", "<b>Get the exam format</b> (email / visit the office). <b>Units 42 + 43.</b>"],
+        ["2026-10-13", "s1", "", "<b>Units 44 + 31.</b> Repeat Pass: 11, 5, 7."],
+        ["2026-10-14", "s1", "", "<b>Units 32 + 33.</b> Repeat Pass: 42, 43. Memorize Skeleton B."],
+        ["2026-10-15", "s1", "", "<b>Unit 34.</b> Repeat Pass: 44, 31. Re-weight the day if the format is known."],
+        ["2026-10-16", "s1", "", "<b>Unit 40.</b> Repeat Pass: 32, 33, 34. Memorize Skeleton E."],
+        ["2026-10-17", "s1", "Mock", "<b>Mini-mock</b> in the morning (1 reading + 1 listening + 1 text, timed). <b>Unit 41</b> in the afternoon."],
+        ["2026-10-18", "s1", "Gate", "Repeat Pass: 40, 41. <b>Gate 1</b> (Guide → 🚦). Half-day off from 16:00."],
+        ["2026-10-19", "s2", "", "<b>Units 70 + 71.</b> Switch walk audio to B2 material."],
+        ["2026-10-20", "s2", "", "<b>Units 74 + 75.</b> Memorize Skeleton C."],
+        ["2026-10-21", "s2", "", "<b>Unit 79</b> (adjective endings, both grammar blocks). Repeat Pass: 70, 71."],
+        ["2026-10-22", "s2", "", "<b>Units 57 + 58</b> (Passiv). Repeat Pass: 74, 75. Memorize Skeleton D."],
+        ["2026-10-23", "s2", "", "<b>Units 55 + 56</b> (Konj II). Repeat Pass: 79."],
+        ["2026-10-24", "s2", "", "<b>Unit 77.</b> Repeat Pass: 57, 58, 55, 56. Recite all 5 skeletons from memory."],
+        ["2026-10-25", "s2", "Mock", "<b>Checkpoint: full mock</b> (all parts, timed; speaking with AI). <b>Gate 2</b>. Half-day off from 16:00."],
+        ["2026-10-26", "s3", "", "<b>Fix-it:</b> Repeat Pass of the 2–3 weakest units from the mock. <b>B2-C1 Unit 73</b>."],
+        ["2026-10-27", "s3", "Mock", "<b>Full mock #2.</b> Post-mortem at 17:00."],
+        ["2026-10-28", "s3", "", "<b>B2-C1 Unit 88</b> (spoken German). Speaking sims ×3. Timed writing ×2."],
+        ["2026-10-29", "s3", "Mock", "<b>Full mock #3.</b> Post-mortem."],
+        ["2026-10-30", "s3", "", "Fix-it on the most frequent post-mortem error. C-Tests rapid fire. Interview sim ×2."],
+        ["2026-10-31", "s3", "Mock", "<b>Full mock #4</b> (last one). Evening off, guilt-free."],
+        ["2026-11-01", "s3", "Gate", "<b>Gate 3.</b> Type all 5 skeletons from memory. No new grammar from now on. Half-day off."],
+        ["2026-11-02", "dl", "", "Half day max. Recite skeletons on walks, light listening. Check exam time, place, documents."],
+        ["2026-11-03", "dl", "Exam", "Exam window. 2–3 h max: Skeleton E out loud, 1 short text, light listening. Sleep 8 h."],
+        ["2026-11-04", "dl", "Exam", "Exam window. Same. No mocks."],
+        ["2026-11-05", "dl", "Exam", "Exam window. Same. Trust the system."],
+        ["2026-11-06", "dl", "Exam", "Exam window."],
+        ["2026-11-07", "dl", "Exam", "Exam window closes."]
+    ];
+    var byDate = {};
+    DAYS.forEach(function (d) { byDate[d[0]] = d; });
+
+    var DONE_KEY = "reboot-done-v1";
+    var done = {};
+    try { done = JSON.parse(store(DONE_KEY) || "{}") || {}; } catch (e) { done = {}; }
+
+    function iso(d) { return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); }
+    function parse(s) { return new Date(s + "T12:00:00"); }
+    function addDays(s, n) { var d = parse(s); d.setDate(d.getDate() + n); return iso(d); }
+    function fmt(s, opts) { return parse(s).toLocaleDateString("en-GB", opts); }
+
+    var today = iso(new Date());
+    var first = DAYS[0][0], last = DAYS[DAYS.length - 1][0];
+    var selected = byDate[today] ? today : (today < first ? first : last);
+
+    function mondayOf(s) { var d = parse(s); var wd = (d.getDay() + 6) % 7; d.setDate(d.getDate() - wd); return iso(d); }
+    var weekStart = mondayOf(selected);
+
+    // ---------- Top line ----------
+    var daysLeft = Math.round((parse("2026-11-03") - parse(today)) / 86400000);
+    $("days-left").textContent = Math.max(daysLeft, 0);
+    $("today-title").textContent = fmt(today, { weekday: "long", day: "numeric", month: "short" });
+
+    // ---------- Week strip ----------
+    function renderWeek() {
+        var box = $("week-days");
+        box.innerHTML = "";
+        for (var i = 0; i < 7; i++) {
+            var s = addDays(weekStart, i), row = byDate[s];
+            var b = document.createElement("button");
+            b.type = "button";
+            b.className = "wday" + (s === today ? " is-today" : "") + (done[s] ? " is-done" : "") + (row && row[2] === "Mock" ? " is-mock" : "");
+            b.setAttribute("aria-pressed", s === selected ? "true" : "false");
+            b.setAttribute("aria-label", fmt(s, { weekday: "long", day: "numeric", month: "long" }) + (done[s] ? ", done" : "") + (row && row[2] ? ", " + row[2] : ""));
+            b.innerHTML = "<small>" + fmt(s, { weekday: "short" }).slice(0, 2) + "</small><b>" + parse(s).getDate() + '</b><span class="dot"></span>';
+            if (!row) b.disabled = true;
+            (function (s) { b.addEventListener("click", function () { selected = s; render(); }); })(s);
+            box.appendChild(b);
+        }
+        $("week-prev").disabled = weekStart <= mondayOf(first);
+        $("week-next").disabled = addDays(weekStart, 7) > last;
+    }
+    $("week-prev").addEventListener("click", function () { weekStart = addDays(weekStart, -7); renderWeek(); });
+    $("week-next").addEventListener("click", function () { weekStart = addDays(weekStart, 7); renderWeek(); });
+
+    // ---------- Mission card ----------
+    function renderMission() {
+        var row = byDate[selected];
+        var isToday = selected === today;
+        $("m-day").textContent = (isToday ? "Today · " : "") + fmt(selected, { weekday: "short", day: "numeric", month: "short" });
+        $("m-phase").textContent = PHASES[row[1]];
+        $("m-kind").hidden = !row[2];
+        $("m-kind").textContent = row[2];
+        $("m-text").innerHTML = row[3];
+        $("m-now").hidden = !isToday;
+        $("m-today").hidden = isToday || !byDate[today];
+        var btn = $("m-done");
+        btn.textContent = done[selected] ? "↺ Mark as not done" : "✓ Mark day done";
+        btn.classList.toggle("btn--primary", !done[selected]);
+    }
+    $("m-done").addEventListener("click", function () {
+        if (done[selected]) delete done[selected]; else done[selected] = true;
+        store(DONE_KEY, JSON.stringify(done));
+        toast(done[selected] ? "Day marked done 💪" : "Day unmarked");
+        render();
+    });
+    $("m-today").addEventListener("click", function () { selected = today; weekStart = mondayOf(today); render(); });
+
+    // ---------- Right now ----------
+    var rows = Array.prototype.slice.call(document.querySelectorAll("#sched li"));
+    function renderNow() {
+        var d = new Date();
+        var hhmm = String(d.getHours()).padStart(2, "0") + String(d.getMinutes()).padStart(2, "0");
+        var idx = -1;
+        rows.forEach(function (r, i) { r.classList.remove("is-now"); if (r.dataset.t <= hhmm) idx = i; });
+        if (idx >= 0 && hhmm < "2300") {
+            var cur = rows[idx], next = rows[idx + 1];
+            cur.classList.add("is-now");
+            $("now-time").textContent = cur.querySelector("time").textContent;
+            $("now-text").innerHTML = cur.querySelector("span").innerHTML;
+            $("now-next").textContent = next ? "Next at " + next.querySelector("time").textContent + ": " + next.querySelector("span").textContent.split(":")[0].replace(/\(.*$/, "").trim() : "";
+        } else {
+            $("now-time").textContent = "Night";
+            $("now-text").textContent = "Sleep. The day starts at 07:30.";
+            $("now-next").textContent = "";
+        }
+    }
+
+    function render() { renderWeek(); renderMission(); }
+
+    // ---------- Tabs ----------
+    var tabs = Array.prototype.slice.call(document.querySelectorAll(".tab"));
+    function selectTab(tab, focus) {
+        tabs.forEach(function (t) {
+            var on = t === tab;
+            t.setAttribute("aria-selected", on ? "true" : "false");
+            t.tabIndex = on ? 0 : -1;
+            $(t.getAttribute("aria-controls")).hidden = !on;
+        });
+        if (focus) tab.focus();
+        store("home:tab", tab.id);
+    }
+    tabs.forEach(function (t, i) {
+        t.addEventListener("click", function () { selectTab(t); });
+        t.addEventListener("keydown", function (e) {
+            var n = e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : 0;
+            if (n) { e.preventDefault(); selectTab(tabs[(i + n + tabs.length) % tabs.length], true); }
+        });
+    });
+    var savedTab = $(store("home:tab") || "");
+    if (savedTab && tabs.indexOf(savedTab) !== -1) selectTab(savedTab);
+
+    // ---------- Skeleton chips ----------
+    var chips = Array.prototype.slice.call(document.querySelectorAll(".chip[data-skel]"));
+    function selectSkel(k) {
+        chips.forEach(function (c) { c.setAttribute("aria-pressed", c.dataset.skel === k ? "true" : "false"); });
+        document.querySelectorAll("[data-skel-panel]").forEach(function (p) { p.hidden = p.dataset.skelPanel !== k; });
+        store("home:skel", k);
+    }
+    chips.forEach(function (c) { c.addEventListener("click", function () { selectSkel(c.dataset.skel); }); });
+    if (store("home:skel")) selectSkel(store("home:skel"));
+
+    render();
+    renderNow();
+    setInterval(renderNow, 60000);
+})();
 </script>
 
 </body>
