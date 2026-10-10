@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Core Words · Speedrun OS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/style.css">
+    <script src="assets/app.js"></script>
+    <script src="assets/words.js"></script>
+    <style>
+        .toolbar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 12px; }
+        .toolbar .input { flex: 1 1 220px; }
+        .check { display: inline-flex; align-items: center; gap: 8px; font-size: 0.9rem; font-weight: 550; cursor: pointer; }
+        .check input { width: 18px; height: 18px; accent-color: var(--accent); }
+
+        .bulkbar {
+            position: sticky; top: 61px; z-index: 10;
+            display: flex; flex-wrap: wrap; gap: 8px; align-items: center;
+            background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+            padding: 10px 12px; margin-bottom: 12px; box-shadow: var(--shadow);
+        }
+        .bulkbar__count { font-weight: 650; font-size: 0.9rem; margin-right: auto; }
+
+        .wordlist { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); }
+        .w { display: grid; grid-template-columns: 28px 1fr auto; gap: 4px 12px; align-items: center; padding: 11px 14px; border-bottom: 1px solid var(--border); cursor: pointer; }
+        .w:last-child { border-bottom: none; }
+        .w:hover { background: var(--surface-2); }
+        .w input { width: 18px; height: 18px; accent-color: var(--accent); margin: 0; }
+        .w__de { font-weight: 650; font-size: 1.02rem; }
+        .w__pl { font-weight: 450; color: var(--text-3); font-size: 0.86rem; }
+        .w__mean { grid-column: 2 / 4; font-size: 0.88rem; color: var(--text-2); margin-top: -2px; }
+        .w__mean span + span::before { content: " · "; color: var(--text-3); }
+        .w__tags { display: flex; gap: 6px; }
+        .w.is-known { opacity: 0.5; }
+        .art-der { color: var(--info); } .art-die { color: var(--danger); } .art-das { color: var(--accent-strong); }
+        .art-legend { display: flex; gap: 14px; flex-wrap: wrap; font-size: 0.85rem; font-weight: 600; }
+        .empty { padding: 24px; text-align: center; color: var(--text-3); }
+        .known-btn { font: inherit; font-size: 0.78rem; font-weight: 600; background: none; border: 1px solid var(--border); color: var(--text-2); border-radius: 999px; padding: 4px 10px; cursor: pointer; min-height: 30px; }
+        .known-btn[aria-pressed="true"] { background: var(--accent-soft); color: var(--accent-strong); border-color: transparent; }
+    </style>
+</head>
+<body>
+
+<main class="page page--narrow" id="main">
+    <div class="page-head">
+        <span class="eyebrow">Vocab</span>
+        <h1>Core Words</h1>
+        <p class="lede">The most frequent German nouns, adjectives and adverbs, with article, plural, English and Spanish. Tick what you don't know and send it to Anki.</p>
+    </div>
+
+    <div class="callout callout--info" style="margin-bottom:16px">
+        <h3>How "Pareto" this really is</h3>
+        <p>In German, the ~1,000 most frequent words cover roughly 75–80% of everyday text, but a big share of that comes from small function words (der, und, ist, nicht…) that you already know. This list is the content-word part of that core: <b id="total-count">–</b> nouns, adjectives and adverbs. Learn these plus the verbs from your grammar units and you have the backbone of B1–B2 texts.</p>
+    </div>
+
+    <div class="stats" style="margin-bottom:16px">
+        <div class="stat"><div class="stat__value" id="st-known">0</div><div class="stat__label">Known</div></div>
+        <div class="stat"><div class="stat__value" id="st-sent">0</div><div class="stat__label">Sent to Anki</div></div>
+        <div class="stat"><div class="stat__value" id="st-left">0</div><div class="stat__label">To learn</div></div>
+    </div>
+
+    <div class="toolbar">
+        <div class="segmented" role="radiogroup" aria-label="Word type">
+            <input type="radio" name="type" id="t-all" value="all" checked><label for="t-all">All</label>
+            <input type="radio" name="type" id="t-noun" value="noun"><label for="t-noun">Nouns</label>
+            <input type="radio" name="type" id="t-adj" value="adj"><label for="t-adj">Adjectives</label>
+            <input type="radio" name="type" id="t-adv" value="adv"><label for="t-adv">Adverbs</label>
+        </div>
+        <input class="input" type="search" id="search" placeholder="Search German, English or Spanish…" aria-label="Search words">
+    </div>
+    <div class="toolbar">
+        <label class="check"><input type="checkbox" id="hide-known" checked> Hide known</label>
+        <label class="check"><input type="checkbox" id="hide-sent"> Hide already sent</label>
+        <span class="art-legend" aria-label="Article colours"><span class="art-der">der</span><span class="art-die">die</span><span class="art-das">das</span></span>
+    </div>
+
+    <div class="bulkbar" role="region" aria-label="Selection actions">
+        <span class="bulkbar__count" id="sel-count" aria-live="polite">0 selected</span>
+        <button class="btn btn--sm" type="button" id="sel-all">Select shown</button>
+        <button class="btn btn--sm" type="button" id="sel-none">Clear</button>
+        <button class="btn btn--sm" type="button" id="mark-known" title="Marks selected words as known (or unmarks them if they all are)">Known ✓/✗</button>
+        <button class="btn btn--sm btn--primary" type="button" id="send">Add to Anki</button>
+        <button class="btn btn--sm" type="button" id="csv">CSV</button>
+    </div>
+
+    <div class="wordlist" id="list" role="list"></div>
+    <p class="subtle" style="margin-top:12px">Cards are tagged <code>speedrun pareto</code> + the word type. If Anki isn't open, they go to the queue on the <a href="anki.html">Anki page</a>. Deck = the one you last used there.</p>
+</main>
+
+<script>
+(function () {
+    var store = window.SpeedrunStore;
+    var $ = function (id) { return document.getElementById(id); };
+    var TYPE_LABEL = { noun: "Noun", adj: "Adj", adv: "Adv" };
+
+    var words = [];
+    Object.keys(window.PARETO_WORDS).forEach(function (type) {
+        window.PARETO_WORDS[type].forEach(function (line, i) {
+            var p = line.split("|");
+            words.push({ id: type + ":" + p[0], type: type, rank: i + 1, de: p[0], art: p[1], pl: p[2], en: p[3], es: p[4] });
+        });
+    });
+    $("total-count").textContent = words.length;
+
+    function loadSet(key) { try { return new Set(JSON.parse(store(key) || "[]")); } catch (e) { return new Set(); } }
+    function saveSet(key, set) { store(key, JSON.stringify(Array.from(set))); }
+    var known = loadSet("words:known"), sent = loadSet("words:sent"), selected = new Set();
+
+    function esc(s) {
+        return String(s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; });
+    }
+
+    function filtered() {
+        var type = document.querySelector("input[name=type]:checked").value;
+        var q = $("search").value.trim().toLowerCase();
+        return words.filter(function (w) {
+            if (type !== "all" && w.type !== type) return false;
+            if ($("hide-known").checked && known.has(w.id)) return false;
+            if ($("hide-sent").checked && sent.has(w.id)) return false;
+            if (q && (w.de + " " + w.en + " " + w.es).toLowerCase().indexOf(q) === -1) return false;
+            return true;
+        });
+    }
+
+    function render() {
+        var list = $("list"), shown = filtered();
+        list.innerHTML = "";
+        if (!shown.length) { list.innerHTML = '<div class="empty">No words match. Try another filter.</div>'; }
+        shown.forEach(function (w) {
+            var row = document.createElement("label");
+            row.className = "w" + (known.has(w.id) ? " is-known" : "");
+            row.setAttribute("role", "listitem");
+            var pl = w.pl && w.pl !== "–" ? '<span class="w__pl"> · die ' + esc(w.pl) + "</span>" : (w.pl === "–" ? '<span class="w__pl"> · no plural</span>' : "");
+            var art = w.art ? '<span class="art-' + w.art + '">' + w.art + "</span> " : "";
+            row.innerHTML =
+                '<input type="checkbox" aria-label="Select ' + esc(w.de) + '"' + (selected.has(w.id) ? " checked" : "") + ">" +
+                '<span><span class="w__de" lang="de">' + art + esc(w.de) + "</span>" + pl + "</span>" +
+                '<span class="w__tags">' + (sent.has(w.id) ? '<span class="badge badge--ok">In Anki</span>' : "") + '<span class="badge">' + TYPE_LABEL[w.type] + "</span></span>" +
+                '<span class="w__mean"><span>' + esc(w.en) + '</span><span lang="es">' + esc(w.es) + "</span></span>";
+            row.querySelector("input").addEventListener("change", function (e) {
+                if (e.target.checked) selected.add(w.id); else selected.delete(w.id);
+                updateCounts();
+            });
+            list.appendChild(row);
+        });
+        updateCounts();
+    }
+
+    function updateCounts() {
+        $("sel-count").textContent = selected.size + " selected";
+        ["send", "csv", "mark-known", "sel-none"].forEach(function (id) { $(id).disabled = selected.size === 0; });
+        $("st-known").textContent = known.size;
+        $("st-sent").textContent = sent.size;
+        $("st-left").textContent = words.filter(function (w) { return !known.has(w.id) && !sent.has(w.id); }).length;
+    }
+
+    function selectedWords() { return words.filter(function (w) { return selected.has(w.id); }); }
+
+    function toCard(w) {
+        var front = (w.art ? w.art + " " : "") + w.de;
+        if (w.pl && w.pl !== "–") front += " · die " + w.pl;
+        return {
+            front: esc(front),
+            back: esc(w.en) + "<br>" + esc(w.es),
+            deck: store("anki:deck") || "German B2 Speedrun",
+            model: store("anki:model") || "Basic (and reversed card)",
+            tags: ["speedrun", "pareto", w.type],
+            created: Date.now()
+        };
+    }
+
+    function anki(action, params) {
+        var ctrl = new AbortController();
+        var timer = setTimeout(function () { ctrl.abort(); }, 4000);
+        return fetch("http://127.0.0.1:8765", {
+            method: "POST", body: JSON.stringify({ action: action, version: 6, params: params || {} }), signal: ctrl.signal
+        }).then(function (r) { return r.json(); }).then(function (res) {
+            clearTimeout(timer);
+            if (res.error) throw new Error(res.error);
+            return res.result;
+        }, function (e) { clearTimeout(timer); throw e; });
+    }
+
+    function enqueue(cards) {
+        var q = [];
+        try { q = JSON.parse(store("anki:queue") || "[]"); } catch (e) {}
+        store("anki:queue", JSON.stringify(q.concat(cards)));
+    }
+
+    function finish(ws) {
+        ws.forEach(function (w) { sent.add(w.id); });
+        saveSet("words:sent", sent);
+        selected.clear();
+        render();
+    }
+
+    $("send").addEventListener("click", function () {
+        var ws = selectedWords(), cards = ws.map(toCard), btn = this;
+        btn.disabled = true;
+        var ok = 0, dup = 0;
+        anki("version").then(function () {
+            return anki("createDeck", { deck: cards[0].deck });
+        }).then(function () {
+            // One by one so a duplicate doesn't block the rest
+            var chain = Promise.resolve();
+            cards.forEach(function (c) {
+                chain = chain.then(function () {
+                    return anki("addNote", { note: { deckName: c.deck, modelName: c.model, fields: { Front: c.front, Back: c.back }, tags: c.tags, options: { allowDuplicate: false, duplicateScope: "deck" } } })
+                        .then(function () { ok++; }, function (e) { if (/duplicate/i.test(e.message)) dup++; else throw e; });
+                });
+            });
+            return chain;
+        }).then(function () {
+            toast(ok + " added to Anki" + (dup ? ", " + dup + " already existed" : ""));
+            finish(ws);
+        }, function () {
+            if (ok || dup) { toast("Anki stopped answering after " + ok + " cards. Try again."); finish(ws.slice(0, ok + dup)); btn.disabled = false; return; }
+            enqueue(cards);
+            toast("Anki not reachable · " + cards.length + " saved to the queue");
+            finish(ws);
+        });
+    });
+
+    $("csv").addEventListener("click", function () {
+        var q = function (s) { return '"' + String(s).replace(/"/g, '""') + '"'; };
+        var lines = ["#separator:comma", "#html:true", "#columns:Front,Back,Tags"].concat(selectedWords().map(toCard).map(function (c) {
+            return [q(c.front), q(c.back), q(c.tags.join(" "))].join(",");
+        }));
+        var a = document.createElement("a");
+        a.href = URL.createObjectURL(new Blob([lines.join("\n")], { type: "text/csv;charset=utf-8" }));
+        a.download = "core-words-" + new Date().toISOString().slice(0, 10) + ".csv";
+        document.body.appendChild(a); a.click(); a.remove();
+        setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
+    });
+
+    $("mark-known").addEventListener("click", function () {
+        var ws = selectedWords();
+        var allKnown = ws.every(function (w) { return known.has(w.id); });
+        ws.forEach(function (w) { if (allKnown) known.delete(w.id); else known.add(w.id); });
+        saveSet("words:known", known);
+        toast(ws.length + (allKnown ? " unmarked" : " marked as known"));
+        selected.clear();
+        render();
+    });
+    $("sel-all").addEventListener("click", function () { filtered().forEach(function (w) { selected.add(w.id); }); render(); });
+    $("sel-none").addEventListener("click", function () { selected.clear(); render(); });
+
+    document.querySelectorAll("input[name=type]").forEach(function (r) { r.addEventListener("change", render); });
+    $("search").addEventListener("input", render);
+    $("hide-known").addEventListener("change", render);
+    $("hide-sent").addEventListener("change", render);
+
+    render();
+})();
+</script>
+
+</body>
+</html>

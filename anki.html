@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anki Card Maker · Speedrun OS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/style.css">
+    <script src="assets/app.js"></script>
+    <style>
+        .status { display: inline-flex; align-items: center; gap: 8px; font-weight: 600; font-size: 0.88rem; padding: 6px 12px; border-radius: 999px; background: var(--surface-2); color: var(--text-2); }
+        .status::before { content: ""; width: 9px; height: 9px; border-radius: 50%; background: var(--text-3); }
+        .status[data-state="ok"] { background: var(--accent-soft); color: var(--accent-strong); }
+        .status[data-state="ok"]::before { background: var(--accent); }
+        .status[data-state="off"] { background: var(--warn-soft); color: var(--warn); }
+        .status[data-state="off"]::before { background: var(--warn); }
+
+        .article-pick .segmented label { min-width: 52px; text-align: center; }
+        .guess { font-size: 0.84rem; color: var(--text-2); min-height: 1.3em; }
+        .guess button { font: inherit; color: var(--accent-strong); background: none; border: none; padding: 0; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+
+        .preview { display: grid; gap: 10px; grid-template-columns: 1fr; }
+        @media (min-width: 640px) { .preview { grid-template-columns: 1fr 1fr; } }
+        .flash { border: 1px dashed var(--border); border-radius: var(--radius-sm); padding: 14px; min-height: 92px; background: var(--bg); }
+        .flash__side { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-3); font-weight: 700; margin-bottom: 6px; }
+        .flash__front { font-size: 1.25rem; font-weight: 700; }
+        .flash__body { font-size: 0.95rem; color: var(--text-2); }
+        .flash__body i { color: var(--text); }
+
+        .queue-item { display: flex; gap: 10px; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border); }
+        .queue-item:last-child { border-bottom: none; }
+        .queue-item__main { flex: 1; min-width: 0; }
+        .queue-item__front { font-weight: 650; }
+        .queue-item__back { font-size: 0.86rem; color: var(--text-2); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+        pre.code { font-family: var(--mono); font-size: 0.82rem; background: var(--surface-2); border-radius: var(--radius-sm); padding: 12px; overflow-x: auto; margin: 0; }
+    </style>
+</head>
+<body>
+
+<main class="page page--narrow" id="main">
+    <div class="page-head">
+        <span class="eyebrow">Vocab</span>
+        <h1>Anki Card Maker</h1>
+        <p class="lede">Type a word, check the preview, press <span class="kbd">Ctrl</span> + <span class="kbd">Enter</span>. It goes straight into Anki, or into a queue if Anki isn't open.</p>
+        <div class="row" style="margin-top:12px">
+            <span class="status" id="status" data-state="checking" role="status">Checking Anki…</span>
+            <button class="btn btn--sm" type="button" id="recheck">Check again</button>
+        </div>
+    </div>
+
+    <form class="card stack-lg" id="card-form" novalidate>
+        <div class="form-grid form-grid--2">
+            <div class="field span-2">
+                <label for="f-word">German word or phrase <span class="t-danger" aria-hidden="true">*</span></label>
+                <input class="input" id="f-word" lang="de" autocomplete="off" autocapitalize="off" spellcheck="false" required placeholder="e.g. Lösung, sich freuen auf, aufgeben">
+                <div class="guess" id="guess" aria-live="polite"></div>
+            </div>
+
+            <div class="field article-pick span-2">
+                <span class="label" id="article-label">Article</span>
+                <div class="segmented" role="radiogroup" aria-labelledby="article-label">
+                    <input type="radio" name="article" id="a-none" value="" checked><label for="a-none">None</label>
+                    <input type="radio" name="article" id="a-der" value="der"><label for="a-der">der</label>
+                    <input type="radio" name="article" id="a-die" value="die"><label for="a-die">die</label>
+                    <input type="radio" name="article" id="a-das" value="das"><label for="a-das">das</label>
+                </div>
+            </div>
+
+            <div class="field">
+                <label for="f-plural">Plural <span class="subtle">(optional)</span></label>
+                <input class="input" id="f-plural" lang="de" autocomplete="off" placeholder="e.g. die Lösungen">
+            </div>
+
+            <div class="field">
+                <label for="f-meaning">Meaning <span class="t-danger" aria-hidden="true">*</span></label>
+                <input class="input" id="f-meaning" autocomplete="off" required placeholder="e.g. solution / solución">
+            </div>
+
+            <div class="field span-2">
+                <label for="f-example">Example sentence <span class="subtle">(optional, highly recommended)</span></label>
+                <textarea class="textarea" id="f-example" lang="de" rows="2" placeholder="e.g. Wir müssen eine Lösung für das Problem finden."></textarea>
+            </div>
+
+            <div class="field span-2">
+                <label for="f-note">Memory hook / rule <span class="subtle">(optional)</span></label>
+                <input class="input" id="f-note" autocomplete="off" placeholder="e.g. -ung → always die · lösen = to solve">
+            </div>
+
+            <div class="field">
+                <label for="f-deck">Deck</label>
+                <input class="input" id="f-deck" list="deck-list" autocomplete="off">
+                <datalist id="deck-list"></datalist>
+            </div>
+
+            <div class="field">
+                <label for="f-model">Card type</label>
+                <select class="select" id="f-model">
+                    <option>Basic (and reversed card)</option>
+                    <option>Basic</option>
+                </select>
+            </div>
+
+            <div class="field span-2">
+                <label for="f-tags">Tags <span class="subtle">(space-separated)</span></label>
+                <input class="input" id="f-tags" autocomplete="off">
+            </div>
+        </div>
+
+        <div>
+            <span class="label">Preview</span>
+            <div class="preview" style="margin-top:8px">
+                <div class="flash"><div class="flash__side">Front</div><div class="flash__front" id="pv-front" lang="de">–</div></div>
+                <div class="flash"><div class="flash__side">Back</div><div class="flash__body" id="pv-back">–</div></div>
+            </div>
+        </div>
+
+        <div class="row">
+            <button class="btn btn--primary" type="submit" id="btn-add">Add to Anki</button>
+            <button class="btn" type="button" id="btn-queue">Save to queue</button>
+            <button class="btn" type="reset">Clear</button>
+        </div>
+        <p class="subtle" id="form-error" role="alert" style="margin:0"></p>
+    </form>
+
+    <div style="margin-top:20px">
+        <details class="section" id="queue-section" open>
+            <summary><span class="section__icon" aria-hidden="true">📥</span><span class="section__title">Queue <small id="queue-count">0 cards waiting</small></span></summary>
+            <div class="section__body">
+                <p class="subtle" id="queue-empty">Cards you save while Anki is closed (or on your phone) wait here. Sync them when you're at your PC, or export a CSV.</p>
+                <div id="queue-list"></div>
+                <div class="row">
+                    <button class="btn btn--primary btn--sm" type="button" id="btn-sync">Sync all to Anki</button>
+                    <button class="btn btn--sm" type="button" id="btn-csv">Export CSV</button>
+                    <button class="btn btn--danger btn--sm" type="button" id="btn-clear">Empty queue</button>
+                </div>
+            </div>
+        </details>
+
+        <details class="section" id="added-section">
+            <summary><span class="section__icon" aria-hidden="true">✅</span><span class="section__title">Added this session <small id="added-count">0 cards</small></span></summary>
+            <div class="section__body"><div id="added-list" class="subtle">Nothing yet.</div></div>
+        </details>
+
+        <details class="section" id="setup-section">
+            <summary><span class="section__icon" aria-hidden="true">🔌</span><span class="section__title">One-time setup <small>Connect this page to Anki desktop</small></span></summary>
+            <div class="section__body">
+                <ol>
+                    <li>Open Anki desktop → <b>Tools → Add-ons → Get Add-ons</b>, paste code <span class="kbd">2055492159</span> (AnkiConnect), restart Anki.</li>
+                    <li><b>Tools → Add-ons → AnkiConnect → Config</b>, and add this site to <code>webCorsOriginList</code>:</li>
+                </ol>
+                <pre class="code">"webCorsOriginList": [
+    "http://localhost",
+    "https://reboufv.github.io"
+]</pre>
+                <ol start="3">
+                    <li>Restart Anki and keep it open. If the browser asks whether this site can access devices on your local network, click <b>Allow</b>.</li>
+                    <li>The status pill at the top turns green.</li>
+                </ol>
+                <div class="callout callout--info">
+                    <h3>Good to know</h3>
+                    <ul>
+                        <li>Works in Chrome, Edge and Firefox on the computer where Anki runs. Safari blocks it.</li>
+                        <li>On your phone, use <b>Save to queue</b>. The queue lives in that browser, so either sync from the same device or use <b>Export CSV</b> and import it in Anki (File → Import, "Allow HTML" on).</li>
+                        <li>Opening this file directly from disk (file://) needs <code>"null"</code> in the list too.</li>
+                    </ul>
+                </div>
+            </div>
+        </details>
+    </div>
+</main>
+
+<script>
+(function () {
+    var ANKI_URL = "http://127.0.0.1:8765";
+    var store = window.SpeedrunStore;
+    var $ = function (id) { return document.getElementById(id); };
+
+    var form = $("card-form");
+    var f = {
+        word: $("f-word"), plural: $("f-plural"), meaning: $("f-meaning"), example: $("f-example"),
+        note: $("f-note"), deck: $("f-deck"), model: $("f-model"), tags: $("f-tags")
+    };
+    f.deck.value = store("anki:deck") || "German B2 Speedrun";
+    f.tags.value = store("anki:tags") || "speedrun";
+    if (store("anki:model")) f.model.value = store("anki:model");
+
+    var connected = false;
+
+    // ---------- AnkiConnect ----------
+    function anki(action, params) {
+        var ctrl = new AbortController();
+        var timer = setTimeout(function () { ctrl.abort(); }, 4000);
+        return fetch(ANKI_URL, {
+            method: "POST",
+            body: JSON.stringify({ action: action, version: 6, params: params || {} }),
+            signal: ctrl.signal
+        }).then(function (r) { return r.json(); }).then(function (res) {
+            clearTimeout(timer);
+            if (res.error) throw new Error(res.error);
+            return res.result;
+        }, function (e) { clearTimeout(timer); throw e; });
+    }
+
+    function setStatus(state, text) {
+        var s = $("status");
+        s.dataset.state = state;
+        s.textContent = text;
+        connected = state === "ok";
+        $("btn-add").textContent = connected ? "Add to Anki" : "Save to queue (Anki offline)";
+        $("btn-sync").disabled = !connected || queue.length === 0;
+    }
+
+    function checkConnection() {
+        setStatus("checking", "Checking Anki…");
+        anki("version").then(function () {
+            setStatus("ok", "Connected to Anki");
+            anki("deckNames").then(function (decks) {
+                $("deck-list").innerHTML = decks.map(function (d) { return "<option value=\"" + esc(d) + "\">"; }).join("");
+            }).catch(function () {});
+            anki("modelNames").then(function (models) {
+                var cur = f.model.value;
+                f.model.innerHTML = models.map(function (m) { return "<option>" + esc(m) + "</option>"; }).join("");
+                var pref = models.indexOf(cur) !== -1 ? cur : (models.indexOf("Basic (and reversed card)") !== -1 ? "Basic (and reversed card)" : models[0]);
+                f.model.value = pref;
+            }).catch(function () {});
+        }).catch(function () {
+            setStatus("off", "Anki not reachable · cards go to the queue");
+        });
+    }
+    $("recheck").addEventListener("click", checkConnection);
+
+    // ---------- Gender guess from suffix ----------
+    var RULES = [
+        [/(ung|heit|keit|schaft|ion|tät|ik|ie|enz|anz|ur)$/i, "die"],
+        [/(chen|lein|ment|um|nis)$/i, "das"],
+        [/(ling|ismus|or|ich|ig)$/i, "der"]
+    ];
+    function guessArticle(word) {
+        var w = word.trim();
+        if (!w || /\s/.test(w) || w[0] !== w[0].toUpperCase() || w[0] === w[0].toLowerCase()) return null;
+        for (var i = 0; i < RULES.length; i++) {
+            var m = w.match(RULES[i][0]);
+            if (m) return { article: RULES[i][1], suffix: "-" + m[1] };
+        }
+        return null;
+    }
+    function updateGuess() {
+        var g = guessArticle(f.word.value);
+        var box = $("guess");
+        box.innerHTML = "";
+        if (!g) return;
+        var chosen = document.querySelector("input[name=article]:checked").value;
+        box.append("Suffix " + g.suffix + " → usually ");
+        if (chosen === g.article) {
+            var b = document.createElement("b"); b.textContent = g.article; box.append(b, " ✓");
+        } else {
+            var btn = document.createElement("button");
+            btn.type = "button"; btn.textContent = g.article;
+            btn.addEventListener("click", function () { $("a-" + g.article).checked = true; updateGuess(); render(); });
+            box.append(btn);
+        }
+    }
+
+    // ---------- Card building ----------
+    function esc(s) {
+        return String(s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; });
+    }
+    function article() { return document.querySelector("input[name=article]:checked").value; }
+
+    function buildCard() {
+        var word = f.word.value.trim();
+        var art = article();
+        var front = (art ? art + " " : "") + word;
+        var plural = f.plural.value.trim();
+        if (plural) front += " · " + plural;
+        var back = esc(f.meaning.value.trim());
+        if (f.example.value.trim()) back += "<br><br><i>" + esc(f.example.value.trim()) + "</i>";
+        if (f.note.value.trim()) back += "<br><br><small>" + esc(f.note.value.trim()) + "</small>";
+        return {
+            front: esc(front), back: back,
+            deck: f.deck.value.trim() || "Default",
+            model: f.model.value,
+            tags: f.tags.value.trim().split(/\s+/).filter(Boolean),
+            created: Date.now()
+        };
+    }
+
+    function render() {
+        var c = buildCard();
+        $("pv-front").innerHTML = f.word.value.trim() ? c.front : "–";
+        $("pv-back").innerHTML = f.meaning.value.trim() ? c.back : "–";
+    }
+
+    function validate() {
+        var msg = "";
+        if (!f.word.value.trim()) msg = "Add the German word.";
+        else if (!f.meaning.value.trim()) msg = "Add the meaning.";
+        $("form-error").textContent = msg;
+        if (msg) (f.word.value.trim() ? f.meaning : f.word).focus();
+        return !msg;
+    }
+
+    function noteFor(c) {
+        return {
+            deckName: c.deck, modelName: c.model,
+            fields: { Front: c.front, Back: c.back },
+            tags: c.tags,
+            options: { allowDuplicate: false, duplicateScope: "deck" }
+        };
+    }
+
+    function addToAnki(c) {
+        return anki("createDeck", { deck: c.deck }).then(function () {
+            return anki("addNote", { note: noteFor(c) });
+        });
+    }
+
+    // ---------- Queue ----------
+    var queue = [];
+    try { queue = JSON.parse(store("anki:queue") || "[]"); } catch (e) { queue = []; }
+    var added = [];
+
+    function saveQueue() { store("anki:queue", JSON.stringify(queue)); renderQueue(); }
+
+    function renderQueue() {
+        $("queue-count").textContent = queue.length + (queue.length === 1 ? " card waiting" : " cards waiting");
+        $("queue-empty").hidden = queue.length > 0;
+        var list = $("queue-list");
+        list.innerHTML = "";
+        queue.forEach(function (c, i) {
+            var row = document.createElement("div");
+            row.className = "queue-item";
+            row.innerHTML = '<div class="queue-item__main"><div class="queue-item__front" lang="de">' + c.front + '</div><div class="queue-item__back">' + c.back.replace(/<[^>]+>/g, " ") + "</div></div>";
+            var del = document.createElement("button");
+            del.type = "button"; del.className = "btn btn--sm btn--danger"; del.textContent = "Remove";
+            del.setAttribute("aria-label", "Remove " + c.front.replace(/<[^>]+>/g, "") + " from queue");
+            del.addEventListener("click", function () { queue.splice(i, 1); saveQueue(); });
+            row.appendChild(del);
+            list.appendChild(row);
+        });
+        $("btn-sync").disabled = !connected || queue.length === 0;
+        $("btn-csv").disabled = queue.length === 0;
+        $("btn-clear").disabled = queue.length === 0;
+    }
+
+    function renderAdded() {
+        $("added-count").textContent = added.length + (added.length === 1 ? " card" : " cards");
+        $("added-list").innerHTML = added.length ? added.map(function (c) { return '<div lang="de">✓ ' + c.front + "</div>"; }).join("") : "Nothing yet.";
+    }
+
+    function enqueue(c, reason) {
+        queue.push(c); saveQueue();
+        toast(reason || "Saved to queue");
+    }
+
+    function afterSave() {
+        store("anki:deck", f.deck.value.trim());
+        store("anki:tags", f.tags.value.trim());
+        store("anki:model", f.model.value);
+        var deck = f.deck.value, tags = f.tags.value, model = f.model.value;
+        form.reset();
+        f.deck.value = deck; f.tags.value = tags; f.model.value = model;
+        $("guess").innerHTML = "";
+        render();
+        f.word.focus();
+    }
+
+    function submit(toQueueOnly) {
+        if (!validate()) return;
+        var c = buildCard();
+        if (toQueueOnly || !connected) { enqueue(c); afterSave(); return; }
+        $("btn-add").disabled = true;
+        addToAnki(c).then(function () {
+            added.unshift(c); renderAdded();
+            toast("Added to " + c.deck);
+            afterSave();
+        }).catch(function (e) {
+            if (/duplicate/i.test(e.message)) {
+                $("form-error").textContent = "That card already exists in this deck. Nothing was added.";
+            } else {
+                enqueue(c, "Anki didn't answer, saved to queue");
+                afterSave();
+                checkConnection();
+            }
+        }).then(function () { $("btn-add").disabled = false; });
+    }
+
+    form.addEventListener("submit", function (e) { e.preventDefault(); submit(false); });
+    $("btn-queue").addEventListener("click", function () { submit(true); });
+    form.addEventListener("reset", function () { setTimeout(function () { $("guess").innerHTML = ""; $("form-error").textContent = ""; render(); }, 0); });
+    form.addEventListener("keydown", function (e) {
+        if ((e.ctrlKey || e.metaKey) && e.key === "Enter") { e.preventDefault(); submit(false); }
+    });
+    form.addEventListener("input", function (e) {
+        if (e.target === f.word) updateGuess();
+        render();
+    });
+    form.addEventListener("change", function () { updateGuess(); render(); });
+
+    $("btn-sync").addEventListener("click", function () {
+        var btn = this; btn.disabled = true;
+        var ok = 0, dup = 0, failed = [];
+        var chain = Promise.resolve();
+        queue.slice().forEach(function (c) {
+            chain = chain.then(function () {
+                return addToAnki(c).then(function () { ok++; added.unshift(c); }, function (e) {
+                    if (/duplicate/i.test(e.message)) dup++; else failed.push(c);
+                });
+            });
+        });
+        chain.then(function () {
+            queue = failed; saveQueue(); renderAdded();
+            toast(ok + " added" + (dup ? ", " + dup + " duplicates skipped" : "") + (failed.length ? ", " + failed.length + " failed" : ""));
+        });
+    });
+
+    $("btn-csv").addEventListener("click", function () {
+        var q = function (s) { return '"' + String(s).replace(/"/g, '""') + '"'; };
+        var lines = ["#separator:comma", "#html:true", "#columns:Front,Back,Tags"].concat(queue.map(function (c) {
+            return [q(c.front), q(c.back), q(c.tags.join(" "))].join(",");
+        }));
+        var blob = new Blob([lines.join("\n")], { type: "text/csv;charset=utf-8" });
+        var a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = "anki-queue-" + new Date().toISOString().slice(0, 10) + ".csv";
+        document.body.appendChild(a); a.click(); a.remove();
+        setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
+    });
+
+    $("btn-clear").addEventListener("click", function () {
+        if (confirm("Delete all " + queue.length + " queued cards? This can't be undone.")) { queue = []; saveQueue(); }
+    });
+
+    renderQueue();
+    renderAdded();
+    render();
+    checkConnection();
+    f.word.focus();
+})();
+</script>
+
+</body>
+</html>

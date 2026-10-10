@@ -3,94 +3,78 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stealth Drill OS - Tagless Memory Engine</title>
+    <title>Drill · Speedrun OS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/style.css">
+    <script src="assets/app.js"></script>
     <style>
-        :root {
-            --bg-color: #121212; --card-bg: #1e1e1e; --primary: #00e676; 
-            --nav-bg: #1a1a2e; --error: #ff5252; --text-main: #ffffff;
-            --text-muted: #888888; --btn-disabled: #333333;
+        .drill { text-align: center; padding: 28px 20px; }
+        .drill__label { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-3); }
+        .drill__prompt { font-size: clamp(1.15rem, 3.5vw, 1.4rem); font-weight: 650; line-height: 1.5; margin: 8px 0 22px; }
+        .drill__answer {
+            font-size: clamp(1.2rem, 3.6vw, 1.45rem); font-weight: 700; line-height: 1.5; color: var(--accent-strong);
+            background: var(--accent-soft); border-radius: var(--radius-sm); padding: 14px; margin: 8px 0 22px; min-height: 84px;
+            display: flex; align-items: center; justify-content: center;
         }
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: var(--bg-color); color: var(--text-main); margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; height: 100vh; box-sizing: border-box; }
-        
-        .main-wrapper { max-width: 550px; width: 100%; display: flex; flex-direction: column; align-items: center; }
-        
-        h1 { margin: 0; color: var(--primary); text-transform: uppercase; font-size: 1.5rem; text-align: center; }
-        .subtitle { text-align: center; color: var(--text-muted); margin-bottom: 20px; font-size: 0.9rem; }
-
-        /* Top Navigation Bar */
-        .topbar { display: flex; gap: 6px; width: 100%; margin-bottom: 25px; }
-        .topbar a { flex: 1; text-align: center; background-color: var(--card-bg); border: 1px solid var(--primary); color: var(--primary); padding: 10px 4px; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 0.85rem; transition: all 0.2s; }
-        .topbar a:hover, .topbar a.active { background-color: var(--primary); color: #000; }
-
-        /* Drill Engine UI */
-        .container { background-color: var(--card-bg); padding: 30px 20px; border-radius: 12px; border: 1px solid #333; width: 100%; box-sizing: border-box; text-align: center; min-height: 300px; display: flex; flex-direction: column; justify-content: center; margin-top: 10px; }
-        
-        #english-prompt { font-size: 1.25rem; font-weight: bold; line-height: 1.5; margin-bottom: 25px; color: var(--text-main); }
-        #german-answer { font-size: 1.35rem; font-weight: bold; line-height: 1.5; color: var(--primary); margin-bottom: 30px; opacity: 0; transition: opacity 0.2s ease-in-out; min-height: 80px; }
-        .visible { opacity: 1 !important; }
-
-        .btn-controls { display: flex; flex-direction: column; gap: 12px; width: 100%; }
-        .btn-row { display: flex; gap: 15px; width: 100%; }
-        .btn { flex: 1; border: none; padding: 15px 10px; font-size: 1.1rem; font-weight: bold; border-radius: 8px; cursor: pointer; text-transform: uppercase; transition: all 0.2s; }
-        
-        .btn-answer { background-color: var(--primary); color: #000; }
-        .btn-answer:active { background-color: #00c853; }
-        
-        .btn-next, .btn-danger { background-color: var(--btn-disabled); color: var(--text-muted); pointer-events: none; }
-        .btn-next.active { background-color: var(--text-main); color: #000; pointer-events: auto; }
-        .btn-next.active:active { background-color: #ddd; }
-        
-        .btn-danger.active { background-color: transparent; border: 2px solid var(--error); color: var(--error); pointer-events: auto; }
-        .btn-danger.active:active { background-color: rgba(255, 82, 82, 0.2); }
-        
-        #stats { margin-top: 15px; font-size: 0.8rem; color: var(--text-muted); }
+        .drill__answer.is-hidden { background: transparent; border: 2px dashed var(--border); color: var(--text-3); font-weight: 500; font-size: 0.95rem; }
+        .drill__actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .drill__actions .btn--danger { grid-column: 1 / -1; }
+        .shortcuts { margin-top: 14px; font-size: 0.82rem; color: var(--text-3); display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
     </style>
 </head>
 <body>
 
-<div class="main-wrapper">
-    <h1>B2 Speedrun OS</h1>
-    <div class="subtitle">Mental Drill Engine</div>
-
-    <!-- OS Navigation -->
-    <div class="topbar">
-        <a href="index.html">🏠 OS</a>
-        <a href="reboot.html">🔁 Reboot</a>
-        <a href="drill.html" class="active">⚡ Drills</a>
-        <a href="archive.html">📑 Archive</a>
-        <a href="performance.html">📊 Perf</a>
+<main class="page page--narrow" id="main">
+    <div class="page-head">
+        <span class="eyebrow">Word order</span>
+        <h1>Mental Drill</h1>
+        <p class="lede">Translate the English sentence in your head (or out loud), then reveal the German. Mark sentences you've mastered so they never come back.</p>
     </div>
 
-    <div class="container">
-        <div id="english-prompt">Loading Engine...</div>
-        <div id="german-answer"></div>
-        
-        <div class="btn-controls">
-            <div class="btn-row">
-                <button class="btn btn-answer" id="btn-answer" onclick="showAnswer()">Answer</button>
-                <button class="btn btn-next" id="btn-next" onclick="nextQuestion()">Next</button>
-            </div>
-            <button class="btn btn-danger" id="btn-danger" onclick="banSentence()">DONE (Never Repeat)</button>
+    <section class="card drill" aria-live="polite">
+        <div class="drill__label">English</div>
+        <div class="drill__prompt" id="english-prompt">Loading…</div>
+        <div class="drill__label">German</div>
+        <div class="drill__answer is-hidden" id="german-answer" lang="de">Say it first, then reveal</div>
+
+        <div class="drill__actions">
+            <button class="btn btn--primary" type="button" id="btn-answer">Show answer</button>
+            <button class="btn" type="button" id="btn-next" disabled>Next</button>
+            <button class="btn btn--danger" type="button" id="btn-danger" disabled>Mastered · never repeat</button>
         </div>
-        
-        <div id="stats">Mastered Sentences: 0</div>
+        <div class="shortcuts" aria-hidden="true">
+            <span><span class="kbd">Space</span> show</span>
+            <span><span class="kbd">Enter</span> / <span class="kbd">→</span> next</span>
+            <span><span class="kbd">M</span> mastered</span>
+        </div>
+    </section>
+
+    <div class="stats" style="margin-top:16px; grid-template-columns: 1fr 1fr;">
+        <div class="stat"><div class="stat__value" id="stats">0</div><div class="stat__label">Mastered sentences</div></div>
+        <div class="stat"><div class="stat__value" id="session">0</div><div class="stat__label">Seen this session</div></div>
     </div>
-</div>
+
+    <div style="margin-top:16px">
+        <button class="btn btn--sm" type="button" id="btn-reset">Reset mastered list</button>
+    </div>
+</main>
 
 <script>
-    // ==========================================
-    // LOCAL STORAGE MEMORY DATABASE
-    // ==========================================
-    let bannedSentences = new Set(JSON.parse(localStorage.getItem('speedrunBannedSet')) || []);
-    let currentSentenceData = { en: "", de: "" };
+    var bannedSentences;
+    try { bannedSentences = new Set(JSON.parse(localStorage.getItem('speedrunBannedSet')) || []); } catch (e) { bannedSentences = new Set(); }
+    var currentSentenceData = { en: "", de: "" };
+    var seen = 0, revealed = false;
 
+    function persist() {
+        try { localStorage.setItem('speedrunBannedSet', JSON.stringify(Array.from(bannedSentences))); } catch (e) {}
+    }
     function updateStats() {
-        document.getElementById('stats').innerText = `Mastered Sentences: ${bannedSentences.size}`;
+        document.getElementById('stats').textContent = bannedSentences.size;
+        document.getElementById('session').textContent = seen;
     }
 
-    // ==========================================
-    // STRICT SVOV PROCEDURAL ENGINE (TAGLESS)
-    // ==========================================
     const subjects = [
         { de: "ich", en: "I", m: { can: {de:"kann", en:"can"}, must: {de:"muss", en:"must"}, want: {de:"will", en:"want to"} } },
         { de: "wir", en: "we", m: { can: {de:"können", en:"can"}, must: {de:"müssen", en:"must"}, want: {de:"wollen", en:"want to"} } },
@@ -204,7 +188,7 @@
             if (safeCounter > 200) {
                 console.warn("Too many rerolls, resetting memory.");
                 bannedSentences.clear();
-                localStorage.removeItem('speedrunBannedSet');
+                persist();
                 updateStats();
                 break;
             }
@@ -213,40 +197,54 @@
         return sentence;
     }
 
-    // ==========================================
-    // UI CONTROLS
-    // ==========================================
-    const promptEl = document.getElementById("english-prompt");
-    const answerEl = document.getElementById("german-answer");
-    const btnNext = document.getElementById("btn-next");
-    const btnDanger = document.getElementById("btn-danger");
+    var promptEl = document.getElementById("english-prompt");
+    var answerEl = document.getElementById("german-answer");
+    var btnAnswer = document.getElementById("btn-answer");
+    var btnNext = document.getElementById("btn-next");
+    var btnDanger = document.getElementById("btn-danger");
 
     function loadQuestion() {
         currentSentenceData = getUniqueSentence();
-        promptEl.innerHTML = currentSentenceData.en;
-        answerEl.innerText = currentSentenceData.de;
-        
-        answerEl.classList.remove("visible");
-        btnNext.classList.remove("active");
-        btnDanger.classList.remove("active");
+        promptEl.textContent = currentSentenceData.en;
+        answerEl.textContent = "Say it first, then reveal";
+        answerEl.classList.add("is-hidden");
+        revealed = false;
+        btnNext.disabled = true;
+        btnDanger.disabled = true;
+        btnAnswer.disabled = false;
+        seen++;
         updateStats();
     }
-
     function showAnswer() {
-        answerEl.classList.add("visible");
-        btnNext.classList.add("active");
-        btnDanger.classList.add("active"); 
+        answerEl.textContent = currentSentenceData.de;
+        answerEl.classList.remove("is-hidden");
+        revealed = true;
+        btnNext.disabled = false;
+        btnDanger.disabled = false;
+        btnAnswer.disabled = true;
+        btnNext.focus();
     }
-
-    function nextQuestion() {
-        loadQuestion();
-    }
-
     function banSentence() {
         bannedSentences.add(currentSentenceData.de);
-        localStorage.setItem('speedrunBannedSet', JSON.stringify([...bannedSentences]));
+        persist();
+        toast("Marked as mastered");
         loadQuestion();
     }
+
+    btnAnswer.addEventListener("click", showAnswer);
+    btnNext.addEventListener("click", loadQuestion);
+    btnDanger.addEventListener("click", banSentence);
+    document.getElementById("btn-reset").addEventListener("click", function () {
+        if (!confirm("Bring back all " + bannedSentences.size + " mastered sentences?")) return;
+        bannedSentences.clear(); persist(); updateStats(); toast("Mastered list cleared");
+    });
+
+    document.addEventListener("keydown", function (e) {
+        if (e.target.closest("input, textarea, select") || e.ctrlKey || e.metaKey || e.altKey) return;
+        if (e.key === " " && !revealed) { e.preventDefault(); showAnswer(); }
+        else if ((e.key === "Enter" || e.key === "ArrowRight") && revealed && e.target.tagName !== "BUTTON") { e.preventDefault(); loadQuestion(); }
+        else if ((e.key === "m" || e.key === "M") && revealed) { e.preventDefault(); banSentence(); }
+    });
 
     loadQuestion();
 </script>
