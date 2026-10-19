@@ -4,16 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Today · Speedrun</title>
-    <link rel="stylesheet" href="assets/style.css">
-    <script src="assets/app.js"></script>
-    <script src="assets/plan.js"></script>
-    <script src="assets/units.js"></script>
+    <link rel="stylesheet" href="assets/style.css?v=202610191053">
+    <script src="assets/app.js?v=202610191053"></script>
+    <script src="assets/plan.js?v=202610191053"></script>
+    <script src="assets/units.js?v=202610191053"></script>
     <style>
         .page { padding-top: 14px; }
 
         /* Large title + date line */
         .today-head { display: flex; align-items: flex-end; gap: 12px; margin-bottom: 12px; }
-        .today-head h1 { font-size: 2.1rem; line-height: 1.05; letter-spacing: -0.025em; flex: 1; }
+        .today-head > div:first-child { flex: 1; }
+        .today-head h1 { font-size: 2.1rem; line-height: 1.05; letter-spacing: -0.025em; }
         .dateline { font-size: 0.8rem; font-weight: 600; color: var(--text-3); letter-spacing: 0.04em; text-transform: uppercase; margin-top: 6px; }
         .countdown { text-align: right; line-height: 1.1; padding-bottom: 2px; }
         .countdown b { display: block; font-size: 1.6rem; font-weight: 700; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
@@ -87,7 +88,7 @@
         .unit__meta { font-size: 0.8rem; color: var(--text-3); margin: 2px 0 0 50px; }
         .unit__log { display: flex; gap: 6px; margin: 8px 0 0 50px; align-items: center; }
         .unit__log .label { font-size: 0.78rem; color: var(--text-3); font-weight: 600; min-width: 52px; }
-        .log-btn { flex: 1; white-space: nowrap; font: inherit; font-size: 0.84rem; font-weight: 600; border-radius: 999px; padding: 6px 4px; min-height: 36px; cursor: pointer; border: none; background: var(--fill); color: var(--text); }
+        .log-btn { flex: 1 1 0; max-width: 120px; white-space: nowrap; font: inherit; font-size: 0.84rem; font-weight: 600; border-radius: 999px; padding: 6px 4px; min-height: 36px; cursor: pointer; border: none; background: var(--fill); color: var(--text); }
         .log-btn--hi { color: var(--accent-strong); }
         .log-btn--mid { color: var(--warn); }
         .log-btn--lo { color: var(--danger); }
@@ -101,6 +102,21 @@
         .gate { padding: 9px 0; font-size: 0.93rem; }
         .gate + .gate { box-shadow: inset 0 0.5px 0 var(--border); }
         .legend { display: flex; flex-wrap: wrap; gap: 12px; font-size: 0.8rem; color: var(--text-2); }
+
+        /* Desktop: plan always visible on the left, the other tabs on the right */
+        @media (min-width: 1024px) {
+            .page--narrow { max-width: 1120px; }
+            .today-head, .week { max-width: 1120px; }
+            .week { max-width: 520px; margin-left: -6px; }
+            #home { display: grid; grid-template-columns: minmax(360px, 420px) 1fr; grid-template-rows: auto 1fr; column-gap: 28px; align-items: start; }
+            #home > .panels { display: contents; }
+            #home > .seg { grid-column: 2; grid-row: 1; top: 64px; }
+            #home > .seg > [data-for="p-plan"] { display: none; }
+            #p-plan { grid-column: 1; grid-row: 1 / span 2; display: block !important; position: sticky; top: 64px; max-height: calc(100vh - 80px); overflow-y: auto; scrollbar-width: thin; }
+            #p-plan .list-label { margin-top: 14px; }
+            #home > .panels > .tabpanel:not(#p-plan) { grid-column: 2; grid-row: 2; margin-top: 12px; }
+            .today-head h1 { font-size: 2.4rem; }
+        }
     </style>
 </head>
 <body>
@@ -607,6 +623,14 @@
 
     render();
     renderUnits();
+    var desk = window.matchMedia("(min-width: 1024px)");
+    function fitDesktop() {
+        var set = $("home");
+        var cur = set.querySelector(".seg__btn[aria-selected=true]");
+        if (desk.matches && cur && cur.dataset.for === "p-plan" && set.selectPanel) set.selectPanel("p-units");
+    }
+    window.addEventListener("load", fitDesktop);
+    desk.addEventListener("change", fitDesktop);
     setInterval(function () { if (selected === today) renderPlan(); }, 60000);
 })();
 </script>

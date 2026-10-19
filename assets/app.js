@@ -456,6 +456,7 @@
     }
 
     function init() {
+        if (currentPage() !== "index.html" && document.querySelector("main.page--narrow")) document.body.classList.add("is-narrow");
         buildShell();
         initTabsets();
         rememberSections();
