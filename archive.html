@@ -4,9 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Essays · Speedrun OS</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/style.css">
     <script src="assets/app.js"></script>
     <style>
@@ -28,7 +25,6 @@
 
 <main class="page page--narrow" id="main">
     <div class="page-head">
-        <span class="eyebrow">Writing</span>
         <h1>Essay Archive</h1>
         <p class="lede">Every graded text, with its error breakdown and rewrite. New essays: copy <a href="essay-template.html">the template</a>, fill it with the AI, add a line to the list in this file.</p>
     </div>
@@ -79,7 +75,7 @@
         sorted.forEach(item => {
             view.insertAdjacentHTML("beforeend",
                 '<a href="' + esc(item.url) + '" class="essay">' +
-                    '<span class="essay__icon" aria-hidden="true">📄</span>' +
+                    
                     '<span class="essay__main"><span class="essay__title" lang="de">' + esc(item.title) + '</span><br><span class="essay__date">' + niceDate(item.date) + "</span></span>" +
                     '<span class="badge ' + (item.passed ? "badge--ok" : "badge--danger") + '">' + esc(item.grade) + "</span>" +
                 "</a>");

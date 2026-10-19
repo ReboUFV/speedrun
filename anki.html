@@ -4,9 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Anki Card Maker · Speedrun OS</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/style.css">
     <script src="assets/app.js"></script>
     <style>
@@ -42,133 +39,127 @@
 
 <main class="page page--narrow" id="main">
     <div class="page-head">
-        <span class="eyebrow">Vocab</span>
-        <h1>Anki Card Maker</h1>
-        <p class="lede">Type a word, check the preview, press <span class="kbd">Ctrl</span> + <span class="kbd">Enter</span>. It goes straight into Anki, or into a queue if Anki isn't open.</p>
-        <div class="row" style="margin-top:12px">
+        <h1>Card maker</h1>
+        <div class="row" style="margin-top:8px">
             <span class="status" id="status" data-state="checking" role="status">Checking Anki…</span>
             <button class="btn btn--sm" type="button" id="recheck">Check again</button>
         </div>
     </div>
 
-    <form class="card stack-lg" id="card-form" novalidate>
-        <div class="form-grid form-grid--2">
-            <div class="field span-2">
-                <label for="f-word">German word or phrase <span class="t-danger" aria-hidden="true">*</span></label>
-                <input class="input" id="f-word" lang="de" autocomplete="off" autocapitalize="off" spellcheck="false" required placeholder="e.g. Lösung, sich freuen auf, aufgeben">
-                <div class="guess" id="guess" aria-live="polite"></div>
-            </div>
+    <div class="tabset" id="anki-tabs">
+        <div class="seg" aria-label="Card maker">
+            <button class="seg__btn" data-for="k-add">Add card</button>
+            <button class="seg__btn" data-for="k-queue">Queue <span id="queue-badge"></span></button>
+            <button class="seg__btn" data-for="k-setup">Setup</button>
+        </div>
+        <div class="panels" style="margin-top:12px">
+            <section class="tabpanel" id="k-add">
+                <form class="card stack-lg" id="card-form" novalidate>
+                    <div class="form-grid form-grid--2">
+                        <div class="field span-2">
+                            <label for="f-word">German word or phrase</label>
+                            <input class="input" id="f-word" lang="de" autocomplete="off" autocapitalize="off" spellcheck="false" required placeholder="Lösung, sich freuen auf, aufgeben">
+                            <div class="guess" id="guess" aria-live="polite"></div>
+                        </div>
+                        <div class="field article-pick span-2">
+                            <span class="label" id="article-label">Article</span>
+                            <div class="segmented" role="radiogroup" aria-labelledby="article-label">
+                                <input type="radio" name="article" id="a-none" value="" checked><label for="a-none">None</label>
+                                <input type="radio" name="article" id="a-der" value="der"><label for="a-der">der</label>
+                                <input type="radio" name="article" id="a-die" value="die"><label for="a-die">die</label>
+                                <input type="radio" name="article" id="a-das" value="das"><label for="a-das">das</label>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label for="f-meaning">Meaning</label>
+                            <input class="input" id="f-meaning" autocomplete="off" required placeholder="solution / solución">
+                        </div>
+                        <div class="field">
+                            <label for="f-plural">Plural <span class="subtle">optional</span></label>
+                            <input class="input" id="f-plural" lang="de" autocomplete="off" placeholder="die Lösungen">
+                        </div>
+                        <div class="field span-2">
+                            <label for="f-example">Example sentence <span class="subtle">optional, recommended</span></label>
+                            <textarea class="textarea" id="f-example" lang="de" rows="2" placeholder="Wir müssen eine Lösung für das Problem finden."></textarea>
+                        </div>
+                    </div>
 
-            <div class="field article-pick span-2">
-                <span class="label" id="article-label">Article</span>
-                <div class="segmented" role="radiogroup" aria-labelledby="article-label">
-                    <input type="radio" name="article" id="a-none" value="" checked><label for="a-none">None</label>
-                    <input type="radio" name="article" id="a-der" value="der"><label for="a-der">der</label>
-                    <input type="radio" name="article" id="a-die" value="die"><label for="a-die">die</label>
-                    <input type="radio" name="article" id="a-das" value="das"><label for="a-das">das</label>
+                    <details class="section" id="k-more" style="background:var(--surface-2);box-shadow:none">
+                        <summary><span class="section__title">More options <small>Memory hook, deck, card type, tags</small></span></summary>
+                        <div class="section__body">
+                            <div class="form-grid form-grid--2">
+                                <div class="field span-2">
+                                    <label for="f-note">Memory hook or rule</label>
+                                    <input class="input" id="f-note" autocomplete="off" placeholder="-ung is always die · lösen = to solve">
+                                </div>
+                                <div class="field">
+                                    <label for="f-deck">Deck</label>
+                                    <input class="input" id="f-deck" list="deck-list" autocomplete="off">
+                                    <datalist id="deck-list"></datalist>
+                                </div>
+                                <div class="field">
+                                    <label for="f-model">Card type</label>
+                                    <select class="select" id="f-model">
+                                        <option>Basic (and reversed card)</option>
+                                        <option>Basic</option>
+                                    </select>
+                                </div>
+                                <div class="field span-2">
+                                    <label for="f-tags">Tags <span class="subtle">separated by spaces</span></label>
+                                    <input class="input" id="f-tags" autocomplete="off">
+                                </div>
+                            </div>
+                        </div>
+                    </details>
+
+                    <div class="preview">
+                        <div class="flash"><div class="flash__side">Front</div><div class="flash__front" id="pv-front" lang="de">–</div></div>
+                        <div class="flash"><div class="flash__side">Back</div><div class="flash__body" id="pv-back">–</div></div>
+                    </div>
+
+                    <div class="row">
+                        <button class="btn btn--primary" type="submit" id="btn-add">Add to Anki</button>
+                        <button class="btn" type="button" id="btn-queue">Save to queue</button>
+                        <button class="btn" type="reset">Clear</button>
+                    </div>
+                    <p class="subtle" id="form-error" role="alert" style="margin:0"></p>
+                    <p class="subtle" style="margin:0"><span class="kbd">Ctrl</span> + <span class="kbd">Enter</span> adds the card. <span id="added-count">0 cards</span> added this session.</p>
+                    <div id="added-list" class="subtle" hidden></div>
+                </form>
+            </section>
+
+            <section class="tabpanel" id="k-queue" hidden>
+                <div class="card">
+                    <h3 id="queue-count">0 cards waiting</h3>
+                    <p class="subtle" id="queue-empty">Cards saved while Anki is closed, or on your phone, wait here. Sync them at your computer or export a CSV.</p>
+                    <div id="queue-list"></div>
+                    <div class="row" style="margin-top:10px">
+                        <button class="btn btn--primary btn--sm" type="button" id="btn-sync">Sync all to Anki</button>
+                        <button class="btn btn--sm" type="button" id="btn-csv">Export CSV</button>
+                        <button class="btn btn--danger btn--sm" type="button" id="btn-clear">Empty queue</button>
+                    </div>
                 </div>
-            </div>
+            </section>
 
-            <div class="field">
-                <label for="f-plural">Plural <span class="subtle">(optional)</span></label>
-                <input class="input" id="f-plural" lang="de" autocomplete="off" placeholder="e.g. die Lösungen">
-            </div>
-
-            <div class="field">
-                <label for="f-meaning">Meaning <span class="t-danger" aria-hidden="true">*</span></label>
-                <input class="input" id="f-meaning" autocomplete="off" required placeholder="e.g. solution / solución">
-            </div>
-
-            <div class="field span-2">
-                <label for="f-example">Example sentence <span class="subtle">(optional, highly recommended)</span></label>
-                <textarea class="textarea" id="f-example" lang="de" rows="2" placeholder="e.g. Wir müssen eine Lösung für das Problem finden."></textarea>
-            </div>
-
-            <div class="field span-2">
-                <label for="f-note">Memory hook / rule <span class="subtle">(optional)</span></label>
-                <input class="input" id="f-note" autocomplete="off" placeholder="e.g. -ung → always die · lösen = to solve">
-            </div>
-
-            <div class="field">
-                <label for="f-deck">Deck</label>
-                <input class="input" id="f-deck" list="deck-list" autocomplete="off">
-                <datalist id="deck-list"></datalist>
-            </div>
-
-            <div class="field">
-                <label for="f-model">Card type</label>
-                <select class="select" id="f-model">
-                    <option>Basic (and reversed card)</option>
-                    <option>Basic</option>
-                </select>
-            </div>
-
-            <div class="field span-2">
-                <label for="f-tags">Tags <span class="subtle">(space-separated)</span></label>
-                <input class="input" id="f-tags" autocomplete="off">
-            </div>
-        </div>
-
-        <div>
-            <span class="label">Preview</span>
-            <div class="preview" style="margin-top:8px">
-                <div class="flash"><div class="flash__side">Front</div><div class="flash__front" id="pv-front" lang="de">–</div></div>
-                <div class="flash"><div class="flash__side">Back</div><div class="flash__body" id="pv-back">–</div></div>
-            </div>
-        </div>
-
-        <div class="row">
-            <button class="btn btn--primary" type="submit" id="btn-add">Add to Anki</button>
-            <button class="btn" type="button" id="btn-queue">Save to queue</button>
-            <button class="btn" type="reset">Clear</button>
-        </div>
-        <p class="subtle" id="form-error" role="alert" style="margin:0"></p>
-    </form>
-
-    <div style="margin-top:20px">
-        <details class="section" id="queue-section" open>
-            <summary><span class="section__icon" aria-hidden="true">📥</span><span class="section__title">Queue <small id="queue-count">0 cards waiting</small></span></summary>
-            <div class="section__body">
-                <p class="subtle" id="queue-empty">Cards you save while Anki is closed (or on your phone) wait here. Sync them when you're at your PC, or export a CSV.</p>
-                <div id="queue-list"></div>
-                <div class="row">
-                    <button class="btn btn--primary btn--sm" type="button" id="btn-sync">Sync all to Anki</button>
-                    <button class="btn btn--sm" type="button" id="btn-csv">Export CSV</button>
-                    <button class="btn btn--danger btn--sm" type="button" id="btn-clear">Empty queue</button>
-                </div>
-            </div>
-        </details>
-
-        <details class="section" id="added-section">
-            <summary><span class="section__icon" aria-hidden="true">✅</span><span class="section__title">Added this session <small id="added-count">0 cards</small></span></summary>
-            <div class="section__body"><div id="added-list" class="subtle">Nothing yet.</div></div>
-        </details>
-
-        <details class="section" id="setup-section">
-            <summary><span class="section__icon" aria-hidden="true">🔌</span><span class="section__title">One-time setup <small>Connect this page to Anki desktop</small></span></summary>
-            <div class="section__body">
-                <ol>
-                    <li>Open Anki desktop → <b>Tools → Add-ons → Get Add-ons</b>, paste code <span class="kbd">2055492159</span> (AnkiConnect), restart Anki.</li>
-                    <li><b>Tools → Add-ons → AnkiConnect → Config</b>, and add this site to <code>webCorsOriginList</code>:</li>
-                </ol>
-                <pre class="code">"webCorsOriginList": [
+            <section class="tabpanel" id="k-setup" hidden>
+                <div class="card">
+                    <h3>Connect to Anki desktop, once</h3>
+                    <ol>
+                        <li>In Anki desktop open <b>Tools, Add-ons, Get Add-ons</b>, paste <span class="kbd">2055492159</span> (AnkiConnect) and restart Anki.</li>
+                        <li>Open <b>Tools, Add-ons, AnkiConnect, Config</b> and add this site to <code>webCorsOriginList</code>:</li>
+                    </ol>
+                    <pre class="code">"webCorsOriginList": [
     "http://localhost",
     "https://reboufv.github.io"
 ]</pre>
-                <ol start="3">
-                    <li>Restart Anki and keep it open. If the browser asks whether this site can access devices on your local network, click <b>Allow</b>.</li>
-                    <li>The status pill at the top turns green.</li>
-                </ol>
-                <div class="callout callout--info">
-                    <h3>Good to know</h3>
-                    <ul>
-                        <li>Works in Chrome, Edge and Firefox on the computer where Anki runs. Safari blocks it.</li>
-                        <li>On your phone, use <b>Save to queue</b>. The queue lives in that browser, so either sync from the same device or use <b>Export CSV</b> and import it in Anki (File → Import, "Allow HTML" on).</li>
-                        <li>Opening this file directly from disk (file://) needs <code>"null"</code> in the list too.</li>
-                    </ul>
+                    <ol start="3">
+                        <li>Restart Anki and keep it open. If the browser asks to access devices on your local network, allow it.</li>
+                        <li>The status at the top turns green.</li>
+                    </ol>
+                    <p class="subtle" style="margin:0">Works in Chrome, Edge and Firefox on the computer that runs Anki; Safari blocks it. On your phone, save to the queue and export a CSV, then import it in Anki with "Allow HTML" on.</p>
                 </div>
-            </div>
-        </details>
+            </section>
+        </div>
     </div>
 </main>
 
@@ -327,6 +318,7 @@
 
     function renderQueue() {
         $("queue-count").textContent = queue.length + (queue.length === 1 ? " card waiting" : " cards waiting");
+        $("queue-badge").textContent = queue.length ? "· " + queue.length : "";
         $("queue-empty").hidden = queue.length > 0;
         var list = $("queue-list");
         list.innerHTML = "";
@@ -348,7 +340,8 @@
 
     function renderAdded() {
         $("added-count").textContent = added.length + (added.length === 1 ? " card" : " cards");
-        $("added-list").innerHTML = added.length ? added.map(function (c) { return '<div lang="de">✓ ' + c.front + "</div>"; }).join("") : "Nothing yet.";
+        $("added-list").hidden = !added.length;
+        $("added-list").innerHTML = added.length ? added.map(function (c) { return '<span lang="de">' + c.front + "</span>"; }).join(", ") : "";
     }
 
     function enqueue(c, reason) {

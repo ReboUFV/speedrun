@@ -18,7 +18,7 @@ window.PLAN = {
         dl:     { core: 0, extra: 0 }
     },
     days: [
-        ["2026-10-10", "p0", "", "<b>Take the grammar test</b> (Units tab) so it builds your unit queue. Then the baseline diagnostic (Guide → 🩺) and Anki backlog triage. Evening: memorize Skeleton A."],
+        ["2026-10-10", "p0", "", "<b>Take the grammar test</b> so it builds your unit queue. Then the baseline diagnostic (Guide, Day 0) and Anki backlog triage. Evening: memorize Skeleton A."],
         ["2026-10-11", "p0", "", "First full-day run: <b>new units from your queue</b>. Draft your Skeleton E answers, get them AI-corrected. From 16:00: passive mode."],
         ["2026-10-12", "s1", "", "<b>Get the exam format</b> (email / visit the office). Grammar: queue + due repeats."],
         ["2026-10-13", "s1", "", "Grammar: queue + due repeats. Memorize Skeleton B."],
@@ -26,7 +26,7 @@ window.PLAN = {
         ["2026-10-15", "s1", "", "Grammar: queue + due repeats. Memorize Skeleton E."],
         ["2026-10-16", "s1", "", "Grammar: queue + due repeats. Clear any red flags (failure protocol)."],
         ["2026-10-17", "s1", "Mock", "<b>Mini-mock</b> in the morning (1 reading + 1 listening + 1 text, timed). Afternoon: due repeats only."],
-        ["2026-10-18", "s1", "Gate", "<b>Gate 1</b> (Guide → 🚦). <b>Retake the grammar test</b> so the queue re-ranks. Due repeats. From 16:00: passive mode."],
+        ["2026-10-18", "s1", "Gate", "<b>Gate 1</b> (Guide, Gates). <b>Retake the grammar test</b> so the queue re-ranks. Due repeats. From 16:00: passive mode."],
         ["2026-10-19", "s2", "", "Grammar: queue + due repeats. Switch walk audio to B2 material."],
         ["2026-10-20", "s2", "", "Grammar: queue + due repeats. Memorize Skeleton C."],
         ["2026-10-21", "s2", "", "Grammar: queue + due repeats."],

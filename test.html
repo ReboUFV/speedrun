@@ -4,9 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Grammar Test · Speedrun OS</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/style.css">
     <script src="assets/app.js"></script>
     <script src="assets/plan.js"></script>
@@ -50,7 +47,6 @@
     <!-- INTRO -->
     <section id="screen-intro">
         <div class="page-head">
-            <span class="eyebrow">Placement</span>
             <h1>Grammar Test</h1>
             <p class="lede">30 quick questions, 2 for each of 15 topics. About 6 minutes. The result ranks units from both Grammatik aktiv books and builds your unit queue.</p>
         </div>
@@ -83,7 +79,7 @@
     <!-- RESULT -->
     <section id="screen-r" hidden>
         <div class="page-head">
-            <span class="eyebrow">Result · <span id="r-date"></span></span>
+            <p class="subtle" style="margin:0 0 6px">Result from <span id="r-date"></span></p>
             <div class="row" style="align-items:flex-end;gap:14px">
                 <div class="big-score" id="r-score">–</div>
                 <div class="muted" id="r-level"></div>
@@ -114,7 +110,7 @@
             </section>
 
             <details class="section" id="math">
-                <summary><span class="section__icon" aria-hidden="true">🧮</span><span class="section__title">How the math works</span></summary>
+                <summary><span class="section__title">How the math works</span></summary>
                 <div class="section__body">
 <pre class="math">mastery m = (correct + 1) / (questions + 2)
             2/2 → 0.75 · 1/2 → 0.50 · 0/2 → 0.25
@@ -277,7 +273,7 @@ the extra slots. Score &lt; 0.3 or no slot left
         var q = active.concat(ids.filter(function (id) { return active.indexOf(id) === -1; }));
         U.saveQueue(q);
         toast("Queue saved: " + q.length + " units");
-        setTimeout(function () { location.href = "index.html#units"; }, 600);
+        setTimeout(function () { location.href = "index.html#p-units"; }, 600);
     });
     $("copy-sum").addEventListener("click", function () {
         window.copyText(summary()).then(function () { toast("Summary copied. Paste it to Claude."); }, function () { toast("Couldn't copy"); });

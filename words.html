@@ -4,9 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Core Words · Speedrun OS</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/style.css">
     <script src="assets/app.js"></script>
     <script src="assets/words.js"></script>
@@ -46,15 +43,14 @@
 
 <main class="page page--narrow" id="main">
     <div class="page-head">
-        <span class="eyebrow">Vocab</span>
         <h1>Core Words</h1>
-        <p class="lede">The most frequent German nouns, adjectives and adverbs, with article, plural, English and Spanish. Tick what you don't know and send it to Anki.</p>
+        <p class="lede">Frequent nouns, adjectives and adverbs. Tick the ones you don't know and send them to Anki.</p>
     </div>
 
-    <div class="callout callout--info" style="margin-bottom:16px">
-        <h3>How "Pareto" this really is</h3>
-        <p>In German, the ~1,000 most frequent words cover roughly 75–80% of everyday text, but a big share of that comes from small function words (der, und, ist, nicht…) that you already know. This list is the content-word part of that core: <b id="total-count">–</b> nouns, adjectives and adverbs. Learn these plus the verbs from your grammar units and you have the backbone of B1–B2 texts.</p>
-    </div>
+    <details class="section" id="w-why" style="margin-bottom:12px">
+        <summary><span class="section__title">How "Pareto" is this list?</span></summary>
+        <div class="section__body"><p>In German, the ~1,000 most frequent words cover roughly 75–80% of everyday text, but a big share of that comes from small function words (der, und, ist, nicht…) that you already know. This list is the content-word part of that core: <b id="total-count">–</b> nouns, adjectives and adverbs. Learn these plus the verbs from your grammar units and you have the backbone of B1–B2 texts.</p></div>
+    </details>
 
     <div class="stats" style="margin-bottom:16px">
         <div class="stat"><div class="stat__value" id="st-known">0</div><div class="stat__label">Known</div></div>
@@ -79,9 +75,9 @@
 
     <div class="bulkbar" role="region" aria-label="Selection actions">
         <span class="bulkbar__count" id="sel-count" aria-live="polite">0 selected</span>
-        <button class="btn btn--sm" type="button" id="sel-all">Select shown</button>
+        <button class="btn btn--sm" type="button" id="sel-all">Select all</button>
         <button class="btn btn--sm" type="button" id="sel-none">Clear</button>
-        <button class="btn btn--sm" type="button" id="mark-known" title="Marks selected words as known (or unmarks them if they all are)">Known ✓/✗</button>
+        <button class="btn btn--sm" type="button" id="mark-known" title="Marks selected words as known (or unmarks them if they all are)">Mark known</button>
         <button class="btn btn--sm btn--primary" type="button" id="send">Add to Anki</button>
         <button class="btn btn--sm" type="button" id="csv">CSV</button>
     </div>
@@ -125,8 +121,9 @@
         });
     }
 
+    var limit = 40;
     function render() {
-        var list = $("list"), shown = filtered();
+        var list = $("list"), all = filtered(), shown = all.slice(0, limit);
         list.innerHTML = "";
         if (!shown.length) { list.innerHTML = '<div class="empty">No words match. Try another filter.</div>'; }
         shown.forEach(function (w) {
@@ -146,6 +143,13 @@
             });
             list.appendChild(row);
         });
+        if (all.length > shown.length) {
+            var more = document.createElement("button");
+            more.type = "button"; more.className = "btn btn--block"; more.style.borderRadius = "0";
+            more.textContent = "Show " + Math.min(40, all.length - shown.length) + " more · " + (all.length - shown.length) + " left";
+            more.addEventListener("click", function () { limit += 40; render(); });
+            list.appendChild(more);
+        }
         updateCounts();
     }
 
@@ -248,8 +252,8 @@
     $("sel-all").addEventListener("click", function () { filtered().forEach(function (w) { selected.add(w.id); }); render(); });
     $("sel-none").addEventListener("click", function () { selected.clear(); render(); });
 
-    document.querySelectorAll("input[name=type]").forEach(function (r) { r.addEventListener("change", render); });
-    $("search").addEventListener("input", render);
+    document.querySelectorAll("input[name=type]").forEach(function (r) { r.addEventListener("change", function () { limit = 40; render(); }); });
+    $("search").addEventListener("input", function () { limit = 40; render(); });
     $("hide-known").addEventListener("change", render);
     $("hide-sent").addEventListener("change", render);
 

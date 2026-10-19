@@ -4,9 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Audit · Speedrun OS</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/style.css">
     <script src="assets/app.js"></script>
     <style>
@@ -28,14 +25,16 @@
 
 <main class="page page--narrow" id="main">
     <div class="page-head">
-        <span class="eyebrow">Diagnostics</span>
         <h1>Audit</h1>
-        <p class="lede">Log your scores, then run the Sunday audit: check the signals, pick the matching recovery.</p>
     </div>
 
-    <div class="stack-lg">
-        <section class="card" aria-labelledby="log-h">
-            <h2 id="log-h" style="font-size:1.05rem;margin-bottom:12px">📈 Score log</h2>
+    <div class="tabset" id="audit-tabs">
+        <div class="seg" aria-label="Audit">
+            <button class="seg__btn" data-for="a-scores">Scores</button>
+            <button class="seg__btn" data-for="a-weekly">Sunday review</button>
+        </div>
+        <div class="panels" style="margin-top:12px">
+        <section class="tabpanel card" id="a-scores" aria-label="Score log">
             <form class="log-form" id="log-form">
                 <div class="field"><label for="l-date">Date</label><input class="input" type="date" id="l-date" required></div>
                 <div class="field"><label for="l-part">Part</label>
@@ -45,7 +44,7 @@
                 </div>
                 <div class="field"><label for="l-score">Score %</label><input class="input" type="number" id="l-score" min="0" max="100" inputmode="numeric" required></div>
                 <div class="field"><label for="l-note">Note</label><input class="input" id="l-note" placeholder="e.g. lost points on traps"></div>
-                <button class="btn btn--primary" type="submit">Log</button>
+                <button class="btn btn--primary" type="submit">Log score</button>
             </form>
             <div style="overflow-x:auto;margin-top:14px">
                 <table class="table" id="log-table">
@@ -56,13 +55,16 @@
             <p class="subtle" id="log-empty" style="margin:10px 0 0">No scores yet. Start with today's baseline diagnostic.</p>
         </section>
 
+        <section class="tabpanel" id="a-weekly" hidden>
         <div class="callout callout--info">
-            <h2>How the audit works</h2>
+            <h2>How the review works</h2>
             <p>Each block has three kinds of signal: <span class="badge badge--ok">KPIs</span> what success looks like, <span class="badge badge--danger">Failure</span> skill problems, <span class="badge badge--purple">Burnout</span> energy problems. Count them honestly, then apply one of the four recoveries.</p>
             <p class="subtle" style="margin:0">These audits were written for the original 7-week timeline. Use the block that matches what you're working on in the Plan.</p>
         </div>
 
         <div id="audits"></div>
+        </section>
+        </div>
     </div>
 </main>
 
