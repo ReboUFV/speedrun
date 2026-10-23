@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Grammar Test · Speedrun OS</title>
-    <link rel="stylesheet" href="assets/style.css?v=202610191053">
-    <script src="assets/app.js?v=202610191053"></script>
-    <script src="assets/plan.js?v=202610191053"></script>
-    <script src="assets/units.js?v=202610191053"></script>
+    <link rel="stylesheet" href="assets/style.css?v=202610240006">
+    <script src="assets/app.js?v=202610240006"></script>
+    <script src="assets/plan.js?v=202610240006"></script>
+    <script src="assets/units.js?v=202610240006"></script>
     <style>
         .page { padding-top: 14px; }
         .progress { height: 8px; background: var(--surface-2); border-radius: 999px; overflow: hidden; margin: 10px 0 18px; }
@@ -122,7 +122,7 @@ cost      = 1 slot (½ for a repeat of a done unit)
 score     = need × fit × done ÷ cost
 
 Your pace: 2 core + 1 optional extra unit per day
-(mock days 1 + 0) until Gate 3 on Nov 1.
+(mock days 1 + 0) until the last new-unit day, Nov 2.
 Highest scores fill the core slots, the next ones
 the extra slots. Score &lt; 0.3 or no slot left
 → not needed.</pre>
@@ -207,7 +207,7 @@ the extra slots. Score &lt; 0.3 or no slot left
         $("r-date").textContent = new Date(result.date + "T12:00:00").toLocaleDateString("en-GB", { day: "numeric", month: "short" });
         $("r-score").textContent = r.correct + "/" + r.total;
         $("r-level").textContent = pct + "% · " + level(pct);
-        $("r-budget").textContent = "Your pace: 2 core units + 1 optional extra per day. Slots left before Nov 1: " + r.cap.core + " core + " + r.cap.extra + " extra (a repeat of a unit you already did counts as ½).";
+        $("r-budget").textContent = "Your pace: 2 core units + 1 optional extra per day. Slots left until Nov 2: " + r.cap.core + " core + " + r.cap.extra + " extra (a repeat of a unit you already did counts as ½).";
 
         var tp = $("r-topics");
         tp.innerHTML = "";

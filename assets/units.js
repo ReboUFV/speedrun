@@ -100,7 +100,7 @@
     function cost(id, doneSet) { return (doneSet ? doneSet.has(id) : DONE_BEFORE.indexOf(id) !== -1) ? 0.5 : 1; }
     function dayCaps(t) {
         var plan = window.PLAN, d = plan && plan.days.filter(function (x) { return x[0] === t; })[0];
-        if (!d || t >= "2026-11-01") return { core: 0, extra: 0 };
+        if (!d || t > (plan.lastNewUnits || "2026-11-02")) return { core: 0, extra: 0 };
         var p = plan.pace, k = d[1] === "dl" ? "dl" : d[1] === "p0" ? "p0" : d[2] === "Mock" ? "Mock" : d[2] === "Gate" ? "Gate" : "normal";
         return p[k];
     }

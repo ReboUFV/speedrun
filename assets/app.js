@@ -6,6 +6,7 @@
     function ico(d) { return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">' + d + "</svg>"; }
     var NAV = [
         { href: "index.html", label: "Today", icon: ico('<rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/>') },
+        { href: "coach.html", label: "Coach", icon: ico('<path d="M20 11.5a7.5 7.5 0 0 1-11.2 6.5L4 19.5l1.5-4.3A7.5 7.5 0 1 1 20 11.5z"/>') },
         { href: "drill.html", label: "Drill", icon: ico('<path d="M13 3 5 13.5h6L10 21l8-10.5h-6z"/>') },
         { href: "words.html", label: "Words", icon: ico('<path d="M4 19 9 5l5 14M5.8 14.5h6.4M15 15.5c0-2 1.4-3 3-3s3 1 3 3v3.5M21 17c-.6 1.5-1.7 2-3 2-1.6 0-3-.6-3-2.2"/>') },
         { href: "anki.html", label: "Anki", icon: ico('<rect x="6" y="3.5" width="13" height="16" rx="2.5"/><path d="M4 7v11.5A2.5 2.5 0 0 0 6.5 21H15"/>') },
@@ -451,6 +452,11 @@
                 copyText(pre.textContent.trim()).then(function () { toast("Prompt copied"); haptic(); }, function () { toast("Couldn't copy. Select the text manually."); });
             });
             wrap.appendChild(b);
+            var c = document.createElement("a");
+            c.className = "btn btn--sm"; c.textContent = "Open in Coach";
+            c.href = "coach.html?q=" + encodeURIComponent(pre.textContent.trim());
+            wrap.appendChild(c);
+            wrap.style.display = "flex"; wrap.style.gap = "8px";
             d.appendChild(wrap);
         });
     }

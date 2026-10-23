@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Today · Speedrun</title>
-    <link rel="stylesheet" href="assets/style.css?v=202610191053">
-    <script src="assets/app.js?v=202610191053"></script>
-    <script src="assets/plan.js?v=202610191053"></script>
-    <script src="assets/units.js?v=202610191053"></script>
+    <link rel="stylesheet" href="assets/style.css?v=202610240006">
+    <script src="assets/app.js?v=202610240006"></script>
+    <script src="assets/plan.js?v=202610240006"></script>
+    <script src="assets/units.js?v=202610240006"></script>
     <style>
         .page { padding-top: 14px; }
 
@@ -128,7 +128,7 @@
             <h1 id="title">Today</h1>
             <div class="dateline" id="dateline">–</div>
         </div>
-        <div class="countdown"><b id="days-left">–</b><span>days to exam</span></div>
+        <div class="countdown"><b id="days-left">–</b><span id="exam-when">days to exam</span></div>
     </div>
 
     <div class="week" aria-label="Week">
@@ -358,7 +358,7 @@
                             <div class="gate"><span class="badge badge--warn">B1+ on a part</span> That part gets the 17:00 block for all of Sprint 3.</div>
                             <div class="gate"><span class="badge badge--danger">B1 or lower on 2+</span> Ask about a later sitting or a retake, or whether B1 is enough. Focus on the interview and writing.</div>
                             <h3 style="margin-top:14px">Gate 3 · Sun Nov 1</h3>
-                            <p>Type all five templates from memory. No new units after this, only due checks.</p>
+                            <p>Type all five templates from memory and retake the test. New units until Nov 2; from Nov 3 (final mock at 10:00) only due checks.</p>
                         </section>
                         <section class="tabpanel card" id="g-vocab" hidden>
                             <h3>Decode instead of memorizing</h3>
@@ -379,7 +379,7 @@
                         <section class="tabpanel card" id="g-anki" hidden>
                             <h3>Anki</h3>
                             <p>FSRS on, desired retention 0.85. Cards from <a href="words.html">Words</a>, mocks and corrections, added with the <a href="anki.html">card maker</a>. Suspend leeches after 4 lapses.</p>
-                            <p style="margin:0">40 new cards a day in Sprints 1 and 2, 20 in Sprint 3, none from Nov 1. Over 300 due? Clear them at 150 a day before adding new ones.</p>
+                            <p style="margin:0">40 new cards a day in Sprints 1 and 2, 20 in Sprint 3, none from Nov 3. Over 300 due? Clear them at 150 a day before adding new ones.</p>
                         </section>
                         <section class="tabpanel card" id="g-diag" hidden>
                             <h3>Baseline</h3>
@@ -413,23 +413,7 @@
     DAYS.forEach(function (d) { byDate[d[0]] = d; });
 
     // ---------- The day, as a checklist ----------
-    var BLOCKS = [
-        ["0730", "off",   "Wake up", "Water, daylight, no phone for 30 minutes."],
-        ["0745", "light", "Walk with audio", "45 minutes. Sprint 1: Michel Thomas or Language Transfer out loud. Later: B2 listening."],
-        ["0830", "light", "Breakfast and Anki reviews", "All due cards."],
-        ["0900", "deep",  "Grammar: new units", "First passes. Type everything. 50 minutes on, 10 off.", "new"],
-        ["1130", "out",   "Writing", "One text from a template, graded, saved in Essays."],
-        ["1215", "light", "Vocabulary", "New cards from Words and the decoding rules."],
-        ["1300", "off",   "Lunch", "A real break."],
-        ["1400", "deep",  "Reading and listening", "One practice part of each, timed, then the post-mortem."],
-        ["1530", "light", "Walk or gym", "Same audio as the morning, or recite templates."],
-        ["1615", "out",   "Speaking", "Voice simulation with the AI, then 10 minutes of shadowing."],
-        ["1700", "deep",  "Grammar: repeats", "Due repeats, checks and red flags, then one C-Test.", "due"],
-        ["1830", "off",   "Exercise and dinner", ""],
-        ["1930", "out",   "Second output", "The other template, or the syntax interrogation."],
-        ["2015", "light", "Immersion", "Series with German subtitles, games, Easy German."],
-        ["2145", "light", "Shutdown", "Five sentences about your day in German."]
-    ];
+    var BLOCKS = window.PLAN.blocks;
     var DONE_KEY = "reboot-done-v1";
     function loadJSON(k, d) { try { return JSON.parse(store(k) || "null") || d; } catch (e) { return d; } }
     var done = loadJSON(DONE_KEY, {});
@@ -447,6 +431,7 @@
 
     var left = Math.round((parse(window.PLAN.examStart) - parse(today)) / 86400000);
     $("days-left").textContent = Math.max(left, 0);
+    $("exam-when").textContent = (left === 1 ? "day" : "days") + " · exam Thu 6 Nov, " + (window.PLAN.examTime || "10:00");
 
     // ---------- Week ----------
     function renderWeek() {
