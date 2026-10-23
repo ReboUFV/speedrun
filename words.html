@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Core Words · Speedrun OS</title>
-    <link rel="stylesheet" href="assets/style.css?v=202610240018">
-    <script src="assets/app.js?v=202610240018"></script>
-    <script src="assets/words.js?v=202610240018"></script>
+    <link rel="stylesheet" href="assets/style.css?v=202610240027">
+    <script src="assets/app.js?v=202610240027"></script>
+    <script src="assets/words.js?v=202610240027"></script>
     <style>
         .toolbar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 12px; }
         .toolbar .input { flex: 1 1 220px; }
@@ -69,6 +69,8 @@
             <input type="radio" name="type" id="t-noun" value="noun"><label for="t-noun">Nouns</label>
             <input type="radio" name="type" id="t-adj" value="adj"><label for="t-adj">Adjectives</label>
             <input type="radio" name="type" id="t-adv" value="adv"><label for="t-adv">Adverbs</label>
+            <input type="radio" name="type" id="t-conn" value="conn"><label for="t-conn">Connectors</label>
+            <input type="radio" name="type" id="t-phr" value="phr"><label for="t-phr">Phrases</label>
         </div>
         <input class="input" type="search" id="search" placeholder="Search German, English or Spanish…" aria-label="Search words">
     </div>
@@ -95,7 +97,7 @@
 (function () {
     var store = window.SpeedrunStore;
     var $ = function (id) { return document.getElementById(id); };
-    var TYPE_LABEL = { noun: "Noun", adj: "Adj", adv: "Adv" };
+    var TYPE_LABEL = { noun: "Noun", adj: "Adj", adv: "Adv", conn: "Connector", phr: "Phrase" };
 
     var words = [];
     Object.keys(window.PARETO_WORDS).forEach(function (type) {

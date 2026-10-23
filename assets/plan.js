@@ -30,8 +30,8 @@ window.PLAN = {
         ["0745", "light", "Walk with audio", "45 minutes of German audio at your level. Repeat out loud what you catch."],
         ["0830", "light", "Breakfast and Anki reviews", "All due cards."],
         ["0900", "deep",  "Grammar: new units", "First passes. Type everything. 50 minutes on, 10 off.", "new"],
-        ["1130", "out",   "Writing", "One text from a template, graded, saved in Essays."],
-        ["1215", "light", "Vocabulary", "New cards from Words and the decoding rules."],
+        ["1130", "out",   "Writing", "One text from a template, graded in Coach. Use at least 4 connectors and 2 phrases from Words."],
+        ["1215", "light", "Vocabulary", "New cards from Words: connectors and phrases first, then frequent words."],
         ["1300", "off",   "Lunch", "A real break."],
         ["1400", "deep",  "Reading and listening", "One practice part of each, timed, then the post-mortem."],
         ["1530", "light", "Walk or gym", "Same audio as the morning, or recite templates."],
@@ -82,10 +82,10 @@ window.PLAN = {
     PLAN.profile = p;
     var FOCUS = {
         grammar: "grammar (an extra C-Test in the 17:00 block)",
-        vocab: "vocabulary (the 12:15 block runs 60 minutes)",
+        vocab: "vocabulary (the 12:15 block runs 60 minutes, connectors and phrases first)",
         reading: "reading (one timed practice text at 14:00)",
         listening: "listening (one practice audio with transcript at 14:00)",
-        writing: "writing (the 19:30 block is a second graded text)"
+        writing: "writing (the 19:30 block is a second graded text, packed with connectors)"
     };
     var weak = p && p.weakest && p.weakest.length ? p.weakest : [];
     var w1 = weak[0] ? FOCUS[weak[0]] : "your weakest skill (take the level test)";
@@ -100,7 +100,7 @@ window.PLAN = {
             if (lvl("listening") <= lvl("reading")) { b[2] = "Listening and reading"; b[3] = "60 minutes of listening (practice audio, then the transcript), 30 minutes of reading, then the post-mortem."; }
             else { b[2] = "Reading and listening"; b[3] = "60 minutes of reading (timed practice text), 30 minutes of listening, then the post-mortem."; }
         }
-        if (b[0] === "1215" && top2.indexOf("vocab") !== -1) { b[3] = "60 minutes: 30 new words from Words, the decoding rules, and Anki reviews."; }
+        if (b[0] === "1215" && top2.indexOf("vocab") !== -1) { b[3] = "60 minutes: 10 connectors or phrases plus 20 frequent words from Words, then Anki reviews."; }
         if (b[0] === "1930") {
             if (top2.indexOf("writing") !== -1) { b[2] = "Second text"; b[3] = "The other template, graded in Coach."; }
             else { b[2] = "Speaking"; b[3] = "Oral simulation in Coach with voice, interview first."; }

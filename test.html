@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Level test · Speedrun</title>
-    <link rel="stylesheet" href="assets/style.css?v=202610240018">
-    <script src="assets/app.js?v=202610240018"></script>
-    <script src="assets/plan.js?v=202610240018"></script>
-    <script src="assets/units.js?v=202610240018"></script>
-    <script src="assets/level.js?v=202610240018"></script>
+    <link rel="stylesheet" href="assets/style.css?v=202610240027">
+    <script src="assets/app.js?v=202610240027"></script>
+    <script src="assets/plan.js?v=202610240027"></script>
+    <script src="assets/units.js?v=202610240027"></script>
+    <script src="assets/level.js?v=202610240027"></script>
     <style>
         .page { padding-top: 14px; }
         .steps-bar { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; margin: 4px 0 6px; }
@@ -72,9 +72,17 @@
             </ul>
             <p class="subtle" style="margin:0">No dictionary, no translator. If you don't know, choose "I don't know": a guess hides what you need to study. You can stop and continue later.</p>
         </div>
+        <div class="callout callout--info" id="paused" style="margin-top:14px" hidden>
+            <h3>Test paused</h3>
+            <p id="paused-text">Your answers are saved on this device.</p>
+            <div class="row">
+                <button class="btn btn--primary" type="button" id="resume">Continue here</button>
+                <button class="btn" type="button" id="handoff">Continue on another device</button>
+            </div>
+            <p class="subtle" id="handoff-note" style="margin:8px 0 0" hidden>Link copied. Open it on the other device (send it to yourself by WhatsApp or email). Your answers travel inside the link; they aren't sent to any server.</p>
+        </div>
         <div class="row" style="margin-top:14px">
             <button class="btn btn--primary" type="button" id="start">Start the test</button>
-            <button class="btn" type="button" id="resume" hidden>Continue where I left off</button>
             <button class="btn" type="button" id="see-last" hidden>See my last result</button>
         </div>
     </section>
@@ -99,7 +107,7 @@
         </div>
         <div class="card" style="margin-top:12px">
             <h3 style="margin-bottom:4px">By skill</h3>
-            <p class="subtle" style="margin:0 0 6px">The line marks B2, the exam level.</p>
+            <p class="subtle" style="margin:0 0 6px">The line marks B2 for reference. In your exam the score sets the level, so every point counts.</p>
             <div id="r-skills"></div>
         </div>
         <div class="card" id="r-writing-card" style="margin-top:12px" hidden>
@@ -115,7 +123,7 @@
                 <button class="btn" type="button" id="r-copy">Copy summary</button>
             </div>
         </div>
-        <p class="subtle" style="margin-top:12px">This is an estimate from a short test, not a certificate. Retake it on Nov 1 to see how far you've moved.</p>
+        <p class="subtle" style="margin-top:12px">An estimate from a short test, not a certificate. Retake it on Nov 1 to see how far you've moved.</p>
     </section>
 </main>
 
@@ -394,8 +402,9 @@
         show("s-result");
         $("r-date").textContent = "Result of " + new Date(p.date + "T12:00:00").toLocaleDateString("en-GB", { day: "numeric", month: "long" });
         $("r-overall").textContent = p.overall || "–";
-        var gap = p.overall ? L.NUM.B2 - L.NUM[p.overall] : null;
-        $("r-line").textContent = gap === null ? "" : gap <= 0 ? "Overall you're at exam level. Now make it reliable." : "Overall estimate. The exam is B2: " + (gap === 0.5 ? "half a level" : gap + " level" + (gap === 1 ? "" : "s")) + " to go.";
+        var pr = L.project(p.overall, U.today());
+        $("r-line").textContent = !pr ? "" : "Realistic by 6 Nov if you follow the plan (about " + pr.hours + " study hours left): " +
+            (pr.low === pr.high ? pr.low : pr.low + " to " + pr.high) + " overall. Writing and speaking can score above that with templates and connectors; that's where the extra points are.";
 
         var box = $("r-skills");
         box.innerHTML = "";
@@ -444,13 +453,48 @@
         else if (st.sec > 0) { st.sec--; var s = SECTIONS[st.sec]; st.idx = s === "grammar" ? Q.length - 1 : s === "vocab" ? L.VOCAB.length - 1 : s === "writing" ? 0 : 1; }
         save(); render();
     });
-    $("pause").addEventListener("click", function () { if (window.speechSynthesis) speechSynthesis.cancel(); save(); location.reload(); });
+    $("pause").addEventListener("click", function () { if (window.speechSynthesis) speechSynthesis.cancel(); save(); showPaused(); });
+
+    function answered() {
+        var n = st.grammar.filter(function (x) { return x !== undefined && x !== null; }).length + st.vocab.filter(function (x) { return x !== undefined && x !== null; }).length;
+        st.reading.concat(st.listening).forEach(function (a) { n += a.filter(function (x) { return x !== undefined && x !== null; }).length; });
+        return n;
+    }
+    function showPaused() {
+        show("s-intro");
+        $("paused").hidden = false;
+        $("handoff-note").hidden = true;
+        $("paused-text").textContent = "Part " + (st.sec + 1) + " of 5 (" + NAMES[SECTIONS[Math.min(st.sec, 4)]] + "), " + answered() + " answers saved on this device.";
+        $("start").textContent = "Start over";
+    }
+    // Hand-off link: the progress travels in the URL fragment, which browsers never send to the server
+    function encode(o) { return btoa(unescape(encodeURIComponent(JSON.stringify(o)))).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, ""); }
+    function decode(t) { t = t.replace(/-/g, "+").replace(/_/g, "/"); while (t.length % 4) t += "="; return JSON.parse(decodeURIComponent(escape(atob(t)))); }
+    $("handoff").addEventListener("click", function () {
+        var url = location.origin + location.pathname + "#p=" + encode(st);
+        if (navigator.share && /Mobi|Android|iPhone/i.test(navigator.userAgent)) {
+            navigator.share({ title: "Level test", text: "Continue my level test", url: url }).catch(function () {});
+        } else {
+            window.copyText(url).then(function () { $("handoff-note").hidden = false; toast("Link copied"); }, function () { prompt("Copy this link:", url); });
+        }
+    });
+    if (location.hash.indexOf("#p=") === 0) {
+        try {
+            var incoming = decode(location.hash.slice(3));
+            var local = loadJSON(P_KEY);
+            history.replaceState(null, "", location.pathname);
+            if (!local || local.sec >= 5 || confirm("Replace the unfinished test on this device with the one from your link?")) {
+                st = incoming; save();
+                toast("Test loaded from your other device");
+            }
+        } catch (e) { toast("That link is incomplete. Copy it again from the other device."); }
+    }
     $("start").addEventListener("click", function () {
         var prev = loadJSON(P_KEY);
         if (prev && prev.sec < 5 && !confirm("Start over? Your unfinished answers will be replaced.")) return;
-        st = fresh(); save(); show("s-run"); render();
+        st = fresh(); save(); $("paused").hidden = true; show("s-run"); render();
     });
-    $("resume").addEventListener("click", function () { st = loadJSON(P_KEY) || fresh(); show("s-run"); render(); });
+    $("resume").addEventListener("click", function () { st = loadJSON(P_KEY) || fresh(); $("paused").hidden = true; show("s-run"); render(); });
     $("see-last").addEventListener("click", function () { var p = loadJSON(R_KEY), t = loadJSON("test:last"); renderResult(p, t && t.res, false); });
 
     document.addEventListener("keydown", function (e) {
@@ -464,7 +508,7 @@
     });
 
     var prog = loadJSON(P_KEY);
-    if (prog && prog.sec < 5) $("resume").hidden = false;
+    if (prog && prog.sec < 5) { st = prog; showPaused(); }
     if (loadJSON(R_KEY)) $("see-last").hidden = false;
 })();
 </script>

@@ -114,7 +114,29 @@
         return w ? nearestLabel(sum / w) : null;
     }
 
+    // ---------- Grounded projection to exam day ----------
+    // Rule of thumb: ~200 focused hours move one CEFR band around B1-B2. The low end assumes half that
+    // progress, the high end all of it; the low end is rounded down, the high end to the nearest half step.
+    var DAY_HOURS = { normal: 7, Mock: 6, Gate: 6, Test: 5, dl: 2 };
+    function hoursLeft(from) {
+        var plan = window.PLAN, h = 0;
+        if (!plan) return 0;
+        plan.days.forEach(function (d) {
+            if (d[0] < from || d[0] >= plan.examStart) return;
+            h += d[1] === "dl" ? DAY_HOURS.dl : (DAY_HOURS[d[2]] || DAY_HOURS.normal);
+        });
+        return h;
+    }
+    function floorHalf(n) { return Math.floor(n * 2) / 2; }
+    function project(level, from) {
+        if (!level || !NUM[level]) return null;
+        var h = hoursLeft(from), gain = Math.min(h / 200, 1), cur = NUM[level];
+        var low = nearestLabel(Math.min(5, floorHalf(cur + gain * 0.5))), high = nearestLabel(Math.min(5, cur + gain));
+        return { hours: h, low: low, high: high };
+    }
+
     window.LevelTest = {
+        project: project, hoursLeft: hoursLeft,
         VOCAB: VOCAB, READING: READING, LISTENING: LISTENING, WRITING: WRITING,
         LEVELS: LEVELS, NUM: NUM, bandLevel: bandLevel, overall: overall,
         SKILL_NAMES: { grammar: "Grammar", vocab: "Vocabulary", reading: "Reading", listening: "Listening", writing: "Writing" }

@@ -4,10 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Today · Speedrun</title>
-    <link rel="stylesheet" href="assets/style.css?v=202610240018">
-    <script src="assets/app.js?v=202610240018"></script>
-    <script src="assets/plan.js?v=202610240018"></script>
-    <script src="assets/units.js?v=202610240018"></script>
+    <link rel="stylesheet" href="assets/style.css?v=202610240027">
+    <script src="assets/app.js?v=202610240027"></script>
+    <script src="assets/plan.js?v=202610240027"></script>
+    <script src="assets/level.js?v=202610240027"></script>
+    <script src="assets/units.js?v=202610240027"></script>
     <style>
         .page { padding-top: 14px; }
 
@@ -387,6 +388,7 @@
                         </section>
                         <section class="tabpanel card" id="g-why" hidden>
                             <h3>Why the plan looks like this</h3>
+                            <p><b>One exam, the score sets the level.</b> Every point counts, in every part. The cheapest points are in writing and speaking: templates, connectors and B2 phrases show range even when the rest of the sentence is simple.</p>
                             <p>A2 to B2 normally takes 300 to 400 hours. Full-time gives you about 250. Close enough to fight for.</p>
                             <p>An internal Erasmus exam is usually shorter and checks whether you can function: talk about yourself, write a clear text, follow normal speech, keep grammar mostly right. A clean B1+ with B2 connectors often passes.</p>
                             <p style="margin:0">The two risks are the unknown format and burnout.</p>
@@ -459,7 +461,10 @@
         var prof = window.PLAN.profile;
         $("dateline").textContent = fmt(selected, { weekday: isToday ? "long" : undefined, day: "numeric", month: "long" }) + " · " + PHASES[row[1]];
         $("m-level").hidden = !(prof && prof.overall);
-        if (prof && prof.overall) $("m-level").textContent = "Level " + prof.overall + " → B2";
+        if (prof && prof.overall) {
+            var pr = window.LevelTest && window.LevelTest.project(prof.overall, U.today());
+            $("m-level").textContent = "Level " + prof.overall + (pr && pr.high !== prof.overall ? " · realistic by 6 Nov: " + (pr.low === pr.high ? pr.high : pr.low + "–" + pr.high) : "");
+        }
         $("m-phase").textContent = PHASES[row[1]];
         $("m-kind").hidden = !row[2]; $("m-kind").textContent = row[2];
         $("m-text").innerHTML = row[3];
