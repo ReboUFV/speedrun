@@ -119,7 +119,7 @@
     window.haptic = haptic;
 
     // ---------- Data: backup, import, delete (with undo) ----------
-    var KEY_RE = /^(units:|test:|reboot-done|words:|anki:|perf:|speedrunBannedSet|home:|open:|tab:|theme$)/;
+    var KEY_RE = /^(units:|test:|level:|reboot-done|words:|anki:|perf:|speedrunBannedSet|home:|open:|tab:|coach:chat|coach:spent|theme$)/;
     function ownKeys() {
         var keys = [];
         try { for (var i = 0; i < localStorage.length; i++) { var k = localStorage.key(i); if (KEY_RE.test(k)) keys.push(k); } } catch (e) {}
@@ -169,7 +169,19 @@
         };
         reader.readAsText(file);
     }
-    var GRAMMAR_RE = /^(units:|test:)/;
+    var GRAMMAR_RE = /^(units:|test:|level:)/;
+
+    // One-time fresh start (requested on 2026-10-24): clears progress, keeps the API key, Coach settings and theme.
+    // The previous data can be restored with the Undo toast right after.
+    (function freshStart() {
+        var ID = "2026-10-24", DATA_RE = /^(units:|test:|level:|reboot-done|words:|anki:|perf:|speedrunBannedSet|home:|open:|tab:|coach:chat|coach:spent)/;
+        if (store("app:reset") === ID) return;
+        var before = snapshot(DATA_RE);
+        store("app:reset", ID);
+        if (!Object.keys(before).length) return;
+        ownKeys().forEach(function (k) { if (DATA_RE.test(k)) store(k, null); });
+        try { sessionStorage.setItem("speedrun:undo", JSON.stringify({ label: "Data cleared for a fresh start", at: Date.now(), filter: DATA_RE.source, data: before })); } catch (e) {}
+    })();
 
     // ---------- Settings sheet ----------
     var sheet, scrim, lastFocus, sheetY = 0, stopAnim;

@@ -36,6 +36,7 @@ const SYSTEM = `You are the personal German exam coach inside "Speedrun OS", a s
 - Native Spanish speaker, C2 English. German level around A2 to B1, improving quickly. Studying German full-time.
 - Grammar comes easily to him; vocabulary is harder. Explain grammar as rules and compare with Spanish and English.
 - Exam: internal university Erasmus German test at B2 level, Thursday 6 November 2026 at 10:00. The exact format may not be known yet; if he tells you about it, adapt the advice.
+- His current level per skill is in get_status (level_test). The routine on the site is built around his two weakest skills; reinforce that focus.
 - Pace: 2 grammar units a day plus 1 optional extra. Books: Grammatik aktiv A1-B1 (units written "A62") and Grammatik aktiv B2-C1 (units written "B14").
 
 ## How the site tracks progress (you can read and change it with tools)
@@ -124,9 +125,10 @@ function status() {
         exam: PLAN.examStart + " " + (PLAN.examTime || "10:00"), days_to_exam: days,
         plan_today: day ? { phase: PLAN.phases[day[1]], kind: day[2] || null, task: day[3].replace(/<[^>]+>/g, "") } : null,
         blocks_today: PLAN.blocks.map((b) => ({ time: b[0], title: b[2], done: !!checks[b[0]], current: b[0] === currentBlock })),
-        grammar_today: ag ? { due: ag.due.map(unit), new: ag.fresh.map(unit), extra: ag.extra.map(unit), logged_today: ag.doneToday.map(unit) } : "no unit queue yet: he should take the grammar test (test.html)",
+        grammar_today: ag ? { due: ag.due.map(unit), new: ag.fresh.map(unit), extra: ag.extra.map(unit), logged_today: ag.doneToday.map(unit) } : "no unit queue yet: he should take the level test (test.html)",
         queue: { total: q.length, by_status: counts, red_flags: q.filter((id) => U.stateOf(st, id).s === "red").map(unit) },
         recent_scores: log.slice(-10),
+        level_test: (function () { const p = loadJSON("level:profile", null); return p ? { date: p.date, overall: p.overall, skills: Object.fromEntries(Object.entries(p.skills).map(([k, v]) => [k, v.level + (v.pct != null ? " (" + v.pct + "%)" : "")])), weakest: p.weakest, writing_feedback: p.writing ? p.writing.summary : null } : "not taken yet (test.html)"; })(),
         anki_queue: loadJSON("anki:queue", []).length,
         known_words: loadJSON("words:known", []).length
     };

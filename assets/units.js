@@ -87,8 +87,28 @@
         { t: "t14", q: "Wann ___ der Zug in München ___?", o: ["ankommt … (nothing)", "kommt … an", "kommt … ankommen"], a: 1 },
         { t: "t14", q: "Wir müssen ___ beeilen, der Bus fährt gleich.", o: ["uns", "unser", "sich"], a: 0 },
         { t: "t15", q: "Das ist das Auto ___ Vaters.", o: ["meinem", "mein", "meines"], a: 2 },
-        { t: "t15", q: "Ich habe gestern mit ___ gesprochen.", o: ["dem Student", "dem Studenten", "den Student"], a: 1 }
+        { t: "t15", q: "Ich habe gestern mit ___ gesprochen.", o: ["dem Student", "dem Studenten", "den Student"], a: 1 },
+        // Harder items (B1 and B2) for the full level test
+        { t: "t12", l: "B2", q: "Der Mann, ___ Auto gestohlen wurde, ist mein Nachbar.", o: ["dessen", "deren", "dem"], a: 0 },
+        { t: "t10", l: "B2", q: "An deiner Stelle ___ ich früher losgefahren.", o: ["hätte", "wäre", "würde"], a: 1 },
+        { t: "t11", l: "B2", q: "Das Problem ließ sich leicht ___.", o: ["gelöst", "zu lösen", "lösen"], a: 2 },
+        { t: "t15", l: "B2", q: "___ des schlechten Wetters sind wir spazieren gegangen.", o: ["Obwohl", "Trotz", "Wegen"], a: 1 },
+        { t: "t2",  l: "B2", q: "Ich habe viel gelernt, ___ habe ich die Prüfung nicht bestanden.", o: ["trotzdem", "obwohl", "weil"], a: 0 },
+        { t: "t2",  l: "B1", q: "Bevor du gehst, ___ die Fenster schließen.", o: ["du musst", "musst du", "musst"], a: 1 },
+        { t: "t13", l: "B2", q: "Er ist gegangen, ohne ein Wort ___.", o: ["sagen", "gesagt", "zu sagen"], a: 2 },
+        { t: "t11", l: "B2", q: "Der Brief ist schon gestern ___ worden.", o: ["geschrieben", "schreiben", "geworden"], a: 0 },
+        { t: "t7",  l: "B2", q: "Es kommt ___ an, wie viel Zeit wir haben.", o: ["daran", "darauf", "davon"], a: 1 },
+        { t: "t8",  l: "B2", q: "Mit ___ Grüßen, Anna", o: ["freundliche", "freundlichem", "freundlichen"], a: 2 },
+        { t: "t6",  l: "B2", q: "Er sagte, er ___ krank und komme heute nicht.", o: ["sei", "seid", "sein"], a: 0 },
+        { t: "t9",  l: "B2", q: "Das ist das ___ Buch, das ich je gelesen habe.", o: ["interessanter", "interessanteste", "interessantesten"], a: 1 },
+        { t: "t3",  l: "B2", q: "Das Buch? Gibst du ___ bitte?", o: ["mir es", "es mir", "mich es"], a: 1 },
+        { t: "t14", l: "B1", q: "Ich wasche ___ vor dem Essen die Hände.", o: ["mich", "mir", "sich"], a: 1 },
+        { t: "t5",  l: "B2", q: "Leider habe ich gestern nicht kommen ___.", o: ["gekonnt", "konnte", "können"], a: 2 }
     ];
+    // CEFR level of the first 30 items, in order
+    var CORE_LEVELS = ["A2", "A2", "A2", "B1", "A2", "A2", "A2", "B1", "A2", "B1", "A2", "B1", "B1", "B1", "A2",
+        "B1", "A2", "B1", "B1", "B2", "B1", "B2", "B1", "B1", "A2", "B1", "A2", "A2", "B1", "B1"];
+    QUESTIONS.forEach(function (q, i) { if (!q.l) q.l = CORE_LEVELS[i]; });
 
     // ---------- Dates ----------
     function iso(d) { return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); }
@@ -101,7 +121,7 @@
     function dayCaps(t) {
         var plan = window.PLAN, d = plan && plan.days.filter(function (x) { return x[0] === t; })[0];
         if (!d || t > (plan.lastNewUnits || "2026-11-02")) return { core: 0, extra: 0 };
-        var p = plan.pace, k = d[1] === "dl" ? "dl" : d[1] === "p0" ? "p0" : d[2] === "Mock" ? "Mock" : d[2] === "Gate" ? "Gate" : "normal";
+        var p = plan.pace, k = d[1] === "dl" ? "dl" : d[1] === "p0" ? "p0" : d[2] === "Mock" ? "Mock" : d[2] === "Gate" ? "Gate" : d[2] === "Test" ? "Test" : "normal";
         return p[k];
     }
     function capacity(from) {

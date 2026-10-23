@@ -10,6 +10,9 @@ window.PLAN = {
         s1: "Sprint 1",
         s2: "Sprint 2",
         s3: "Sprint 3 · Gauntlet",
+        rs: "Reset",
+        bd: "Build",
+        sh: "Sharpen",
         dl: "Deload + exam"
     },
     // New units per day: 2 core + 1 optional extra (your pace). Used by the test and the Units tab.
@@ -18,12 +21,13 @@ window.PLAN = {
         normal: { core: 2, extra: 1 },
         Mock:   { core: 1, extra: 0 },
         Gate:   { core: 1, extra: 1 },
+        Test:   { core: 1, extra: 1 },
         dl:     { core: 0, extra: 0 }
     },
     // The day as a checklist: [time, kind, title, detail, grammar slot]
     blocks: [
         ["0730", "off",   "Wake up", "Water, daylight, no phone for 30 minutes."],
-        ["0745", "light", "Walk with audio", "45 minutes. Sprint 1: Michel Thomas or Language Transfer out loud. Later: B2 listening."],
+        ["0745", "light", "Walk with audio", "45 minutes of German audio at your level. Repeat out loud what you catch."],
         ["0830", "light", "Breakfast and Anki reviews", "All due cards."],
         ["0900", "deep",  "Grammar: new units", "First passes. Type everything. 50 minutes on, 10 off.", "new"],
         ["1130", "out",   "Writing", "One text from a template, graded, saved in Essays."],
@@ -53,19 +57,54 @@ window.PLAN = {
         ["2026-10-21", "s2", "", "Grammar: queue + due repeats."],
         ["2026-10-22", "s2", "", "Grammar: queue + due repeats. Memorize Skeleton D."],
         ["2026-10-23", "s2", "", "Grammar: queue + due repeats. Clear any red flags."],
-        ["2026-10-24", "s2", "", "Grammar: queue + due repeats. Recite all 5 skeletons from memory."],
-        ["2026-10-25", "s2", "Mock", "<b>Checkpoint: full mock</b> (all parts, timed; speaking with AI). <b>Gate 2</b>. Retake the grammar test. From 16:00: passive mode."],
-        ["2026-10-26", "s3", "", "<b>Fix-it day:</b> every red-flag unit through the failure protocol, then the queue."],
-        ["2026-10-27", "s3", "Mock", "<b>Full mock #2.</b> Post-mortem at 17:00. Due repeats only."],
-        ["2026-10-28", "s3", "", "Grammar: queue + due repeats. Speaking sims ×3. Timed writing ×2."],
-        ["2026-10-29", "s3", "Mock", "<b>Full mock #3.</b> Post-mortem. Due repeats only."],
-        ["2026-10-30", "s3", "", "Last new units from the queue. C-Tests rapid fire. Interview sim ×2."],
-        ["2026-10-31", "s3", "Mock", "<b>Full mock #4</b> (last one). Evening: passive immersion."],
-        ["2026-11-01", "s3", "Gate", "<b>Gate 3.</b> Type all 5 templates from memory. Retake the grammar test. New units only until tomorrow. Afternoon: passive mode."],
-        ["2026-11-02", "s3", "", "<b>Last new units</b> from the queue + due repeats. Interview simulation ×2. Timed writing ×1."],
-        ["2026-11-03", "s3", "Mock", "<b>Final full mock at 10:00</b>, the same time as the real exam. Post-mortem in the afternoon. No new units from now on."],
+        ["2026-10-24", "rs", "Test", "<b>Full level test</b> (about 45 minutes). Your routine and unit queue rewrite themselves from the result. Then the first unit from the new queue and an interview-template draft in Coach."],
+        ["2026-10-25", "rs", "", "Units from the new queue + due repeats. Focus: {weak1}. Write your interview answers and get them corrected in Coach. From 16:00: passive mode."],
+        ["2026-10-26", "bd", "", "Units + due repeats. Focus: {weak1}. Speaking: oral simulation in Coach with voice."],
+        ["2026-10-27", "bd", "", "Units + due repeats. Focus: {weak2}. Memorise the opinion template."],
+        ["2026-10-28", "bd", "Mock", "<b>Mock at 10:00:</b> one reading part, one listening part and one text, timed. Afternoon: post-mortem in Coach and due repeats only. Gate A."],
+        ["2026-10-29", "bd", "", "Units + due repeats. Focus: {weak1}. Memorise the email template."],
+        ["2026-10-30", "bd", "", "Units + due repeats. Focus: {weak2}. Two speaking simulations in Coach."],
+        ["2026-10-31", "sh", "Mock", "<b>Full mock at 10:00</b>, all parts timed, speaking with Coach. Evening: passive immersion."],
+        ["2026-11-01", "sh", "Gate", "<b>Retake the level test</b>; the routine and queue update. Type all five templates from memory. From 16:00: passive mode."],
+        ["2026-11-02", "sh", "", "<b>Last new units</b> + due repeats. Focus: {weak1}. Two interview simulations in Coach."],
+        ["2026-11-03", "sh", "Mock", "<b>Final full mock at 10:00</b>, the same time as the real exam. Post-mortem in the afternoon. No new units from now on."],
         ["2026-11-04", "dl", "", "Light day: due checks only, templates out loud on a walk, light listening. Confirm the room, documents and route."],
-        ["2026-11-05", "dl", "", "Exam eve: 2 h max. Interview template out loud, one short text. Pack ID and pens. Screens off at 22:00, sleep by 23:00."],
+        ["2026-11-05", "dl", "", "Exam eve: 2 hours max. Interview template out loud, one short text. Pack ID and pens. Screens off at 22:00, sleep by 23:00."],
         ["2026-11-06", "dl", "Exam", "<b>Exam at 10:00.</b> Wake at 7:00, 30-minute walk with German audio, read the interview template once, arrive by 9:30."]
     ]
 };
+
+/* Personalise the routine from the latest level test (saved by test.html as "level:profile").
+   Without a result the plan stays generic. */
+(function () {
+    var PLAN = window.PLAN, p = null;
+    try { p = JSON.parse(localStorage.getItem("level:profile") || "null"); } catch (e) {}
+    PLAN.profile = p;
+    var FOCUS = {
+        grammar: "grammar (an extra C-Test in the 17:00 block)",
+        vocab: "vocabulary (the 12:15 block runs 60 minutes)",
+        reading: "reading (one timed practice text at 14:00)",
+        listening: "listening (one practice audio with transcript at 14:00)",
+        writing: "writing (the 19:30 block is a second graded text)"
+    };
+    var weak = p && p.weakest && p.weakest.length ? p.weakest : [];
+    var w1 = weak[0] ? FOCUS[weak[0]] : "your weakest skill (take the level test)";
+    var w2 = weak[1] ? FOCUS[weak[1]] : (weak[0] ? FOCUS[weak[0]] : "your second weakest skill");
+    PLAN.days.forEach(function (d) { d[3] = d[3].replace("{weak1}", w1).replace("{weak2}", w2); });
+    if (!p) return;
+
+    var lvl = function (k) { return p.skills && p.skills[k] && p.skills[k].level ? ({ A1: 1, A2: 2, "A2+": 2.5, B1: 3, "B1+": 3.5, B2: 4, "B2+": 4.5, C1: 5 }[p.skills[k].level] || 0) : 9; };
+    var top2 = weak.slice(0, 2);
+    PLAN.blocks.forEach(function (b) {
+        if (b[0] === "1400") {
+            if (lvl("listening") <= lvl("reading")) { b[2] = "Listening and reading"; b[3] = "60 minutes of listening (practice audio, then the transcript), 30 minutes of reading, then the post-mortem."; }
+            else { b[2] = "Reading and listening"; b[3] = "60 minutes of reading (timed practice text), 30 minutes of listening, then the post-mortem."; }
+        }
+        if (b[0] === "1215" && top2.indexOf("vocab") !== -1) { b[3] = "60 minutes: 30 new words from Words, the decoding rules, and Anki reviews."; }
+        if (b[0] === "1930") {
+            if (top2.indexOf("writing") !== -1) { b[2] = "Second text"; b[3] = "The other template, graded in Coach."; }
+            else { b[2] = "Speaking"; b[3] = "Oral simulation in Coach with voice, interview first."; }
+        }
+        if (b[0] === "1700" && top2.indexOf("grammar") !== -1) { b[3] = "Due repeats, checks and red flags, then two C-Tests."; }
+    });
+})();

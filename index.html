@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Today · Speedrun</title>
-    <link rel="stylesheet" href="assets/style.css?v=202610240006">
-    <script src="assets/app.js?v=202610240006"></script>
-    <script src="assets/plan.js?v=202610240006"></script>
-    <script src="assets/units.js?v=202610240006"></script>
+    <link rel="stylesheet" href="assets/style.css?v=202610240018">
+    <script src="assets/app.js?v=202610240018"></script>
+    <script src="assets/plan.js?v=202610240018"></script>
+    <script src="assets/units.js?v=202610240018"></script>
     <style>
         .page { padding-top: 14px; }
 
@@ -156,7 +156,7 @@
                         <div class="ring__label"><div><b id="ring-n">0/0</b><small class="subtle">blocks</small></div></div>
                     </div>
                     <div class="progress-card__text">
-                        <div class="row"><span class="badge" id="m-phase">–</span><span class="badge badge--warn" id="m-kind" hidden></span></div>
+                        <div class="row"><span class="badge" id="m-phase">–</span><span class="badge badge--warn" id="m-kind" hidden></span><span class="badge badge--ok" id="m-level" hidden></span></div>
                         <p class="mission" id="m-text">–</p>
                         <button class="btn btn--sm" type="button" id="m-today" hidden style="margin-top:8px">Back to today</button>
                     </div>
@@ -170,8 +170,8 @@
             <section class="tabpanel" id="p-units" hidden>
                 <div class="callout callout--info" id="u-empty" hidden>
                     <h3>No unit queue yet</h3>
-                    <p>Take the 30-question grammar test. It ranks units from both books and fills this list.</p>
-                    <a class="btn btn--primary" href="test.html">Take the test</a>
+                    <p>Take the level test. It measures every skill, ranks units from both books and fills this list.</p>
+                    <a class="btn btn--primary" href="test.html">Take the level test</a>
                 </div>
                 <div class="tabset" id="units-tabs">
                     <div class="seg" aria-label="Units">
@@ -315,7 +315,7 @@
                         <button class="seg__btn" data-for="g-vocab">Vocab rules</button>
                         <button class="seg__btn" data-for="g-tactics">Tactics</button>
                         <button class="seg__btn" data-for="g-anki">Anki</button>
-                        <button class="seg__btn" data-for="g-diag">Day 0</button>
+                        <button class="seg__btn" data-for="g-diag">Level test</button>
                         <button class="seg__btn" data-for="g-why">Why</button>
                     </div>
                     <div class="panels" style="margin-top:10px">
@@ -349,16 +349,14 @@
                             </ul>
                         </section>
                         <section class="tabpanel card" id="g-gates" hidden>
-                            <h3>Gate 1 · Sun Oct 18</h3>
-                            <div class="gate"><span class="badge badge--ok">Pass</span> 10 units or more at repeat or better, no red flag older than 2 days. Retake the test and continue.</div>
-                            <div class="gate"><span class="badge badge--warn">Partial</span> 6 to 9 units, or 2 open red flags. Monday is a fix-it day before new units.</div>
-                            <div class="gate"><span class="badge badge--danger">Miss</span> Under 6 units or dreading every block. One new unit a day for 3 days, more sleep, keep the output blocks.</div>
-                            <h3 style="margin-top:14px">Gate 2 · Sun Oct 25, checkpoint mock</h3>
-                            <div class="gate"><span class="badge badge--ok">B2 on most parts</span> Keep going; swap one grammar block a day for mocks.</div>
-                            <div class="gate"><span class="badge badge--warn">B1+ on a part</span> That part gets the 17:00 block for all of Sprint 3.</div>
-                            <div class="gate"><span class="badge badge--danger">B1 or lower on 2+</span> Ask about a later sitting or a retake, or whether B1 is enough. Focus on the interview and writing.</div>
-                            <h3 style="margin-top:14px">Gate 3 · Sun Nov 1</h3>
-                            <p>Type all five templates from memory and retake the test. New units until Nov 2; from Nov 3 (final mock at 10:00) only due checks.</p>
+                            <h3>Gate A · Wed Oct 28, mock at 10:00</h3>
+                            <div class="gate"><span class="badge badge--ok">B1+ or better on each part</span> Keep the routine. One extra speaking simulation a day.</div>
+                            <div class="gate"><span class="badge badge--warn">One part clearly behind</span> That part takes the 17:00 block until Nov 2.</div>
+                            <div class="gate"><span class="badge badge--danger">Two parts at A2</span> Fewer new units (one a day), more practice of those parts, and lean on the templates for writing and speaking.</div>
+                            <h3 style="margin-top:14px">Gate B · Sun Nov 1, level test again</h3>
+                            <p>Retake the level test; the routine and unit queue follow the new result. Type all five templates from memory.</p>
+                            <h3 style="margin-top:14px">Final · Tue Nov 3, mock at 10:00</h3>
+                            <p style="margin:0">Same time as the exam. After it, no new units: only due checks, templates and rest.</p>
                         </section>
                         <section class="tabpanel card" id="g-vocab" hidden>
                             <h3>Decode instead of memorizing</h3>
@@ -382,14 +380,10 @@
                             <p style="margin:0">40 new cards a day in Sprints 1 and 2, 20 in Sprint 3, none from Nov 3. Over 300 due? Clear them at 150 a day before adding new ones.</p>
                         </section>
                         <section class="tabpanel card" id="g-diag" hidden>
-                            <h3>Baseline</h3>
-                            <ol>
-                                <li>The <a href="test.html">grammar test</a>.</li>
-                                <li>A free B2 practice paper: one reading and one listening part, timed.</li>
-                                <li>One 150-word opinion text in 45 minutes, graded with the writing prompt.</li>
-                                <li>Five minutes of the speaking simulation, interview part only.</li>
-                                <li>Log the scores in <a href="performance.html">Audit</a>.</li>
-                            </ol>
+                            <h3>Level test</h3>
+                            <p>About 45 minutes: grammar, vocabulary, reading, listening and a forum post. It estimates your level per skill, builds the unit queue and rewrites the routine around your two weakest skills.</p>
+                            <a class="btn btn--primary btn--sm" href="test.html">Open the level test</a>
+                            <p class="subtle" style="margin:10px 0 0">Take it today and again on Nov 1.</p>
                         </section>
                         <section class="tabpanel card" id="g-why" hidden>
                             <h3>Why the plan looks like this</h3>
@@ -462,7 +456,10 @@
     function renderPlan() {
         var row = byDate[selected], isToday = selected === today;
         $("title").textContent = isToday ? "Today" : fmt(selected, { weekday: "long" });
+        var prof = window.PLAN.profile;
         $("dateline").textContent = fmt(selected, { weekday: isToday ? "long" : undefined, day: "numeric", month: "long" }) + " · " + PHASES[row[1]];
+        $("m-level").hidden = !(prof && prof.overall);
+        if (prof && prof.overall) $("m-level").textContent = "Level " + prof.overall + " → B2";
         $("m-phase").textContent = PHASES[row[1]];
         $("m-kind").hidden = !row[2]; $("m-kind").textContent = row[2];
         $("m-text").innerHTML = row[3];
@@ -493,7 +490,7 @@
             el.setAttribute("role", "listitem");
             var extra = "";
             if (b[4] && isToday) {
-                if (!ag) extra = '<div class="block__detail"><a href="test.html">Take the grammar test</a> to get your units.</div>';
+                if (!ag) extra = '<div class="block__detail"><a href="test.html">Take the level test</a> to get your units.</div>';
                 else {
                     var ids = b[4] === "new" ? ag.fresh.map(function (x) { return unitPill(x); }).concat(ag.extra.map(function (x) { return unitPill(x, "badge--purple"); }))
                                              : ag.due.map(function (x) { return unitPill(x, "badge--warn"); });
