@@ -110,6 +110,21 @@
         "B1", "A2", "B1", "B1", "B2", "B1", "B2", "B1", "B1", "A2", "B1", "A2", "A2", "B1", "B1"];
     QUESTIONS.forEach(function (q, i) { if (!q.l) q.l = CORE_LEVELS[i]; });
 
+    // What kind of mistake each wrong option reveals (null marks the correct option)
+    var ERR = [["vpos", null, "vpos"], ["vpos", "vpos", null], ["vpos", null, "form"], ["conn", "vpos", null], ["case", null, "end"], ["case", null, "case"], ["case", "case", null], ["case", null, "end"], ["part", null, "tense"], ["part", "form", null], [null, "form", "tense"], ["tense", null, "part"], ["prep", null, "prep"], ["prep", "prep", null], ["end", null, "end"], [null, "case", "end"], ["form", null, "form"], ["vpos", null, "form"], ["tense", "tense", null], [null, "tense", "part"], ["tense", null, "tense"], ["vpos", "vpos", null], ["case", null, "case"], ["case", null, "end"], [null, "form", "vpos"], ["conn", null, "conn"], ["vpos", null, "form"], [null, "pron", "pron"], ["case", "case", null], ["end", null, "case"], [null, "pron", "pron"], ["part", null, "tense"], ["form", "form", null], ["conn", null, "conn"], [null, "conn", "conn"], ["vpos", null, "form"], ["form", "form", null], [null, "part", "part"], ["prep", null, "prep"], ["end", "end", null], [null, "form", "form"], ["end", null, "end"], ["vpos", null, "case"], ["pron", null, "pron"], ["part", "tense", null]];
+    QUESTIONS.forEach(function (q, i) { q.e = ERR[i]; });
+    var ERROR_TYPES = {
+        vpos:  { name: "Word order (verb position)", rule: "Main clause: verb in position 2. Subordinate clause (weil, dass, obwohl, als): conjugated verb at the end. Modal or perfect: second verb at the end.", units: ["A12", "A13", "A46", "B1", "B2"] },
+        "case": { name: "Case choice (Akk / Dat / Gen)", rule: "Ask what the verb or preposition requires: mit, seit, bei = Dativ; für, durch, ohne = Akkusativ; wohin? = Akk, wo? = Dat; wegen, trotz = Genitiv.", units: ["A17", "A18", "A22", "B3", "B31"] },
+        end:   { name: "Endings (articles, adjectives, n-declension)", rule: "The ending shows gender, number and case: dem/den/der, -e/-en/-er after the article type, and der Student → den/dem Studenten.", units: ["A40", "A41", "A84", "B55", "B50"] },
+        part:  { name: "Perfekt and passive forms", rule: "sein for movement and change of state, haben for the rest; no ge- with be-/ver-/er- verbs; passive = werden + Partizip II; modal in Perfekt = haben + two infinitives.", units: ["A26", "A27", "A28", "B36", "B37"] },
+        tense: { name: "Tense and mood", rule: "Präteritum for sein, haben and modals; Plusquamperfekt (hatte/war + Partizip) for the earlier past; Konjunktiv II (hätte, wäre, würde + Infinitiv) for unreal situations.", units: ["A54", "A55", "A60", "B9", "B10"] },
+        conn:  { name: "Connectors and conjunctions", rule: "als for one event in the past, wenn for repeated or present; um … zu with the same subject, damit with a different one; obwohl (verb at end) vs trotzdem (verb right after).", units: ["A77", "A78", "A80", "B63", "B73"] },
+        prep:  { name: "Prepositions and da-/wo- words", rule: "Verbs come with fixed prepositions (sich freuen auf, warten auf, denken an); for things replace preposition + noun with da- (daran, darauf).", units: ["A35", "A36", "A58", "A59", "B33"] },
+        form:  { name: "Word forms", rule: "zu before the infinitive after Lust haben, versuchen, ohne, statt; comparatives with -er (größer), never mehr + adjective; check irregular forms.", units: ["A42", "A73", "A74", "B67"] },
+        pron:  { name: "Pronouns (reflexive, relative)", rule: "Reflexive: mich/mir follow the case (ich wasche mich, ich wasche mir die Hände); relative pronoun = gender of the noun + case in its own clause (dessen for possession).", units: ["A31", "A56", "A75", "B70", "B71"] }
+    };
+
     // ---------- Dates ----------
     function iso(d) { return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); }
     function today() { return iso(new Date()); }
@@ -136,34 +151,84 @@
     }
 
     /* ---------- Recommendation math ----------
-       mastery  m = (correct + 1) / (questions + 2)          Laplace smoothing: 2/2 → 0.75, 1/2 → 0.5, 0/2 → 0.25
-       need       = weight × (1 − m)
-       fit        = book A: 1 if m < 0.75, else 0.35          (basics only if the basics are shaky)
-                    book B: 1.2 if m ≥ 0.5, else 0.25         (no B2-C1 on top of a broken A-level foundation)
+       Evidence per topic, split in two levels:
+         basic    = test items at A2/B1  + results logged on A1-B1 units (A..)
+         advanced = test items at B2     + results logged on B2-C1 units (B..)
+       A logged result counts as two observations: 80%+ = 2/2, 60-79% = 1/2, under 60% = 0/2.
+       mastery  m = (correct + 1) / (observations + 2)          (Laplace smoothing)
+       A1-B1 unit:  need = weight × (1 − m_basic);    fit = 0.1 if m_basic ≥ 0.7 (you already pass the basics), else 1
+                    × 0.6 more when your grammar level is B1+ or higher
+       B2-C1 unit:  need = weight × (1 − m_advanced); fit = 1.2 if m_basic ≥ 0.5, else 0.3 (no B2 on a broken base)
        done       = 0.5 if you already did the unit (it becomes a Repeat Pass that costs half a unit)
        score      = need × fit × done ÷ cost
-       Units are taken by score: first into your core slots (2/day), then the extra slots (1/day). */
-    function recommend(answers, doneSet, from) {
-        var per = {};
-        Object.keys(TOPICS).forEach(function (t) { per[t] = { c: 0, n: 0 }; });
-        QUESTIONS.forEach(function (q, i) {
-            per[q.t].n++;
-            if (answers[i] === q.a) per[q.t].c++;
-        });
+       Solid and parked units are never suggested again. Units fill the core slots (2/day), then the extra slots (1/day). */
+    var LOG_KEY = "units:log";
+    function loadLog() { try { return JSON.parse(store(LOG_KEY) || "[]") || []; } catch (e) { return []; } }
+    var BAND_OBS = { hi: 2, mid: 1, lo: 0 };
 
+    function evidence(answers) {
+        var ev = {};
+        Object.keys(TOPICS).forEach(function (t) { ev[t] = { bc: 0, bn: 0, ac: 0, an: 0, tc: 0, tn: 0 }; });
+        (answers ? QUESTIONS : []).forEach(function (q, i) {
+            var x = answers[i];
+            if (x === undefined || x === null) return;
+            var ok = x === q.a ? 1 : 0, e = ev[q.t];
+            e.tn++; e.tc += ok;
+            if (q.l === "B2") { e.an++; e.ac += ok; } else { e.bn++; e.bc += ok; }
+        });
+        // Unit results: the log, or for older data the current status as a stand-in
+        var seen = {};
+        loadLog().forEach(function (r) { addUnit(ev, r.id, r.band); seen[r.id] = true; });
+        var st = loadState();
+        Object.keys(st).forEach(function (id) {
+            if (seen[id]) return;
+            var s = st[id].s, band = s === "solid" || s === "repeat" ? "hi" : s === "first" ? "mid" : s === "red" || s === "parked" ? "lo" : null;
+            if (band) addUnit(ev, id, band);
+        });
+        return ev;
+    }
+    function topicOfUnit(id) {
+        var ks = Object.keys(TOPICS);
+        for (var i = 0; i < ks.length; i++) if (TOPICS[ks[i]].units.indexOf(id) !== -1) return ks[i];
+        return null;
+    }
+    function addUnit(ev, id, band) {
+        var t = topicOfUnit(id);
+        if (!t || !(band in BAND_OBS)) return;
+        if (id[0] === "A") { ev[t].bn += 2; ev[t].bc += BAND_OBS[band]; } else { ev[t].an += 2; ev[t].ac += BAND_OBS[band]; }
+    }
+    function grammarLevelNum() {
+        var p = null;
+        try { p = JSON.parse(store("level:profile") || "null"); } catch (e) {}
+        var NUMS = { A1: 1, A2: 2, "A2+": 2.5, B1: 3, "B1+": 3.5, B2: 4, "B2+": 4.5, C1: 5 };
+        return p && p.skills && p.skills.grammar ? NUMS[p.skills.grammar.level] || 0 : 0;
+    }
+
+    function recommend(answers, doneSet, from) {
+        var ev = evidence(answers), st = loadState(), strongBase = grammarLevelNum() >= 3.5;
         var topics = Object.keys(TOPICS).map(function (t) {
-            var m = (per[t].c + 1) / (per[t].n + 2);
-            return { id: t, name: TOPICS[t].name, w: TOPICS[t].w, c: per[t].c, n: per[t].n, m: m, need: TOPICS[t].w * (1 - m) };
+            var e = ev[t];
+            var mb = (e.bc + 1) / (e.bn + 2), ma = (e.ac + 1) / (e.an + 2);
+            return { id: t, name: TOPICS[t].name, w: TOPICS[t].w, c: e.tc, n: e.tn, m: (e.tc + 1) / (e.tn + 2), mBasic: mb, mAdv: ma, need: TOPICS[t].w * (1 - Math.min(mb, ma)) };
         });
 
         var cands = [];
         topics.forEach(function (tp) {
             TOPICS[tp.id].units.forEach(function (u) {
-                var isA = u[0] === "A";
-                var fit = isA ? (tp.m < 0.75 ? 1 : 0.35) : (tp.m >= 0.5 ? 1.2 : 0.25);
+                var s = stateOf(st, u).s;
+                if (s === "solid" || s === "parked") return;
+                var isA = u[0] === "A", need, fit;
+                if (isA) {
+                    need = tp.w * (1 - tp.mBasic);
+                    fit = tp.mBasic >= 0.7 ? 0.1 : 1;
+                    if (strongBase) fit *= 0.6;
+                } else {
+                    need = tp.w * (1 - tp.mAdv);
+                    fit = tp.mBasic >= 0.5 ? 1.2 : 0.3;
+                }
                 var done = doneSet.has(u);
                 var c = done ? 0.5 : 1;
-                var score = tp.need * fit * (done ? 0.5 : 1) / c;
+                var score = need * fit * (done ? 0.5 : 1) / c;
                 cands.push({ id: u, title: UNITS[u], topic: tp.name, topicId: tp.id, cost: c, hours: hours(u) * c, done: done, score: Math.round(score * 100) / 100 });
             });
         });
@@ -177,8 +242,23 @@
             else c.tier = "skip";
         });
         var correct = 0;
-        QUESTIONS.forEach(function (q, i) { if (answers[i] === q.a) correct++; });
+        if (answers) QUESTIONS.forEach(function (q, i) { if (answers[i] === q.a) correct++; });
         return { topics: topics, units: cands, cap: cap, core: core, extra: extra, correct: correct, total: QUESTIONS.length };
+    }
+
+    // Re-rank the queue from all the evidence: in-progress units first, then the new ranking.
+    function rerank() {
+        var last = null;
+        try { last = JSON.parse(store("test:last") || "null"); } catch (e) {}
+        var q = loadQueue();
+        if (!q.length && !last) return null;
+        var st = loadState();
+        var res = recommend(last ? last.answers : null, new Set(DONE_BEFORE), today());
+        var active = q.filter(function (id) { var s = stateOf(st, id).s; return s === "first" || s === "repeat" || s === "red"; });
+        var ranked = res.units.filter(function (u) { return (u.tier === "plan" || u.tier === "extra") && active.indexOf(u.id) === -1; }).map(function (u) { return u.id; });
+        var history = q.filter(function (id) { var s = stateOf(st, id).s; return (s === "solid" || s === "parked") && active.indexOf(id) === -1; });
+        saveQueue(active.concat(ranked, history));
+        return res;
     }
 
     // ---------- Unit progress state machine ----------
@@ -211,6 +291,8 @@
         u.firstOn = prev.firstOn || (prev.s === "todo" || !prev.s ? t : undefined);
         st[id] = u;
         saveState(st);
+        var log = loadLog(); log.push({ id: id, band: band, date: t }); store(LOG_KEY, JSON.stringify(log));
+        rerank();
         return u;
     }
     function resetUnit(id) { var st = loadState(); delete st[id]; saveState(st); }
@@ -236,8 +318,8 @@
     }
 
     window.Units = {
-        TOPICS: TOPICS, UNITS: UNITS, QUESTIONS: QUESTIONS, DONE_BEFORE: DONE_BEFORE,
-        hours: hours, capacity: capacity, dayCaps: dayCaps, recommend: recommend,
+        TOPICS: TOPICS, UNITS: UNITS, QUESTIONS: QUESTIONS, DONE_BEFORE: DONE_BEFORE, ERROR_TYPES: ERROR_TYPES,
+        hours: hours, capacity: capacity, dayCaps: dayCaps, recommend: recommend, rerank: rerank, evidence: evidence, loadLog: loadLog,
         loadState: loadState, saveState: saveState, loadQueue: loadQueue, saveQueue: saveQueue,
         stateOf: stateOf, logResult: logResult, resetUnit: resetUnit, agenda: agenda, today: today,
         label: function (id) { return (id[0] === "A" ? "A·" : "B·") + id.slice(1); },

@@ -158,6 +158,7 @@ function runTool(name, input) {
             if (i.status === "todo") delete st[id];
             else st[id] = { first: { s: "first", due: t }, repeat: { s: "repeat", due: addDays(t, 3) }, solid: { s: "solid", on: t }, red: { s: "red", due: t, tries: 1 }, parked: { s: "parked", tries: 2 } }[i.status];
             U.saveState(st);
+            U.rerank();
             const q = U.loadQueue();
             if (q.indexOf(id) === -1) { q.unshift(id); U.saveQueue(q); }
             return { unit: id, status: i.status };

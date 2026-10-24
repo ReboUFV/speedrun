@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Today · Speedrun</title>
-    <link rel="stylesheet" href="assets/style.css?v=202610240027">
-    <script src="assets/app.js?v=202610240027"></script>
-    <script src="assets/plan.js?v=202610240027"></script>
-    <script src="assets/level.js?v=202610240027"></script>
-    <script src="assets/units.js?v=202610240027"></script>
+    <link rel="stylesheet" href="assets/style.css?v=202610241205">
+    <script src="assets/app.js?v=202610241205"></script>
+    <script src="assets/plan.js?v=202610241205"></script>
+    <script src="assets/level.js?v=202610241205"></script>
+    <script src="assets/units.js?v=202610241205"></script>
     <style>
         .page { padding-top: 14px; }
 
@@ -189,7 +189,7 @@
                         </section>
                         <section class="tabpanel" id="u-queue" hidden>
                             <div class="card">
-                                <div class="row" style="justify-content:space-between"><span class="subtle" id="u-count">–</span><a class="btn btn--sm" href="test.html">Retake test</a></div>
+                                <div class="row" style="justify-content:space-between"><span class="subtle" id="u-count">–</span><span class="row"><a class="btn btn--sm" href="diag.html">Diagnosis</a><a class="btn btn--sm" href="test.html">Retake test</a></span></div>
                                 <p class="subtle" style="margin:8px 0 0">Change a status by hand if you need to correct or rebuild your progress.</p>
                                 <div id="u-all-list"></div>
                             </div>
@@ -541,6 +541,7 @@
         if (s === "todo") delete st[id];
         else st[id] = { first: { s: "first", due: t }, repeat: { s: "repeat", due: addDays(t, 3) }, solid: { s: "solid", on: t }, red: { s: "red", due: t, tries: 1 }, parked: { s: "parked", tries: 2 } }[s];
         U.saveState(st);
+        U.rerank();
     }
     function unitRow(id, mode) {
         var st = U.loadState(), u = U.stateOf(st, id);
@@ -608,6 +609,7 @@
 
     function render() { renderWeek(); renderPlan(); }
 
+    if (U.loadQueue().length) U.rerank(); // keep the queue in line with all the evidence so far
     render();
     renderUnits();
     var desk = window.matchMedia("(min-width: 1024px)");
