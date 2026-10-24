@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Today · Speedrun</title>
-    <link rel="stylesheet" href="assets/style.css?v=202610241205">
-    <script src="assets/app.js?v=202610241205"></script>
-    <script src="assets/plan.js?v=202610241205"></script>
-    <script src="assets/level.js?v=202610241205"></script>
-    <script src="assets/units.js?v=202610241205"></script>
+    <link rel="stylesheet" href="assets/style.css?v=20261024180822">
+    <script src="assets/app.js?v=20261024180822"></script>
+    <script src="assets/plan.js?v=20261024180822"></script>
+    <script src="assets/level.js?v=20261024180822"></script>
+    <script src="assets/units.js?v=20261024180822"></script>
     <style>
         .page { padding-top: 14px; }
 
@@ -94,6 +94,12 @@
         .log-btn--mid { color: var(--warn); }
         .log-btn--lo { color: var(--danger); }
         .status-select { font: inherit; font-size: 0.8rem; font-weight: 600; border: none; background: var(--fill); color: var(--text); border-radius: 999px; padding: 4px 8px; min-height: 30px; }
+        .mine-kinds { display: flex; flex-wrap: wrap; }
+        .mined { padding: 9px 0; font-size: 0.92rem; }
+        .mined + .mined { box-shadow: inset 0 0.5px 0 var(--border); }
+        .mined__de { font-weight: 600; }
+        .mined__meta { font-size: 0.8rem; color: var(--text-3); }
+        .unit__add { font: inherit; font-size: 0.78rem; font-weight: 600; color: var(--accent-strong); background: none; border: none; padding: 4px 0; cursor: pointer; margin-left: 50px; }
         .steps { counter-reset: step; list-style: none; padding: 0; margin: 0; }
         .steps li { counter-increment: step; position: relative; padding: 0 0 10px 32px; margin: 0; font-size: 0.94rem; }
         .steps li::before { content: counter(step); position: absolute; left: 0; top: 1px; width: 22px; height: 22px; border-radius: 50%; background: var(--fill); font-size: 0.76rem; font-weight: 700; display: grid; place-items: center; }
@@ -178,6 +184,7 @@
                     <div class="seg" aria-label="Units">
                         <button class="seg__btn" data-for="u-today">Today</button>
                         <button class="seg__btn" data-for="u-queue">Queue</button>
+                        <button class="seg__btn" data-for="u-mine">Mine vocab</button>
                         <button class="seg__btn" data-for="u-how">How it works</button>
                     </div>
                     <div class="panels" style="margin-top:10px">
@@ -194,12 +201,63 @@
                                 <div id="u-all-list"></div>
                             </div>
                         </section>
+                        <section class="tabpanel" id="u-mine" hidden>
+                            <form class="card stack" id="mine-form" novalidate>
+                                <p class="subtle" style="margin:0">After each unit: 5 to 8 items you would use in an exam text. Verbs with preposition and case, phrases, connectors, general nouns. Skip anything the decoding rules give you, and topic-only nouns.</p>
+                                <div class="form-grid form-grid--2">
+                                    <div class="field"><label for="mine-unit">Unit</label><select class="select" id="mine-unit"></select></div>
+                                    <div class="field">
+                                        <span class="label" id="mine-kind-label">Kind</span>
+                                        <div class="segmented mine-kinds" role="radiogroup" aria-labelledby="mine-kind-label">
+                                            <input type="radio" name="mine-kind" id="mk-verb" value="verb" checked><label for="mk-verb">Verb + prep</label>
+                                            <input type="radio" name="mine-kind" id="mk-phr" value="phrase"><label for="mk-phr">Phrase</label>
+                                            <input type="radio" name="mine-kind" id="mk-conn" value="connector"><label for="mk-conn">Connector</label>
+                                            <input type="radio" name="mine-kind" id="mk-noun" value="noun"><label for="mk-noun">Noun</label>
+                                        </div>
+                                    </div>
+                                    <div class="field span-2">
+                                        <label for="mine-de" id="mine-de-label">German, with preposition and case</label>
+                                        <input class="input" id="mine-de" lang="de" autocomplete="off" spellcheck="false" placeholder="sich beschäftigen mit + Dat">
+                                    </div>
+                                    <div class="field" id="mine-noun-fields" hidden>
+                                        <span class="label" id="mine-art-label">Article and plural</span>
+                                        <div class="row">
+                                            <div class="segmented" role="radiogroup" aria-labelledby="mine-art-label">
+                                                <input type="radio" name="mine-art" id="ma-der" value="der"><label for="ma-der">der</label>
+                                                <input type="radio" name="mine-art" id="ma-die" value="die" checked><label for="ma-die">die</label>
+                                                <input type="radio" name="mine-art" id="ma-das" value="das"><label for="ma-das">das</label>
+                                            </div>
+                                            <input class="input" id="mine-pl" lang="de" autocomplete="off" placeholder="Plural" style="flex:1;min-width:120px" aria-label="Plural">
+                                        </div>
+                                    </div>
+                                    <div class="field">
+                                        <label for="mine-mean">Meaning</label>
+                                        <input class="input" id="mine-mean" autocomplete="off" placeholder="ocuparse de / to deal with">
+                                    </div>
+                                    <div class="field span-2">
+                                        <label for="mine-ex">Sentence from the book</label>
+                                        <textarea class="textarea" id="mine-ex" lang="de" rows="2" placeholder="Ich beschäftige mich seit Jahren mit diesem Thema."></textarea>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <button class="btn btn--primary" type="submit">Add to Anki queue</button>
+                                    <span class="subtle"><span class="kbd">Ctrl</span> + <span class="kbd">Enter</span> · sync the queue on the Anki page</span>
+                                </div>
+                                <p class="subtle t-danger" id="mine-error" role="alert" style="margin:0"></p>
+                            </form>
+                            <div class="card">
+                                <div class="row" style="justify-content:space-between"><h3 style="margin:0">Mined today</h3><span class="subtle" id="mine-count">0</span></div>
+                                <p class="subtle" style="margin:4px 0 0">Use 3 of these in your "5 own sentences" and 2 in today's writing block.</p>
+                                <div id="mine-list"></div>
+                            </div>
+                        </section>
                         <section class="tabpanel" id="u-how" hidden>
                             <div class="card">
                                 <h3>Make a unit solid</h3>
                                 <ol class="steps">
                                     <li><b>First pass (day 0, 45–60 min).</b> Skim the theory for 2 minutes, type every exercise, check after each one. Log the %.</li>
-                                    <li><b>Make it yours (10 min).</b> Write 5 sentences with the structure about your own life. Check them with the "5 own sentences" prompt.</li>
+                                    <li><b>Mine vocabulary (10 min).</b> 5 to 8 items from the unit's sentences in the Mine vocab tab: verbs with preposition and case, phrases, connectors, general nouns.</li>
+                                    <li><b>Make it yours (10 min).</b> Write 5 sentences with the structure about your own life, using 3 of the words you just mined. Check them with the "5 own sentences" prompt.</li>
                                     <li><b>Repeat pass (day +2).</b> Only the exercises you got wrong. No theory. Log it.</li>
                                     <li><b>Check (day +5).</b> The 10-item "Unit check" prompt, cold. 80% or more makes it solid.</li>
                                     <li><b>Use it.</b> Put the structure into your next template text on purpose.</li>
@@ -583,13 +641,75 @@
                 log.appendChild(btn);
             });
             el.appendChild(log);
+            var add = document.createElement("button");
+            add.type = "button"; add.className = "unit__add"; add.textContent = "+ Add words from this unit";
+            add.addEventListener("click", function () { openMine(id); });
+            el.appendChild(add);
         }
         return el;
     }
+    // ---------- Mine vocab ----------
+    var MINE_KEY = "mine:list";
+    function loadMine() { try { return JSON.parse(store(MINE_KEY) || "[]") || []; } catch (e) { return []; } }
+    function escH(x) { return String(x).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
+    function mineKind() { return document.querySelector("input[name=mine-kind]:checked").value; }
+    function fillMineUnits(pre) {
+        var sel = $("mine-unit"), q = U.loadQueue(), ag = q.length ? U.agenda() : { due: [], fresh: [], extra: [], doneToday: [] };
+        var first = ag.doneToday.concat(ag.due, ag.fresh, ag.extra), seen = {}, opts = [];
+        first.concat(q).forEach(function (id) { if (!seen[id]) { seen[id] = 1; opts.push(id); } });
+        var keep = pre || sel.value;
+        sel.innerHTML = opts.map(function (id) { return '<option value="' + id + '">' + U.label(id) + " · " + escH(U.UNITS[id] || "") + "</option>"; }).join("") + '<option value="other">Other source</option>';
+        if (keep && (seen[keep] || keep === "other")) sel.value = keep;
+    }
+    function renderMine() {
+        var t = U.today(), list = loadMine().filter(function (m) { return m.date === t; });
+        $("mine-count").textContent = list.length + (list.length === 1 ? " item" : " items");
+        $("mine-list").innerHTML = list.length ? list.slice().reverse().map(function (m) {
+            return '<div class="mined"><div class="mined__de" lang="de">' + escH(m.front) + '</div><div class="mined__meta">' + escH(m.meaning) + " · " + (m.unit === "other" ? "other source" : U.label(m.unit)) + "</div></div>";
+        }).join("") : '<p class="subtle" style="margin:10px 0 0">Nothing yet today.</p>';
+    }
+    function openMine(id) {
+        $("home").selectPanel("p-units");
+        $("units-tabs").selectPanel("u-mine");
+        fillMineUnits(id);
+        $("mine-de").focus();
+    }
+    function mineLabel() {
+        var k = mineKind();
+        $("mine-noun-fields").hidden = k !== "noun";
+        $("mine-de-label").textContent = { verb: "German, with preposition and case", phrase: "German phrase", connector: "Connector", noun: "Noun, without the article" }[k];
+        $("mine-de").placeholder = { verb: "sich beschäftigen mit + Dat", phrase: "eine Entscheidung treffen", connector: "allerdings", noun: "Voraussetzung" }[k];
+    }
+    document.querySelectorAll("input[name=mine-kind]").forEach(function (r) { r.addEventListener("change", mineLabel); });
+    function addMine() {
+        var de = $("mine-de").value.trim(), mean = $("mine-mean").value.trim(), ex = $("mine-ex").value.trim(), k = mineKind(), unit = $("mine-unit").value;
+        if (!de || !mean) { $("mine-error").textContent = de ? "Add the meaning." : "Add the German word or phrase."; (de ? $("mine-mean") : $("mine-de")).focus(); return; }
+        $("mine-error").textContent = "";
+        var front = de;
+        if (k === "noun") {
+            var art = document.querySelector("input[name=mine-art]:checked").value, pl = $("mine-pl").value.trim();
+            front = art + " " + de + (pl ? " · die " + pl : "");
+        }
+        var back = escH(mean) + (ex ? "<br><br><i>" + escH(ex) + "</i>" : "");
+        var tags = ["speedrun", "mined", k];
+        if (unit !== "other") tags.push("unit-" + unit);
+        var q = []; try { q = JSON.parse(store("anki:queue") || "[]") || []; } catch (e) {}
+        q.push({ front: escH(front), back: back, deck: store("anki:deck") || "German B2 Speedrun", model: store("anki:model") || "Basic (and reversed card)", tags: tags, created: Date.now() });
+        store("anki:queue", JSON.stringify(q));
+        var m = loadMine(); m.push({ unit: unit, kind: k, front: front, meaning: mean, example: ex, date: U.today() });
+        store(MINE_KEY, JSON.stringify(m));
+        $("mine-de").value = ""; $("mine-mean").value = ""; $("mine-ex").value = ""; $("mine-pl").value = "";
+        window.haptic(); toast("Added · " + q.length + " in the Anki queue");
+        renderMine();
+        $("mine-de").focus();
+    }
+    $("mine-form").addEventListener("submit", function (e) { e.preventDefault(); addMine(); });
+    $("mine-form").addEventListener("keydown", function (e) { if ((e.ctrlKey || e.metaKey) && e.key === "Enter") { e.preventDefault(); addMine(); } });
+
     function renderUnits() {
         var q = U.loadQueue();
         $("u-empty").hidden = q.length > 0;
-        $("units-tabs").hidden = q.length === 0;
+        fillMineUnits(); mineLabel(); renderMine();
         if (!q.length) return;
         var ag = U.agenda(), list = $("u-today-list");
         list.innerHTML = "";

@@ -310,7 +310,7 @@ body.is-narrow .appbar__inner { max-width: 760px; }
     border: none; background: none; color: var(--text-2); border-radius: 999px; min-height: 36px; padding: 0 12px; cursor: pointer;
 }
 .seg__btn[aria-selected="true"] { color: var(--text); }
-.seg--sticky { position: sticky; top: 60px; z-index: 5; box-shadow: 0 0 0 6px var(--bg); }
+.seg--sticky { position: sticky; top: 60px; z-index: 5; box-shadow: 0 0 0 6px var(--bg); background: linear-gradient(var(--fill), var(--fill)), var(--bg); }
 .panels { position: relative; touch-action: pan-y; overflow-x: clip; }
 .panel-in { animation: panel-in 0.32s var(--ease); }
 .panel-in--left { --from: -18px; }

@@ -119,7 +119,7 @@
     window.haptic = haptic;
 
     // ---------- Data: backup, import, delete (with undo) ----------
-    var KEY_RE = /^(units:|test:|level:|reboot-done|words:|anki:|perf:|speedrunBannedSet|home:|open:|tab:|coach:chat|coach:spent|theme$)/;
+    var KEY_RE = /^(units:|test:|level:|mine:|reboot-done|words:|anki:|perf:|speedrunBannedSet|home:|open:|tab:|coach:chat|coach:spent|theme$)/;
     function ownKeys() {
         var keys = [];
         try { for (var i = 0; i < localStorage.length; i++) { var k = localStorage.key(i); if (KEY_RE.test(k)) keys.push(k); } } catch (e) {}
@@ -171,10 +171,50 @@
     }
     var GRAMMAR_RE = /^(units:|test:|level:)/;
 
+    // ---------- Device sync by link: all progress travels in the URL fragment (never sent to a server).
+    // The API key and the theme stay on each device.
+    var SYNC_RE = /^(units:|test:|level:|mine:|reboot-done|words:|anki:|perf:|speedrunBannedSet|home:|open:|tab:|coach:chat|coach:spent)/;
+    function b64url(bytes) { var s = ""; for (var i = 0; i < bytes.length; i++) s += String.fromCharCode(bytes[i]); return btoa(s).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, ""); }
+    function unb64url(t) { t = t.replace(/-/g, "+").replace(/_/g, "/"); while (t.length % 4) t += "="; var s = atob(t), b = new Uint8Array(s.length); for (var i = 0; i < s.length; i++) b[i] = s.charCodeAt(i); return b; }
+    async function packData() {
+        var json = JSON.stringify({ app: "speedrun-os", v: 1, at: Date.now(), data: snapshot(SYNC_RE) });
+        var bytes = new TextEncoder().encode(json);
+        if (window.CompressionStream) {
+            var zipped = await new Response(new Blob([bytes]).stream().pipeThrough(new CompressionStream("deflate-raw"))).arrayBuffer();
+            return "z" + b64url(new Uint8Array(zipped));
+        }
+        return "j" + b64url(bytes);
+    }
+    async function unpackData(t) {
+        var bytes = unb64url(t.slice(1));
+        if (t[0] === "z") bytes = new Uint8Array(await new Response(new Blob([bytes]).stream().pipeThrough(new DecompressionStream("deflate-raw"))).arrayBuffer());
+        return JSON.parse(new TextDecoder().decode(bytes));
+    }
+    async function sendData() {
+        var url = location.origin + location.pathname.replace(/[^/]*$/, "") + "index.html#sync=" + (await packData());
+        if (navigator.share && /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent)) {
+            navigator.share({ title: "Speedrun data", text: "Open this on the other device to replace its data", url: url }).catch(function () {});
+        } else {
+            copyText(url).then(function () { toast("Link copied. Open it on the other device."); }, function () { prompt("Copy this link:", url); });
+        }
+    }
+    async function receiveData() {
+        if (location.hash.indexOf("#sync=") !== 0) return;
+        var token = location.hash.slice(6);
+        history.replaceState(null, "", location.pathname + location.search);
+        var p;
+        try { p = await unpackData(token); } catch (e) { toast("That sync link is incomplete. Send it again from the other device."); return; }
+        if (!p || p.app !== "speedrun-os" || !p.data) { toast("That link doesn't contain Speedrun data."); return; }
+        var when = new Date(p.at).toLocaleString("en-GB", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
+        if (!confirm("Replace all progress on this device with the data from your other device (" + when + ")? Your API key and theme stay.")) return;
+        withUndo("Data replaced with your other device's", SYNC_RE, function () { restore(p.data, SYNC_RE); });
+    }
+    window.SpeedrunSync = { pack: packData, unpack: unpackData, receive: receiveData };
+
     // One-time fresh start (requested on 2026-10-24): clears progress, keeps the API key, Coach settings and theme.
     // The previous data can be restored with the Undo toast right after.
     (function freshStart() {
-        var ID = "2026-10-24", DATA_RE = /^(units:|test:|level:|reboot-done|words:|anki:|perf:|speedrunBannedSet|home:|open:|tab:|coach:chat|coach:spent)/;
+        var ID = "2026-10-24", DATA_RE = /^(units:|test:|level:|mine:|reboot-done|words:|anki:|perf:|speedrunBannedSet|home:|open:|tab:|coach:chat|coach:spent)/;
         if (store("app:reset") === ID) return;
         var before = snapshot(DATA_RE);
         store("app:reset", ID);
@@ -203,6 +243,7 @@
             '<div class="sheet__label" style="margin-top:18px">Your data</div>' +
             '<div class="sheet__group">' +
                 '<button class="sheet-row" type="button" data-act="export"><span class="sheet-row__icon">' + ico('<path d="M12 4v11M7 10l5 5 5-5M5 20h14"/>') + '</span><span class="sheet-row__text">Export backup<small>Unit queue, progress, words, Anki queue, scores</small></span></button>' +
+                '<button class="sheet-row" type="button" data-act="send"><span class="sheet-row__icon">' + ico('<path d="M4 12v6.5A1.5 1.5 0 0 0 5.5 20h13a1.5 1.5 0 0 0 1.5-1.5V12M12 15V4M7.5 8.5 12 4l4.5 4.5"/>') + '</span><span class="sheet-row__text">Send my data to another device<small>A link that replaces the data on the device that opens it</small></span></button>' +
                 '<label class="sheet-row" style="cursor:pointer"><span class="sheet-row__icon">' + ico('<path d="M12 15V4M7 9l5-5 5 5M5 20h14"/>') + '</span><span class="sheet-row__text">Import backup<small>Replaces the data in this browser</small></span><input type="file" accept="application/json,.json" data-act="import" class="sr-only"></label>' +
             "</div>" +
             '<p class="sheet__note">Everything is stored only in this browser. Export a backup to move it to another device.</p>' +
@@ -222,6 +263,7 @@
             r.addEventListener("change", function () { store("theme", r.value === "auto" ? null : r.value); applyTheme(r.value); });
         });
         sheet.querySelector('[data-act="export"]').addEventListener("click", exportBackup);
+        sheet.querySelector('[data-act="send"]').addEventListener("click", function () { sendData(); });
         sheet.querySelector('[data-act="import"]').addEventListener("change", function (e) { if (e.target.files[0]) importBackup(e.target.files[0]); e.target.value = ""; });
         sheet.querySelectorAll("[data-ask]").forEach(function (b) {
             b.addEventListener("click", function () {
@@ -480,6 +522,7 @@
         rememberSections();
         enhancePrompts();
         offerUndo();
+        receiveData();
     }
     if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
     else init();
