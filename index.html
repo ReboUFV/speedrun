@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Today · Speedrun</title>
-    <link rel="stylesheet" href="assets/style.css?v=20261027193254">
-    <script src="assets/app.js?v=20261027193254"></script>
-    <script src="assets/plan.js?v=20261027193254"></script>
-    <script src="assets/level.js?v=20261027193254"></script>
-    <script src="assets/units.js?v=20261027193254"></script>
+    <link rel="stylesheet" href="assets/style.css?v=20261027193900">
+    <script src="assets/app.js?v=20261027193900"></script>
+    <script src="assets/plan.js?v=20261027193900"></script>
+    <script src="assets/level.js?v=20261027193900"></script>
+    <script src="assets/units.js?v=20261027193900"></script>
     <style>
         .page { padding-top: 14px; }
 
@@ -284,26 +284,42 @@
             <section class="tabpanel" id="p-tpl" hidden>
                 <div class="tabset" id="exam-tabs">
                     <div class="seg seg--scroll" aria-label="Exam parts">
+                        <button class="seg__btn" data-for="x-s">Strategy</button>
                         <button class="seg__btn" data-for="x-l">Listening</button>
                         <button class="seg__btn" data-for="x-r">Reading</button>
                         <button class="seg__btn" data-for="x-g">Grammar</button>
                     </div>
                     <div class="panels" style="margin-top:10px">
-                        <section class="tabpanel card" id="x-l">
+                        <section class="tabpanel card" id="x-s">
+                            <h3>A placement exam, A1 to C1</h3>
+                            <p><b>Your level is where you stop scoring reliably.</b> The questions most likely span A1 to C1, and many placement tests get harder as they go. Hitting the hard ones is normal and means the test is finding your ceiling. Don't let it shake you.</p>
+                            <p><b>1 · Secure the floor.</b> Every A2–B1 item you miss costs more than a C1 item you can't reach, because those items decide your band. Careless errors are the leak: endings, verb position, <i lang="de">dem/den</i>. That's why the drills start easy and are timed.</p>
+                            <p><b>2 · Raise the ceiling one level.</b> Train one level above where you are, never two. Material you understand at about 70% teaches the most. Less than 50% wastes the hour.</p>
+                            <p><b>3 · Recognise, don't produce.</b> Nothing is written or spoken, so B2 and C1 structures only need recognising (Grammar tab). That's much faster to learn.</p>
+                            <p><b>4 · Time.</b> Placement tests reward reaching the end. If an item takes more than about 60 seconds, mark it, guess, move on and come back if there's time. Unless wrong answers subtract points, never leave a blank.</p>
+                            <p><b>5 · Work the options.</b> The upside of a test with options: in grammar, the sentence itself often decides it. Look for the case trigger (<i lang="de">mit</i> → dative), the verb position (verb at the end → subordinate connector) and agreement (plural verb → plural subject), and cross out what breaks them. Two options left is a 50% guess, not 25%. In reading and listening, an option that's true but doesn't answer the question, or is too absolute (<i lang="de">immer, nie, alle</i>), is usually wrong.</p>
+                            <p><b>The downside.</b> The wrong options are built from the typical mistakes (<i lang="de">dem/den, weil … ist / weil ist</i>), so half-knowing a rule picks the trap with full confidence. Only clean rules pay. That's what the careless-error list and the drills are for.</p>
+                            <p style="margin:0"><b>Worth asking the department:</b> <span lang="es">«¿Restan las respuestas incorrectas? ¿Cuánto dura cada parte y es tipo test?»</span> If wrong answers do subtract, skip what you can't narrow down to two options.</p>
+                        </section>
+                        <section class="tabpanel card" id="x-l" hidden>
                             <h3>Listening <span class="badge badge--danger">Priority 1</span></h3>
                             <p><b>In the exam.</b> Use every pause to read the questions and underline the key words. Predict the answer before it plays. Mark on the first play, confirm on the second. The real answer often comes after <i lang="de">aber, jedoch, eigentlich, trotzdem</i>; what's said first often gets corrected. Watch numbers, times and negation (<i lang="de">kein, nicht, nie</i>). Never leave a blank.</p>
                             <p><b>Daily method.</b> Questions first, play twice, score it. Then the transcript: find the exact words behind each answer and why you missed them (speed, a word, a trap, a paraphrase). Finish with 10 minutes of shadowing.</p>
-                            <p style="margin:0"><b>Material.</b> Goethe-Zertifikat B1 and B2 model tests (free on goethe.de, with audio and answers), DW <i>Langsam gesprochene Nachrichten</i> and <i>Top-Thema</i> (with transcripts), Easy German with subtitles. Move from slow to normal speed through the week.</p>
+                            <p style="margin:0"><b>Material by level.</b> A2–B1: DW <i>Nicos Weg</i>, Goethe A2 and B1 model tests. B1–B2: DW <i>Top-Thema</i> and <i>Langsam gesprochene Nachrichten</i>, Goethe B1 and B2 model tests (free on goethe.de, with audio and answers). B2–C1: DW <i>Alltagsdeutsch</i>, Goethe C1 model test (to try once, not to train on). Move up a level when you score 70% or more twice in a row.</p>
                         </section>
                         <section class="tabpanel card" id="x-r" hidden>
                             <h3>Reading <span class="badge badge--warn">Priority 2</span></h3>
                             <p><b>In the exam.</b> Questions first, then scan. The right answer is usually a paraphrase (<i lang="de">Arbeit → Beruf</i>); options that copy the text's words are often the trap. Not in the text means wrong. Stuck over 90 seconds: guess and move on.</p>
                             <p><b>Daily method.</b> Two texts against the clock. For each wrong answer, quote the sentence that held it. Words that cost you an answer go to Mine vocab.</p>
-                            <p style="margin:0"><b>Material.</b> Goethe B1 and B2 model tests (Lesen), DW <i>Top-Thema</i>, nachrichtenleicht.de, and the "Reading practice" prompt.</p>
+                            <p><b>Climbing levels.</b> B1 texts test facts; B2 texts test opinions, cause and contrast, so the answer sits around <i lang="de">jedoch, dennoch, während, folglich</i>. In C1 texts expect nominal style (<i lang="de">die Durchführung der Maßnahme</i>) and extended participles (<i lang="de">die seit Jahren steigenden Mieten</i>): read them backwards from the noun.</p>
+                            <p style="margin:0"><b>Material.</b> nachrichtenleicht.de (A2–B1), DW <i>Top-Thema</i> (B1–B2), Goethe B1, B2 and C1 model tests (Lesen), and the "Reading practice" prompt at your level and one above.</p>
                         </section>
                         <section class="tabpanel card" id="x-g" hidden>
                             <h3>Grammar</h3>
-                            <p><b>Expect</b> multiple choice, gap fill or a C-Test. The points are in verb position (V2, and the verb at the end after <i lang="de">dass, weil, obwohl</i>), case after prepositions and verbs, adjective endings, connectors, the passive, Konjunktiv II and relative pronouns.</p>
+                            <p><b>Expect</b> multiple choice, gap fill or a C-Test, probably from easy to hard.</p>
+                            <p><b>The floor (A2–B1), always right.</b> Verb position (V2, and the verb at the end after <i lang="de">dass, weil, obwohl</i>), case after prepositions and verbs, adjective endings, Perfekt with <i lang="de">sein/haben</i>, relative pronouns.</p>
+                            <p><b>The ceiling (B2), recognise these.</b> Passive with modals (<i lang="de">muss gemacht werden</i>), Konjunktiv II past (<i lang="de">hätte … gemacht</i>), two-part connectors (<i lang="de">je … desto, zwar … aber, weder … noch</i>), verbs with prepositions (<i lang="de">sich verlassen auf</i>), <i lang="de">um … zu / damit</i>, genitive prepositions (<i lang="de">trotz, wegen, während</i>).</p>
+                            <p><b>Bonus (C1), recognise only.</b> Konjunktiv I in reported speech (<i lang="de">er sagte, er sei krank</i>), extended participles, passive substitutes (<i lang="de">lässt sich lösen, ist zu lösen</i>), nominal style.</p>
                             <p><b>In the exam.</b> Read the whole sentence before choosing. Find what sets the case (a preposition or a verb) and where the verb has to go. Don't change an answer unless a rule backs the change.</p>
                             <p style="margin:0"><b>Daily.</b> New units at 09:00, a 30-item drill at 11:00, repeats and a C-Test at 17:00. Your error patterns are on the <a href="diag.html">Diagnosis</a> page.</p>
                         </section>
@@ -313,8 +329,8 @@
 
             <!-- PROMPTS -->
             <section class="tabpanel" id="p-ai" hidden>
-                <details class="prompt"><summary>Grammar exam drill, 30 items</summary><pre class="prompt__text">Act as the grammar section of a university German placement exam (A2 to B2). Give me 30 numbered items at once: 15 multiple choice with 4 options, 10 one-word gap fills and 5 sentence transformations. Mix verb position, cases after prepositions and verbs, adjective endings, connectors, passive, Konjunktiv II, relative clauses and these weak topics of mine: [topics from the Diagnosis page]. No answers yet. When I send mine, give my score out of 30, then every mistake as: my answer → correct answer → the rule in 5 words. End with the one topic I should drill next.</pre></details>
-                <details class="prompt"><summary>Reading practice, exam style</summary><pre class="prompt__text">Write a German newspaper-style text of about 350 words at B1+/B2 level on [studies / work / environment / technology / travel / society]. Then 8 questions: 4 richtig / falsch / nicht im Text and 4 multiple choice with 3 options. Like real exams, put paraphrases in the correct options and word-matching traps in the wrong ones. Wait for my answers. Then grade them and, for each mistake, quote the sentence that holds the answer and name the trap.</pre></details>
+                <details class="prompt"><summary>Grammar ladder drill, A2 to C1</summary><pre class="prompt__text">Act as the grammar section of a university German placement exam that places students from A1 to C1. Give me 30 numbered items at once, easiest first: 8 at A2, 8 at B1, 8 at B2 and 6 at C1, multiple choice with 4 options and one-word gap fills. Don't show the levels. Include these weak topics of mine: [topics from the Diagnosis page]. No answers yet. When I send mine, give my score per level (A2 x/8, B1 x/8, B2 x/8, C1 x/6) and my estimated placement (the highest level with 70% or more), then every mistake as: my answer → correct answer → the rule in 5 words. Flag mistakes at or below my placement as careless: those are the ones to fix first.</pre></details>
+                <details class="prompt"><summary>Reading practice, exam style</summary><pre class="prompt__text">Write a German newspaper-style text of about 350 words at [my level / one level above, e.g. B1 / B2] on [studies / work / environment / technology / travel / society]. Then 8 questions: 4 richtig / falsch / nicht im Text and 4 multiple choice with 3 options. Like real exams, put paraphrases in the correct options and word-matching traps in the wrong ones. Wait for my answers. Then grade them and, for each mistake, quote the sentence that holds the answer and name the trap.</pre></details>
                 <details class="prompt"><summary>Listening post-mortem</summary><pre class="prompt__text">I practised a German listening task. Transcript: [paste]. My answers: [..]. Correct answers: [..]. For each wrong answer, show the exact words in the transcript that gave it and why I probably missed it (speed, vocabulary, paraphrase, a trap after aber/eigentlich, numbers or negation). Then give me 5 chunks from the transcript worth adding to Anki, with a Spanish translation.</pre></details>
                 <details class="prompt"><summary>5 own sentences, after a first pass</summary><pre class="prompt__text">I just studied this German grammar structure: [unit topic, e.g. Relativsätze im Dativ]. Here are 5 sentences I wrote with it about my own life: [sentences]. Correct each one. For every mistake: my sentence → corrected sentence → which rule I broke (one line). Then give me 3 new sentences in English to translate using the same structure, and correct those too.</pre></details>
                 <details class="prompt"><summary>Unit check, day +5</summary><pre class="prompt__text">Test me on this German grammar structure: [unit topic]. Give me 10 short items, one at a time (mix gap-fill, transformation and translation from English). Don't explain anything before I answer. After all 10, give me my score out of 10 and list my mistakes with the correct version.</pre></details>
@@ -350,7 +366,7 @@
                         </section>
                         <section class="tabpanel card" id="g-gates" hidden>
                             <h3>Gate A · Wed Oct 28, mock at 10:00</h3>
-                            <div class="gate"><span class="badge badge--ok">B1+ or better on each part</span> Keep the routine.</div>
+                            <div class="gate"><span class="badge badge--ok">Each part's ceiling at B1 or higher</span> Keep the routine and move practice material up a level.</div>
                             <div class="gate"><span class="badge badge--warn">Listening or reading clearly behind</span> The 11:00 drill becomes a second round of that part until Nov 2; grammar keeps 09:00 and 17:00.</div>
                             <div class="gate"><span class="badge badge--danger">Two parts at A2</span> One new unit a day instead of two; the freed time goes to listening and reading.</div>
                             <h3 style="margin-top:14px">Gate B · Sun Nov 1, level test again</h3>
@@ -379,7 +395,7 @@
                         </section>
                         <section class="tabpanel card" id="g-why" hidden>
                             <h3>Why the plan looks like this</h3>
-                            <p><b>One exam in three parts: grammar, reading and listening. The score sets the level.</b> There's no writing or speaking, so every hour goes to understanding German and getting the forms right.</p>
+                            <p><b>One placement exam in three parts (grammar, reading and listening) that rates you from A1 to C1.</b> There's no writing or speaking, so every hour goes to understanding German and getting the forms right. First secure every item up to your level, then win the ones just above it.</p>
                             <p><b>Listening first, then reading.</b> They're your weakest parts, and they improve fastest with daily timed practice and post-mortems. Grammar comes easily to you: the units keep it climbing and the drills turn it into points.</p>
                             <p>Vocabulary carries both: most wrong answers in reading and listening come from a word you didn't know or a paraphrase you didn't spot.</p>
                             <p style="margin:0">The remaining risk is burnout, so keep the off blocks.</p>
