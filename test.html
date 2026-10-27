@@ -4,14 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Level test · Speedrun</title>
-    <link rel="stylesheet" href="assets/style.css?v=20261024180822">
-    <script src="assets/app.js?v=20261024180822"></script>
-    <script src="assets/plan.js?v=20261024180822"></script>
-    <script src="assets/units.js?v=20261024180822"></script>
-    <script src="assets/level.js?v=20261024180822"></script>
+    <link rel="stylesheet" href="assets/style.css?v=20261027193254">
+    <script src="assets/app.js?v=20261027193254"></script>
+    <script src="assets/plan.js?v=20261027193254"></script>
+    <script src="assets/units.js?v=20261027193254"></script>
+    <script src="assets/level.js?v=20261027193254"></script>
     <style>
         .page { padding-top: 14px; }
-        .steps-bar { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; margin: 4px 0 6px; }
+        .steps-bar { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; margin: 4px 0 6px; }
         .steps-bar span { height: 4px; border-radius: 2px; background: var(--fill); }
         .steps-bar span.is-done { background: var(--accent); }
         .steps-bar span.is-on { background: var(--accent); opacity: 0.45; }
@@ -35,7 +35,6 @@
         .mcq .opt { min-height: 44px; padding: 10px 13px; font-size: 0.95rem; }
         .player { display: flex; align-items: center; gap: 12px; }
         .player .btn { min-width: 150px; }
-        .writing textarea { min-height: 260px; font-size: 1rem; line-height: 1.6; }
         .wmeta { display: flex; justify-content: space-between; font-size: 0.84rem; color: var(--text-3); margin-top: 6px; font-variant-numeric: tabular-nums; }
 
         .result-hero { text-align: center; padding: 22px 16px; }
@@ -60,7 +59,7 @@
     <section id="s-intro">
         <div class="page-head">
             <h1>Level test</h1>
-            <p class="lede">Five parts, about 45 minutes. It estimates your level in each skill, rebuilds your unit queue and rewrites your routine until the exam.</p>
+            <p class="lede">The three exam parts plus vocabulary, about 35 minutes. It estimates your level in each part and rebuilds your unit queue.</p>
         </div>
         <div class="card stack">
             <ul class="checklist">
@@ -68,7 +67,6 @@
                 <li><b>Vocabulary</b> · 20 words in context <span class="subtle">· 4 min</span></li>
                 <li><b>Reading</b> · 2 texts, 10 questions <span class="subtle">· 10 min</span></li>
                 <li><b>Listening</b> · 2 audios, played twice at most <span class="subtle">· 6 min</span></li>
-                <li><b>Writing</b> · one forum post, graded by Claude if Coach is set up <span class="subtle">· 25 min</span></li>
             </ul>
             <p class="subtle" style="margin:0">No dictionary, no translator. If you don't know, choose "I don't know": a guess hides what you need to study. You can stop and continue later.</p>
         </div>
@@ -89,7 +87,7 @@
 
     <!-- RUNNER -->
     <section id="s-run" hidden>
-        <div class="steps-bar" id="steps" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
+        <div class="steps-bar" id="steps" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
         <div class="qhead"><span id="sec-name">–</span><span id="sec-count"></span></div>
         <div id="stage"></div>
         <div class="nav-row">
@@ -106,16 +104,12 @@
             <p id="r-line">–</p>
         </div>
         <div class="card" style="margin-top:12px">
-            <h3 style="margin-bottom:4px">By skill</h3>
+            <h3 style="margin-bottom:4px">By part</h3>
             <p class="subtle" style="margin:0 0 6px">The line marks B2 for reference. In your exam the score sets the level, so every point counts.</p>
             <div id="r-skills"></div>
         </div>
-        <div class="card" id="r-writing-card" style="margin-top:12px" hidden>
-            <h3>Writing feedback</h3>
-            <div id="r-writing"></div>
-        </div>
         <div class="callout callout--ok" style="margin-top:12px">
-            <h3>Your routine has been rewritten</h3>
+            <h3>Your unit queue has been rebuilt</h3>
             <p id="r-plan">–</p>
             <div class="row">
                 <a class="btn btn--primary" href="index.html">See today's plan</a>
@@ -133,11 +127,11 @@
     var U = window.Units, L = window.LevelTest, store = window.SpeedrunStore;
     var $ = function (id) { return document.getElementById(id); };
     var Q = U.QUESTIONS;
-    var SECTIONS = ["grammar", "vocab", "reading", "listening", "writing"];
-    var NAMES = { grammar: "Grammar", vocab: "Vocabulary", reading: "Reading", listening: "Listening", writing: "Writing" };
+    var SECTIONS = ["grammar", "vocab", "reading", "listening"], DONE = SECTIONS.length;
+    var NAMES = { grammar: "Grammar", vocab: "Vocabulary", reading: "Reading", listening: "Listening" };
     var P_KEY = "level:progress", R_KEY = "level:profile";
 
-    function fresh() { return { sec: 0, idx: 0, grammar: [], vocab: [], reading: [[], []], listening: [[], []], plays: [0, 0], noAudio: false, writing: "", wStart: null }; }
+    function fresh() { return { sec: 0, idx: 0, grammar: [], vocab: [], reading: [[], []], listening: [[], []], plays: [0, 0], noAudio: false }; }
     var st = fresh();
     function save() { store(P_KEY, JSON.stringify(st)); }
     function loadJSON(k) { try { return JSON.parse(store(k) || "null"); } catch (e) { return null; } }
@@ -169,8 +163,10 @@
     // ---------- Section renderers ----------
     function render() {
         bar();
+        // Past the last part (also a test paused at the old writing part): score it
+        if (st.sec >= DONE) { finish(); return; }
         var sec = SECTIONS[st.sec], stage = $("stage");
-        $("sec-name").textContent = (st.sec + 1) + " of 5 · " + NAMES[sec];
+        $("sec-name").textContent = (st.sec + 1) + " of " + DONE + " · " + NAMES[sec];
         stage.innerHTML = "";
         $("back").disabled = st.sec === 0 && st.idx === 0;
 
@@ -233,35 +229,6 @@
             };
             markAnswered();
             if (sec === "listening") setupPlayer(part);
-            return;
-        }
-
-        if (sec === "writing") {
-            $("sec-count").textContent = "About " + L.WRITING.minutes + " minutes";
-            if (!st.wStart) { st.wStart = Date.now(); save(); }
-            stage.innerHTML =
-                '<div class="text-box"><h3>Forum post</h3><p lang="de" style="margin:0"></p></div>' +
-                '<div class="writing field"><label for="w-text">Your text</label><textarea class="textarea" id="w-text" lang="de" spellcheck="false"></textarea>' +
-                '<div class="wmeta"><span id="w-count">0 words</span><span id="w-time"></span></div></div>' +
-                '<div class="row" style="margin-top:14px"><button class="btn btn--primary" type="button" id="w-done">Finish the test</button><button class="btn" type="button" id="w-skip">Skip writing</button></div>' +
-                '<p class="subtle" id="w-note" style="margin-top:8px"></p>';
-            stage.querySelector("p").textContent = L.WRITING.task;
-            var ta = $("w-text");
-            ta.value = st.writing || "";
-            var count = function () { var n = (ta.value.trim().match(/\S+/g) || []).length; $("w-count").textContent = n + " words"; return n; };
-            ta.addEventListener("input", function () { st.writing = ta.value; count(); save(); });
-            count();
-            var tick = function () {
-                if (!$("w-time")) return;
-                var left = L.WRITING.minutes * 60 - Math.floor((Date.now() - st.wStart) / 1000);
-                $("w-time").textContent = left > 0 ? Math.floor(left / 60) + ":" + String(left % 60).padStart(2, "0") + " left" : "Time is up, finish your sentence";
-                setTimeout(tick, 1000);
-            };
-            tick();
-            $("w-note").textContent = store("coach:key") ? "Claude grades your text when you finish (it uses your Coach key)." : "Coach isn't set up, so writing won't be graded now. You can paste the text into Coach later.";
-            $("w-done").addEventListener("click", function () { if (count() < 40 && !confirm("Your text is very short. Finish anyway?")) return; finish(); });
-            $("w-skip").addEventListener("click", function () { st.writing = ""; save(); finish(); });
-            ta.focus();
         }
     }
 
@@ -296,7 +263,7 @@
         note.append("This browser has no German voice, so listening can't be tested here. Chrome or Edge on a computer usually have one. ");
         var b = document.createElement("button");
         b.type = "button"; b.className = "btn btn--sm"; b.textContent = "Skip listening";
-        b.addEventListener("click", function () { st.noAudio = true; st.sec = SECTIONS.indexOf("writing"); st.idx = 0; save(); render(); });
+        b.addEventListener("click", function () { st.noAudio = true; save(); finish(); });
         note.appendChild(b);
         if ($("play")) $("play").disabled = true;
     }
@@ -327,65 +294,10 @@
             .sort(function (a, b) { return (L.NUM[skills[a].level] - L.NUM[skills[b].level]) || ((skills[a].pct || 0) - (skills[b].pct || 0)); });
     }
 
-    // Claude grades the text with a structured output, only when Coach has a key
-    async function gradeWriting(text) {
-        var key = store("coach:key");
-        if (!key || !text.trim()) return null;
-        var mod = await import("https://cdn.jsdelivr.net/npm/@anthropic-ai/sdk@0.133.0/+esm");
-        var Anthropic = mod.default;
-        var client = new Anthropic({ apiKey: key, dangerouslyAllowBrowser: true, maxRetries: 2 });
-        var prefs = loadJSON("coach:prefs") || {};
-        var model = prefs.model || "claude-opus-5-5";
-        var schema = {
-            type: "object", additionalProperties: false,
-            required: ["level", "task_completion", "coherence", "vocabulary", "grammar", "summary", "corrections"],
-            properties: {
-                level: { type: "string", enum: L.LEVELS, description: "Estimated CEFR level of this text" },
-                task_completion: { type: "integer", description: "0 to 5" },
-                coherence: { type: "integer", description: "0 to 5" },
-                vocabulary: { type: "integer", description: "0 to 5" },
-                grammar: { type: "integer", description: "0 to 5" },
-                summary: { type: "string", description: "Two or three sentences in Spanish: what works and what to fix first" },
-                corrections: {
-                    type: "array", description: "The most important errors, at most 6",
-                    items: {
-                        type: "object", additionalProperties: false, required: ["original", "corrected", "rule"],
-                        properties: { original: { type: "string" }, corrected: { type: "string" }, rule: { type: "string", description: "The rule in a few words, in Spanish" } }
-                    }
-                }
-            }
-        };
-        var params = {
-            model: model, max_tokens: 16000,
-            output_config: { effort: "medium", format: { type: "json_schema", schema: schema } },
-            system: "You are a strict but fair CEFR examiner for a university B2 German placement test. The writer is a native Spanish speaker. Grade only what is on the page.",
-            messages: [{ role: "user", content: "Task given to the student:\n" + L.WRITING.task + "\n\nStudent's text:\n" + text }]
-        };
-        var withFallback = model === "claude-opus-5-5" || model === "claude-sonnet-5-5";
-        var msg;
-        try {
-            msg = await client.beta.messages.create(Object.assign({}, params, withFallback ? { betas: ["server-side-fallback-2026-07-01"], fallbacks: "default" } : {}));
-        } catch (e) {
-            if (withFallback && e instanceof Anthropic.BadRequestError) msg = await client.messages.create(params);
-            else throw e;
-        }
-        if (msg.stop_reason === "refusal") return null;
-        var t = msg.content.find(function (b) { return b.type === "text"; });
-        return t ? JSON.parse(t.text) : null;
-    }
-
     async function finish() {
-        st.sec = 5; save();
-        show("s-result");
-        $("r-overall").textContent = "…";
-        $("r-line").textContent = store("coach:key") && st.writing.trim() ? "Scoring and grading your text with Claude…" : "Scoring…";
-        var skills = score(), writing = null;
-        try { writing = await gradeWriting(st.writing || ""); } catch (e) { writing = { error: true }; }
-        if (writing && !writing.error && writing.level) skills.writing = { level: writing.level, pct: null };
-        var profile = {
-            date: U.today(), overall: L.overall(skills), skills: skills, weakest: weakest(skills),
-            writing: writing && !writing.error ? writing : null, writingText: st.writing || ""
-        };
+        st.sec = DONE; st.done = true; save();
+        var skills = score();
+        var profile = { date: U.today(), overall: L.overall(skills), skills: skills, weakest: weakest(skills) };
         store(R_KEY, JSON.stringify(profile));
 
         // Rebuild the unit queue from the grammar part, keeping units already in progress
@@ -396,16 +308,17 @@
         U.saveQueue(active.concat(ids.filter(function (id) { return active.indexOf(id) === -1; })));
         store("test:last", JSON.stringify({ date: U.today(), answers: st.grammar, res: res }));
         store(P_KEY, null);
-        renderResult(profile, res, writing && writing.error);
+        renderResult(profile, res);
     }
 
-    function renderResult(p, res, writingFailed) {
+    function renderResult(p, res) {
         show("s-result");
         $("r-date").textContent = "Result of " + new Date(p.date + "T12:00:00").toLocaleDateString("en-GB", { day: "numeric", month: "long" });
-        $("r-overall").textContent = p.overall || "–";
-        var pr = L.project(p.overall, U.today());
+        var overall = L.overall(p.skills) || p.overall;
+        $("r-overall").textContent = overall || "–";
+        var pr = L.project(overall, U.today());
         $("r-line").textContent = !pr ? "" : "Realistic by 6 Nov if you follow the plan (about " + pr.hours + " study hours left): " +
-            (pr.low === pr.high ? pr.low : pr.low + " to " + pr.high) + " overall. Writing and speaking can score above that with templates and connectors; that's where the extra points are.";
+            (pr.low === pr.high ? pr.low : pr.low + " to " + pr.high) + " overall. Listening and reading move fastest with daily timed practice; that's where the extra points are.";
 
         var box = $("r-skills");
         box.innerHTML = "";
@@ -421,37 +334,26 @@
         });
         box.insertAdjacentHTML("beforeend", '<div class="scale-labels"><span>A1</span><span>A2</span><span>B1</span><span>B2</span><span>C1</span></div>');
 
-        if (p.writing) {
-            $("r-writing-card").hidden = false;
-            var wr = p.writing;
-            var html = "<p><b>" + esc(wr.level) + "</b> · task " + wr.task_completion + "/5 · coherence " + wr.coherence + "/5 · vocabulary " + wr.vocabulary + "/5 · grammar " + wr.grammar + "/5</p><p>" + esc(wr.summary) + "</p>";
-            if (wr.corrections && wr.corrections.length) html += "<ul>" + wr.corrections.map(function (c) { return '<li><span class="t-danger" lang="de">' + esc(c.original) + '</span> → <b lang="de">' + esc(c.corrected) + '</b> <span class="subtle">' + esc(c.rule) + "</span></li>"; }).join("") + "</ul>";
-            $("r-writing").innerHTML = html;
-        } else if (writingFailed) {
-            $("r-writing-card").hidden = false;
-            $("r-writing").innerHTML = "<p>Claude couldn't grade the text this time. Paste it into Coach to get the feedback.</p>";
-        }
-
-        var NICE = { grammar: "grammar", vocab: "vocabulary", reading: "reading", listening: "listening", writing: "writing" };
-        var w2 = p.weakest.slice(0, 2).map(function (k) { return NICE[k]; });
+        var NICE = { grammar: "grammar", vocab: "vocabulary", reading: "reading", listening: "listening" };
+        var w2 = p.weakest.filter(function (k) { return NICE[k]; }).slice(0, 2).map(function (k) { return NICE[k]; });
         var core = res ? res.units.filter(function (u) { return u.tier === "plan"; }).length : 0;
-        $("r-plan").textContent = (w2.length ? "Your focus until the exam: " + w2.join(" and ") + ". The daily blocks and focus lines now follow that. " : "") +
+        $("r-plan").textContent = (w2.length ? "Weakest in this test: " + w2.join(" and ") + ". The routine keeps listening and reading first, as you decided. " : "") +
             (res ? "Unit queue: " + core + " core units, ordered by what pays off most." : "");
         var sum = summary(p);
         $("r-coach").href = "coach.html?q=" + encodeURIComponent("Acabo de hacer el test de nivel. Resultado:\n" + sum + "\n\nRevisa mi rutina hasta el examen y dime en qué debo fijarme estos días.");
         $("r-copy").onclick = function () { window.copyText(sum).then(function () { toast("Summary copied"); }); };
     }
     function summary(p) {
-        return "Level test " + p.date + ": overall " + p.overall + ". " + Object.keys(L.SKILL_NAMES).map(function (k) {
+        return "Level test " + p.date + ": overall " + (L.overall(p.skills) || p.overall) + ". " + Object.keys(L.SKILL_NAMES).map(function (k) {
             var s = p.skills[k]; return L.SKILL_NAMES[k] + " " + (s && s.level ? s.level + (s.pct != null ? " (" + s.pct + "%)" : "") : "not measured");
-        }).join(", ") + ". Weakest: " + p.weakest.slice(0, 2).join(", ") + ".";
+        }).join(", ") + ". Weakest: " + p.weakest.filter(function (k) { return L.SKILL_NAMES[k]; }).slice(0, 2).join(", ") + ".";
     }
 
     // ---------- Navigation ----------
     $("back").addEventListener("click", function () {
         if (window.speechSynthesis) speechSynthesis.cancel();
         if (st.idx > 0) st.idx--;
-        else if (st.sec > 0) { st.sec--; var s = SECTIONS[st.sec]; st.idx = s === "grammar" ? Q.length - 1 : s === "vocab" ? L.VOCAB.length - 1 : s === "writing" ? 0 : 1; }
+        else if (st.sec > 0) { st.sec--; var s = SECTIONS[st.sec]; st.idx = s === "grammar" ? Q.length - 1 : s === "vocab" ? L.VOCAB.length - 1 : 1; }
         save(); render();
     });
     $("pause").addEventListener("click", function () { if (window.speechSynthesis) speechSynthesis.cancel(); save(); showPaused(); });
@@ -465,7 +367,7 @@
         show("s-intro");
         $("paused").hidden = false;
         $("handoff-note").hidden = true;
-        $("paused-text").textContent = "Part " + (st.sec + 1) + " of 5 (" + NAMES[SECTIONS[Math.min(st.sec, 4)]] + "), " + answered() + " answers saved on this device.";
+        $("paused-text").textContent = "Part " + Math.min(st.sec + 1, DONE) + " of " + DONE + " (" + NAMES[SECTIONS[Math.min(st.sec, DONE - 1)]] + "), " + answered() + " answers saved on this device.";
         $("start").textContent = "Start over";
     }
     // Hand-off link: the progress travels in the URL fragment, which browsers never send to the server
@@ -484,7 +386,7 @@
             var incoming = decode(location.hash.slice(3));
             var local = loadJSON(P_KEY);
             history.replaceState(null, "", location.pathname);
-            if (!local || local.sec >= 5 || confirm("Replace the unfinished test on this device with the one from your link?")) {
+            if (!local || local.sec >= 5 || local.done || confirm("Replace the unfinished test on this device with the one from your link?")) {
                 st = incoming; save();
                 toast("Test loaded from your other device");
             }
@@ -492,11 +394,11 @@
     }
     $("start").addEventListener("click", function () {
         var prev = loadJSON(P_KEY);
-        if (prev && prev.sec < 5 && !confirm("Start over? Your unfinished answers will be replaced.")) return;
+        if (prev && prev.sec < 5 && !prev.done && !confirm("Start over? Your unfinished answers will be replaced.")) return;
         st = fresh(); save(); $("paused").hidden = true; show("s-run"); render();
     });
     $("resume").addEventListener("click", function () { st = loadJSON(P_KEY) || fresh(); $("paused").hidden = true; show("s-run"); render(); });
-    $("see-last").addEventListener("click", function () { var p = loadJSON(R_KEY), t = loadJSON("test:last"); renderResult(p, t && t.res, false); });
+    $("see-last").addEventListener("click", function () { var p = loadJSON(R_KEY), t = loadJSON("test:last"); renderResult(p, t && t.res); });
 
     document.addEventListener("keydown", function (e) {
         if ($("s-run").hidden || e.ctrlKey || e.metaKey || e.altKey || e.target.tagName === "TEXTAREA") return;
@@ -509,7 +411,7 @@
     });
 
     var prog = loadJSON(P_KEY);
-    if (prog && prog.sec < 5) { st = prog; showPaused(); }
+    if (prog && prog.sec < 5 && !prog.done) { st = prog; showPaused(); }
     if (loadJSON(R_KEY)) $("see-last").hidden = false;
 })();
 </script>

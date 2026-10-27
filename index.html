@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Today · Speedrun</title>
-    <link rel="stylesheet" href="assets/style.css?v=20261024180822">
-    <script src="assets/app.js?v=20261024180822"></script>
-    <script src="assets/plan.js?v=20261024180822"></script>
-    <script src="assets/level.js?v=20261024180822"></script>
-    <script src="assets/units.js?v=20261024180822"></script>
+    <link rel="stylesheet" href="assets/style.css?v=20261027193254">
+    <script src="assets/app.js?v=20261027193254"></script>
+    <script src="assets/plan.js?v=20261027193254"></script>
+    <script src="assets/level.js?v=20261027193254"></script>
+    <script src="assets/units.js?v=20261027193254"></script>
     <style>
         .page { padding-top: 14px; }
 
@@ -148,7 +148,7 @@
         <div class="seg seg--sticky" aria-label="Today">
             <button class="seg__btn" data-for="p-plan">Plan</button>
             <button class="seg__btn" data-for="p-units">Units</button>
-            <button class="seg__btn" data-for="p-tpl">Templates</button>
+            <button class="seg__btn" data-for="p-tpl">Exam</button>
             <button class="seg__btn" data-for="p-ai">Prompts</button>
             <button class="seg__btn" data-for="p-guide">Guide</button>
         </div>
@@ -247,7 +247,7 @@
                             </form>
                             <div class="card">
                                 <div class="row" style="justify-content:space-between"><h3 style="margin:0">Mined today</h3><span class="subtle" id="mine-count">0</span></div>
-                                <p class="subtle" style="margin:4px 0 0">Use 3 of these in your "5 own sentences" and 2 in today's writing block.</p>
+                                <p class="subtle" style="margin:4px 0 0">Use 3 of these in your "5 own sentences"; the rest go to Anki.</p>
                                 <div id="mine-list"></div>
                             </div>
                         </section>
@@ -260,7 +260,7 @@
                                     <li><b>Make it yours (10 min).</b> Write 5 sentences with the structure about your own life, using 3 of the words you just mined. Check them with the "5 own sentences" prompt.</li>
                                     <li><b>Repeat pass (day +2).</b> Only the exercises you got wrong. No theory. Log it.</li>
                                     <li><b>Check (day +5).</b> The 10-item "Unit check" prompt, cold. 80% or more makes it solid.</li>
-                                    <li><b>Use it.</b> Put the structure into your next template text on purpose.</li>
+                                    <li><b>Use it.</b> Put the structure into tonight's five shutdown sentences on purpose.</li>
                                 </ol>
                                 <p class="subtle" style="margin:0">80%+ moves to the next step (a first pass at 80%+ skips straight to the check). 60–79% repeats in 2 days. Under 60% starts the failure protocol.</p>
                             </div>
@@ -280,73 +280,32 @@
                 </div>
             </section>
 
-            <!-- TEMPLATES -->
+            <!-- EXAM -->
             <section class="tabpanel" id="p-tpl" hidden>
-                <div class="tabset" id="tpl-tabs">
-                    <div class="seg seg--scroll" aria-label="Templates">
-                        <button class="seg__btn" data-for="t-e">Interview</button>
-                        <button class="seg__btn" data-for="t-a">Opinion</button>
-                        <button class="seg__btn" data-for="t-b">Email</button>
-                        <button class="seg__btn" data-for="t-c">Monologue</button>
-                        <button class="seg__btn" data-for="t-d">Discussion</button>
+                <div class="tabset" id="exam-tabs">
+                    <div class="seg seg--scroll" aria-label="Exam parts">
+                        <button class="seg__btn" data-for="x-l">Listening</button>
+                        <button class="seg__btn" data-for="x-r">Reading</button>
+                        <button class="seg__btn" data-for="x-g">Grammar</button>
                     </div>
                     <div class="panels" style="margin-top:10px">
-                        <section class="tabpanel card" id="t-e">
-                            <h3>Erasmus interview <span class="badge badge--danger">Most likely question</span></h3>
-                            <p class="subtle">Write your own answers, get them corrected, memorize them.</p>
-                            <div class="skeleton" lang="de">
-                                <b>Wer sind Sie?</b> Ich heiße <span class="slot">[…]</span>, bin <span class="slot">[…]</span> Jahre alt und studiere <span class="slot">[Fach]</span> an der <span class="slot">[Uni]</span> in <span class="slot">[Stadt]</span>.<br>
-                                <b>Warum Erasmus?</b> Ich möchte ein Auslandssemester machen, <b>weil</b> ich <span class="slot">[…]</span>. <b>Außerdem</b> ist es für meine Zukunft wichtig, <b>dass</b> <span class="slot">[…]</span>.<br>
-                                <b>Warum diese Stadt / Uni?</b> Die Uni ist bekannt für <span class="slot">[…]</span>. <b>Je</b> länger ich mich damit beschäftigt habe, <b>desto</b> mehr <span class="slot">[…]</span>.<br>
-                                <b>Was erwarten Sie?</b> Ich hoffe, <span class="slot">[…] zu [Infinitiv]</span>. <b>Wenn</b> ich zurückkomme, <b>würde</b> ich gern <span class="slot">[…]</span>.<br>
-                                <b>Sorgen?</b> <b>Zwar</b> habe ich ein bisschen Angst vor <span class="slot">[…]</span>, <b>aber</b> ich bin sicher, dass <span class="slot">[…]</span>.<br>
-                                <b>Ihr Deutsch?</b> Ich lerne seit <span class="slot">[…]</span> Deutsch. Am schwierigsten finde ich <span class="slot">[…]</span>, aber ich übe jeden Tag.
-                            </div>
+                        <section class="tabpanel card" id="x-l">
+                            <h3>Listening <span class="badge badge--danger">Priority 1</span></h3>
+                            <p><b>In the exam.</b> Use every pause to read the questions and underline the key words. Predict the answer before it plays. Mark on the first play, confirm on the second. The real answer often comes after <i lang="de">aber, jedoch, eigentlich, trotzdem</i>; what's said first often gets corrected. Watch numbers, times and negation (<i lang="de">kein, nicht, nie</i>). Never leave a blank.</p>
+                            <p><b>Daily method.</b> Questions first, play twice, score it. Then the transcript: find the exact words behind each answer and why you missed them (speed, a word, a trap, a paraphrase). Finish with 10 minutes of shadowing.</p>
+                            <p style="margin:0"><b>Material.</b> Goethe-Zertifikat B1 and B2 model tests (free on goethe.de, with audio and answers), DW <i>Langsam gesprochene Nachrichten</i> and <i>Top-Thema</i> (with transcripts), Easy German with subtitles. Move from slow to normal speed through the week.</p>
                         </section>
-                        <section class="tabpanel card" id="t-a" hidden>
-                            <h3>Opinion text, about 150 words</h3>
-                            <p class="subtle">Carries zwar…aber, je…desto, nicht nur…sondern auch, Konjunktiv II and a modal passive. Your own middle sentences must be clean too.</p>
-                            <div class="skeleton" lang="de">
-                                In letzter Zeit wird immer häufiger über das Thema „<span class="slot">[X]</span>" diskutiert. Ich möchte dazu meine Meinung äußern.<br>
-                                <b>Einerseits</b> spricht für <span class="slot">[X]</span>, dass <span class="slot">[Grund … Verb]</span>. Ein gutes Beispiel dafür ist <span class="slot">[Beispiel]</span>.<br>
-                                <b>Andererseits</b> darf man nicht außer Acht lassen, dass <span class="slot">[Nachteil … Verb]</span>. <b>Zwar</b> <span class="slot">[Gegenargument]</span>, <b>aber</b> <span class="slot">[dein Argument]</span>.<br>
-                                In meinem Heimatland ist die Situation <b>nicht nur</b> <span class="slot">[…]</span>, <b>sondern auch</b> <span class="slot">[…]</span>. <b>Je</b> mehr man darüber nachdenkt, <b>desto</b> klarer wird, dass <span class="slot">[…]</span>.<br>
-                                <b>Wenn ich die Wahl hätte, würde ich</b> vorschlagen, dass <span class="slot">[Alternative]</span>.<br>
-                                <b>Zusammenfassend</b> lässt sich sagen, dass für <span class="slot">[X]</span> eine Lösung gefunden werden <b>muss</b>, <b>um</b> <span class="slot">[…]</span> <b>zu</b> <span class="slot">[Infinitiv]</span>.
-                            </div>
+                        <section class="tabpanel card" id="x-r" hidden>
+                            <h3>Reading <span class="badge badge--warn">Priority 2</span></h3>
+                            <p><b>In the exam.</b> Questions first, then scan. The right answer is usually a paraphrase (<i lang="de">Arbeit → Beruf</i>); options that copy the text's words are often the trap. Not in the text means wrong. Stuck over 90 seconds: guess and move on.</p>
+                            <p><b>Daily method.</b> Two texts against the clock. For each wrong answer, quote the sentence that held it. Words that cost you an answer go to Mine vocab.</p>
+                            <p style="margin:0"><b>Material.</b> Goethe B1 and B2 model tests (Lesen), DW <i>Top-Thema</i>, nachrichtenleicht.de, and the "Reading practice" prompt.</p>
                         </section>
-                        <section class="tabpanel card" id="t-b" hidden>
-                            <h3>Formal email, about 100 words</h3>
-                            <div class="skeleton" lang="de">
-                                Sehr geehrte Frau <span class="slot">[Name]</span>, / Sehr geehrte Damen und Herren,<br>
-                                vielen Dank für Ihre Nachricht. Ich wende mich an Sie, <b>weil</b> <span class="slot">[…]</span>.<br>
-                                Leider muss ich Ihnen mitteilen, <b>dass</b> <span class="slot">[…]</span>.<br>
-                                <b>Könnten Sie mir bitte mitteilen, ob</b> <span class="slot">[…]</span>? Außerdem <b>würde ich gern wissen</b>, <span class="slot">[W-Frage … Verb]</span>.<br>
-                                Ich schlage vor, dass <span class="slot">[…]</span>. <b>Wäre es möglich</b>, <span class="slot">[…] zu [Infinitiv]</span>?<br>
-                                Für Ihr Verständnis bedanke ich mich im Voraus.<br>
-                                Mit freundlichen Grüßen<br><span class="slot">[Name]</span>
-                            </div>
-                        </section>
-                        <section class="tabpanel card" id="t-c" hidden>
-                            <h3>Monologue, 3 to 4 minutes</h3>
-                            <div class="skeleton" lang="de">
-                                Ich möchte heute über das Thema „<span class="slot">[X]</span>" sprechen. <b>Zuerst</b> <span class="slot">[…]</span>, <b>dann</b> <span class="slot">[…]</span> und <b>zum Schluss</b> <span class="slot">[…]</span>.<br>
-                                In meinem Heimatland ist es so, dass <span class="slot">[…]</span>. Ich persönlich habe die Erfahrung gemacht, dass <span class="slot">[…]</span>.<br>
-                                <b>Ein Vorteil ist</b>, dass <span class="slot">[…]</span>. <b>Ein Nachteil ist allerdings</b> <span class="slot">[…]</span>.<br>
-                                <b>Brücke</b> (weak topic): Man muss das auch im Zusammenhang mit <span class="slot">[Gesundheit / Digitalisierung / Studium]</span> betrachten.<br>
-                                <b>Damit komme ich zum Schluss.</b> Meiner Meinung nach <span class="slot">[…]</span>, weil <span class="slot">[…]</span>.
-                            </div>
-                            <p class="subtle" style="margin-top:8px">Use the bridge to reach vocabulary you know, then come back to the question. Going fully off-topic loses points.</p>
-                        </section>
-                        <section class="tabpanel card" id="t-d" hidden>
-                            <h3>Discussion phrases</h3>
-                            <div class="skeleton" lang="de">
-                                <b>Zustimmen:</b> Da bin ich ganz Ihrer Meinung. / Das finde ich auch.<br>
-                                <b>Widersprechen:</b> Das sehe ich etwas anders, weil <span class="slot">[…]</span>. / Das stimmt zwar, aber man sollte auch bedenken, dass <span class="slot">[…]</span>.<br>
-                                <b>Nachfragen:</b> Was halten Sie davon? / Wie meinen Sie das genau?<br>
-                                <b>Zeit gewinnen:</b> Das ist eine gute Frage … Lassen Sie mich kurz überlegen.<br>
-                                <b>Vorschlagen:</b> Wie wäre es, wenn wir <span class="slot">[…]</span>?
-                            </div>
+                        <section class="tabpanel card" id="x-g" hidden>
+                            <h3>Grammar</h3>
+                            <p><b>Expect</b> multiple choice, gap fill or a C-Test. The points are in verb position (V2, and the verb at the end after <i lang="de">dass, weil, obwohl</i>), case after prepositions and verbs, adjective endings, connectors, the passive, Konjunktiv II and relative pronouns.</p>
+                            <p><b>In the exam.</b> Read the whole sentence before choosing. Find what sets the case (a preposition or a verb) and where the verb has to go. Don't change an answer unless a rule backs the change.</p>
+                            <p style="margin:0"><b>Daily.</b> New units at 09:00, a 30-item drill at 11:00, repeats and a C-Test at 17:00. Your error patterns are on the <a href="diag.html">Diagnosis</a> page.</p>
                         </section>
                     </div>
                 </div>
@@ -354,8 +313,9 @@
 
             <!-- PROMPTS -->
             <section class="tabpanel" id="p-ai" hidden>
-                <details class="prompt"><summary>Writing grader</summary><pre class="prompt__text">Act as a strict CEFR B2 German examiner for a university Erasmus language test. First give me one realistic writing task (alternate between an opinion text ~150 words and a semi-formal email ~100 words). Wait for my text. Then grade it on: task completion, coherence, vocabulary range, grammar accuracy, with a score per criterion and an estimated CEFR level (A2/B1/B1+/B2). List every error as: my sentence → corrected sentence → 5-word rule. Finally, give me 3 phrases to add to my skeleton. Explain in English.</pre></details>
-                <details class="prompt"><summary>Speaking simulation (voice)</summary><pre class="prompt__text">Act as the examiner of a university B2 German oral test for Erasmus students. Run a ~12 minute oral exam in 3 parts: (1) interview: ask about me, my studies, why I want to do Erasmus, where and what I plan to do there; (2) give me a topic and let me speak ~3 minutes alone; (3) a short discussion where you take the opposite opinion. Speak at natural B2 speed. Do NOT correct me during the exam. At the end, give me: an estimated CEFR level, my 5 most frequent errors (my sentence → correct), and 3 phrases I should have used.</pre></details>
+                <details class="prompt"><summary>Grammar exam drill, 30 items</summary><pre class="prompt__text">Act as the grammar section of a university German placement exam (A2 to B2). Give me 30 numbered items at once: 15 multiple choice with 4 options, 10 one-word gap fills and 5 sentence transformations. Mix verb position, cases after prepositions and verbs, adjective endings, connectors, passive, Konjunktiv II, relative clauses and these weak topics of mine: [topics from the Diagnosis page]. No answers yet. When I send mine, give my score out of 30, then every mistake as: my answer → correct answer → the rule in 5 words. End with the one topic I should drill next.</pre></details>
+                <details class="prompt"><summary>Reading practice, exam style</summary><pre class="prompt__text">Write a German newspaper-style text of about 350 words at B1+/B2 level on [studies / work / environment / technology / travel / society]. Then 8 questions: 4 richtig / falsch / nicht im Text and 4 multiple choice with 3 options. Like real exams, put paraphrases in the correct options and word-matching traps in the wrong ones. Wait for my answers. Then grade them and, for each mistake, quote the sentence that holds the answer and name the trap.</pre></details>
+                <details class="prompt"><summary>Listening post-mortem</summary><pre class="prompt__text">I practised a German listening task. Transcript: [paste]. My answers: [..]. Correct answers: [..]. For each wrong answer, show the exact words in the transcript that gave it and why I probably missed it (speed, vocabulary, paraphrase, a trap after aber/eigentlich, numbers or negation). Then give me 5 chunks from the transcript worth adding to Anki, with a Spanish translation.</pre></details>
                 <details class="prompt"><summary>5 own sentences, after a first pass</summary><pre class="prompt__text">I just studied this German grammar structure: [unit topic, e.g. Relativsätze im Dativ]. Here are 5 sentences I wrote with it about my own life: [sentences]. Correct each one. For every mistake: my sentence → corrected sentence → which rule I broke (one line). Then give me 3 new sentences in English to translate using the same structure, and correct those too.</pre></details>
                 <details class="prompt"><summary>Unit check, day +5</summary><pre class="prompt__text">Test me on this German grammar structure: [unit topic]. Give me 10 short items, one at a time (mix gap-fill, transformation and translation from English). Don't explain anything before I answer. After all 10, give me my score out of 10 and list my mistakes with the correct version.</pre></details>
                 <details class="prompt"><summary>Failure drill, red units</summary><pre class="prompt__text">I keep failing this German structure: [unit topic]. My typical mistakes are: [paste 3–5 wrong sentences]. First explain the rule in 3 lines, comparing it with Spanish and English. Then drill me with minimal pairs: give me one sentence at a time where I must choose between two forms (e.g. dem/den, weil…ist/weil ist…). Keep going until I get 8 in a row right, then tell me I'm done.</pre></details>
@@ -369,10 +329,8 @@
                 <div class="tabset" id="guide-tabs">
                     <div class="seg seg--scroll" aria-label="Guide">
                         <button class="seg__btn" data-for="g-rules">Rules</button>
-                        <button class="seg__btn" data-for="g-intel">Exam intel</button>
                         <button class="seg__btn" data-for="g-gates">Gates</button>
                         <button class="seg__btn" data-for="g-vocab">Vocab rules</button>
-                        <button class="seg__btn" data-for="g-tactics">Tactics</button>
                         <button class="seg__btn" data-for="g-anki">Anki</button>
                         <button class="seg__btn" data-for="g-diag">Level test</button>
                         <button class="seg__btn" data-for="g-why">Why</button>
@@ -381,41 +339,24 @@
                         <section class="tabpanel card" id="g-rules">
                             <h3>Rules of the day</h3>
                             <ul>
-                                <li><b>Mock days:</b> the mock replaces the 09:00 and 14:00 blocks. Post-mortem at 17:00.</li>
-                                <li><b>Sunday from 16:00 is passive:</b> no deep work, German stays on (series, podcasts, Anki reviews, template recital).</li>
+                                <li><b>Mock days:</b> the mock replaces the 09:00, 11:00 and 14:00 blocks. Post-mortem at 17:00.</li>
+                                <li><b>Sunday from 16:00 is passive:</b> no deep work, German stays on (series, podcasts, Anki reviews).</li>
                                 <li><b>Fried brain</b> (rereading a line three times): jump to the next light block and come back later.</li>
                                 <li><b>Focus rotation:</b> no block over 2.5 h, every block switches skill. If one drags, set a 25-minute timer and start.</li>
                                 <li><b>No short-form video</b> until the exam. If you need it, German only, in the 20:15 slot.</li>
-                                <li><b>Walks:</b> morning active audio out loud, afternoon the same audio passively, night templates aloud without headphones.</li>
+                                <li><b>Walks:</b> morning active audio out loud, afternoon the same audio passively.</li>
                                 <li><b>Desk:</b> no German audio while typing grammar.</li>
-                            </ul>
-                        </section>
-                        <section class="tabpanel card" id="g-intel" hidden>
-                            <h3>Ask the Erasmus office</h3>
-                            <ul>
-                                <li>Which parts: grammar, reading, listening, writing, oral interview?</li>
-                                <li>Duration and weight of each, and the minimum per part.</li>
-                                <li>Writing: text type and word count.</li>
-                                <li>Oral: interview, presentation or conversation; alone or in pairs.</li>
-                                <li>Sample exam, retakes, exact date and time.</li>
-                            </ul>
-                            <h3 style="margin-top:14px">Then re-weight the day</h3>
-                            <ul>
-                                <li><b>Grammar test:</b> the 17:00 block becomes C-Tests every day.</li>
-                                <li><b>Oral is an interview:</b> the interview template is priority one.</li>
-                                <li><b>No listening part:</b> move that time to speaking.</li>
-                                <li><b>Sample exam:</b> untimed now, timed on Oct 25.</li>
                             </ul>
                         </section>
                         <section class="tabpanel card" id="g-gates" hidden>
                             <h3>Gate A · Wed Oct 28, mock at 10:00</h3>
-                            <div class="gate"><span class="badge badge--ok">B1+ or better on each part</span> Keep the routine. One extra speaking simulation a day.</div>
-                            <div class="gate"><span class="badge badge--warn">One part clearly behind</span> That part takes the 17:00 block until Nov 2.</div>
-                            <div class="gate"><span class="badge badge--danger">Two parts at A2</span> Fewer new units (one a day), more practice of those parts, and lean on the templates for writing and speaking.</div>
+                            <div class="gate"><span class="badge badge--ok">B1+ or better on each part</span> Keep the routine.</div>
+                            <div class="gate"><span class="badge badge--warn">Listening or reading clearly behind</span> The 11:00 drill becomes a second round of that part until Nov 2; grammar keeps 09:00 and 17:00.</div>
+                            <div class="gate"><span class="badge badge--danger">Two parts at A2</span> One new unit a day instead of two; the freed time goes to listening and reading.</div>
                             <h3 style="margin-top:14px">Gate B · Sun Nov 1, level test again</h3>
-                            <p>Retake the level test; the routine and unit queue follow the new result. Type all five templates from memory.</p>
+                            <p>Retake the level test; the unit queue follows the new result.</p>
                             <h3 style="margin-top:14px">Final · Tue Nov 3, mock at 10:00</h3>
-                            <p style="margin:0">Same time as the exam. After it, no new units: only due checks, templates and rest.</p>
+                            <p style="margin:0">Same time as the exam. After it, no new units: only due checks, light listening and rest.</p>
                         </section>
                         <section class="tabpanel card" id="g-vocab" hidden>
                             <h3>Decode instead of memorizing</h3>
@@ -425,14 +366,6 @@
                             <p><b>Prefixes are directions.</b> auf up/open, zu closed, an/aus on/off, ab off/away, ein in, um change, vor before, ver- wrong or changed, er- result.</p>
                             <p style="margin:0"><b>Compounds.</b> The last part gives meaning and gender: Hand + Schuh = der Handschuh.</p>
                         </section>
-                        <section class="tabpanel card" id="g-tactics" hidden>
-                            <h3>Reading</h3>
-                            <p>Questions first, then scan. The right answer is usually a paraphrase (Arbeit, Beruf); identical words are often the trap. Not in the text means wrong. Stuck over 90 seconds: guess. Never leave a blank.</p>
-                            <h3>Listening</h3>
-                            <p>Underline key words in the pause. The real answer often follows aber, jedoch, trotzdem or eigentlich. Mark on the first play, confirm on the replay.</p>
-                            <h3>After every practice part</h3>
-                            <p style="margin:0">For each wrong answer, write why: vocabulary, grammar, trap or time.</p>
-                        </section>
                         <section class="tabpanel card" id="g-anki" hidden>
                             <h3>Anki</h3>
                             <p>FSRS on, desired retention 0.85. Cards from <a href="words.html">Words</a>, mocks and corrections, added with the <a href="anki.html">card maker</a>. Suspend leeches after 4 lapses.</p>
@@ -440,16 +373,16 @@
                         </section>
                         <section class="tabpanel card" id="g-diag" hidden>
                             <h3>Level test</h3>
-                            <p>About 45 minutes: grammar, vocabulary, reading, listening and a forum post. It estimates your level per skill, builds the unit queue and rewrites the routine around your two weakest skills.</p>
+                            <p>About 35 minutes: grammar, vocabulary, reading and listening (the exam parts plus the vocabulary behind them). It estimates your level per part and rebuilds the unit queue.</p>
                             <a class="btn btn--primary btn--sm" href="test.html">Open the level test</a>
                             <p class="subtle" style="margin:10px 0 0">Take it today and again on Nov 1.</p>
                         </section>
                         <section class="tabpanel card" id="g-why" hidden>
                             <h3>Why the plan looks like this</h3>
-                            <p><b>One exam, the score sets the level.</b> Every point counts, in every part. The cheapest points are in writing and speaking: templates, connectors and B2 phrases show range even when the rest of the sentence is simple.</p>
-                            <p>A2 to B2 normally takes 300 to 400 hours. Full-time gives you about 250. Close enough to fight for.</p>
-                            <p>An internal Erasmus exam is usually shorter and checks whether you can function: talk about yourself, write a clear text, follow normal speech, keep grammar mostly right. A clean B1+ with B2 connectors often passes.</p>
-                            <p style="margin:0">The two risks are the unknown format and burnout.</p>
+                            <p><b>One exam in three parts: grammar, reading and listening. The score sets the level.</b> There's no writing or speaking, so every hour goes to understanding German and getting the forms right.</p>
+                            <p><b>Listening first, then reading.</b> They're your weakest parts, and they improve fastest with daily timed practice and post-mortems. Grammar comes easily to you: the units keep it climbing and the drills turn it into points.</p>
+                            <p>Vocabulary carries both: most wrong answers in reading and listening come from a word you didn't know or a paraphrase you didn't spot.</p>
+                            <p style="margin:0">The remaining risk is burnout, so keep the off blocks.</p>
                         </section>
                     </div>
                 </div>
@@ -518,6 +451,8 @@
         $("title").textContent = isToday ? "Today" : fmt(selected, { weekday: "long" });
         var prof = window.PLAN.profile;
         $("dateline").textContent = fmt(selected, { weekday: isToday ? "long" : undefined, day: "numeric", month: "long" }) + " · " + PHASES[row[1]];
+        // Recomputed with the exam weights (grammar, reading, listening), so older results follow the new format
+        if (prof && prof.skills && window.LevelTest) prof.overall = window.LevelTest.overall(prof.skills) || prof.overall;
         $("m-level").hidden = !(prof && prof.overall);
         if (prof && prof.overall) {
             var pr = window.LevelTest && window.LevelTest.project(prof.overall, U.today());

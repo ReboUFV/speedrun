@@ -27,20 +27,20 @@ window.PLAN = {
     // The day as a checklist: [time, kind, title, detail, grammar slot]
     blocks: [
         ["0730", "off",   "Wake up", "Water, daylight, no phone for 30 minutes."],
-        ["0745", "light", "Walk with audio", "45 minutes of German audio at your level. Repeat out loud what you catch."],
+        ["0745", "light", "Walk with audio", "45 minutes of B1 audio. Pause, repeat out loud, guess the next sentence. This is listening practice."],
         ["0830", "light", "Breakfast and Anki reviews", "All due cards."],
         ["0900", "deep",  "Grammar: new units", "First passes. Type everything. 50 minutes on, 10 off.", "new"],
-        ["1130", "out",   "Writing", "One text from a template, graded in Coach. Use at least 4 connectors and 2 phrases from Words."],
-        ["1215", "light", "Vocabulary", "New cards from Words: connectors and phrases first, then frequent words."],
+        ["1100", "deep",  "Grammar: exam drill", "30 mixed items cold and timed: multiple choice, gap fill and a C-Test (Prompts tab). Log the score in Audit."],
+        ["1215", "light", "Vocabulary", "New cards from Words: connectors and frequent words first. They decide most reading and listening questions."],
         ["1300", "off",   "Lunch", "A real break."],
-        ["1400", "deep",  "Reading and listening", "One practice part of each, timed, then the post-mortem."],
-        ["1530", "light", "Walk or gym", "Same audio as the morning, or recite templates."],
-        ["1615", "out",   "Speaking", "Voice simulation with the AI, then 10 minutes of shadowing."],
+        ["1400", "deep",  "Listening", "90 minutes: three practice audios, questions read first, played twice at most. Then the transcript, the words that cost you an answer, and 10 minutes of shadowing."],
+        ["1530", "light", "Walk or gym", "The morning audio again, passively."],
+        ["1615", "deep",  "Reading", "Two timed texts with questions, then the post-mortem: why each wrong answer was wrong. Unknown words go to Mine vocab."],
         ["1700", "deep",  "Grammar: repeats", "Due repeats, checks and red flags, then one C-Test.", "due"],
         ["1830", "off",   "Exercise and dinner", ""],
-        ["1930", "out",   "Second output", "The other template, or the syntax interrogation."],
-        ["2015", "light", "Immersion", "Series with German subtitles, games, Easy German."],
-        ["2145", "light", "Shutdown", "Five sentences about your day in German."]
+        ["1930", "deep",  "Weak part, second round", "40 minutes more of your weakest exam part, with lighter material."],
+        ["2015", "light", "Immersion", "A series with German subtitles, Easy German or podcasts. Listening counts."],
+        ["2145", "light", "Shutdown", "Five sentences about your day using today's grammar."]
     ],
     days: [
         ["2026-10-10", "p0", "", "<b>Take the grammar test</b> so it builds your unit queue. Then the baseline diagnostic (Guide, Day 0) and Anki backlog triage. Evening: memorize Skeleton A."],
@@ -60,17 +60,17 @@ window.PLAN = {
         ["2026-10-24", "rs", "Test", "<b>Full level test</b> (about 45 minutes). Your routine and unit queue rewrite themselves from the result. Then the first unit from the new queue and an interview-template draft in Coach."],
         ["2026-10-25", "rs", "", "Units from the new queue + due repeats. Focus: {weak1}. Write your interview answers and get them corrected in Coach. From 16:00: passive mode."],
         ["2026-10-26", "bd", "", "Units + due repeats. Focus: {weak1}. Speaking: oral simulation in Coach with voice."],
-        ["2026-10-27", "bd", "", "Units + due repeats. Focus: {weak2}. Memorise the opinion template."],
-        ["2026-10-28", "bd", "Mock", "<b>Mock at 10:00:</b> one reading part, one listening part and one text, timed. Afternoon: post-mortem in Coach and due repeats only. Gate A."],
-        ["2026-10-29", "bd", "", "Units + due repeats. Focus: {weak1}. Memorise the email template."],
-        ["2026-10-30", "bd", "", "Units + due repeats. Focus: {weak2}. Two speaking simulations in Coach."],
-        ["2026-10-31", "sh", "Mock", "<b>Full mock at 10:00</b>, all parts timed, speaking with Coach. Evening: passive immersion."],
-        ["2026-11-01", "sh", "Gate", "<b>Retake the level test</b>; the routine and queue update. Type all five templates from memory. From 16:00: passive mode."],
-        ["2026-11-02", "sh", "", "<b>Last new units</b> + due repeats. Focus: {weak1}. Two interview simulations in Coach."],
+        ["2026-10-27", "bd", "", "<b>Format confirmed: grammar, reading and listening.</b> No writing or speaking, so that time goes to the three parts. Units + due repeats. Focus: {weak1}."],
+        ["2026-10-28", "bd", "Mock", "<b>Mock at 10:00:</b> a 30-item grammar drill, one reading and one listening part, all timed. Afternoon: post-mortem in Coach and due repeats only. Gate A."],
+        ["2026-10-29", "bd", "", "Units + due repeats. Focus: {weak1}. Listening: read the questions first and predict the answers before every audio."],
+        ["2026-10-30", "bd", "", "Units + due repeats. Focus: {weak2}. Reading: questions first, then scan for paraphrases."],
+        ["2026-10-31", "sh", "Mock", "<b>Full mock at 10:00:</b> grammar, reading and listening, timed and in exam conditions. Evening: passive immersion."],
+        ["2026-11-01", "sh", "Gate", "<b>Retake the level test</b>; the routine and queue update. From 16:00: passive mode."],
+        ["2026-11-02", "sh", "", "<b>Last new units</b> + due repeats. Focus: {weak1}. One extra C-Test on your red-flag topics."],
         ["2026-11-03", "sh", "Mock", "<b>Final full mock at 10:00</b>, the same time as the real exam. Post-mortem in the afternoon. No new units from now on."],
-        ["2026-11-04", "dl", "", "Light day: due checks only, templates out loud on a walk, light listening. Confirm the room, documents and route."],
-        ["2026-11-05", "dl", "", "Exam eve: 2 hours max. Interview template out loud, one short text. Pack ID and pens. Screens off at 22:00, sleep by 23:00."],
-        ["2026-11-06", "dl", "Exam", "<b>Exam at 10:00.</b> Wake at 7:00, 30-minute walk with German audio, read the interview template once, arrive by 9:30."]
+        ["2026-11-04", "dl", "", "Light day: due checks only, one reading and one listening part, the walk audio. Confirm the room, documents and route."],
+        ["2026-11-05", "dl", "", "Exam eve: 2 hours max. A short grammar drill on your red-flag topics and one easy listening. Pack ID and pens. Screens off at 22:00, sleep by 23:00."],
+        ["2026-11-06", "dl", "Exam", "<b>Exam at 10:00.</b> Wake at 7:00, 30-minute walk with German audio to warm up your ear for listening, arrive by 9:30."]
     ]
 };
 
@@ -81,30 +81,28 @@ window.PLAN = {
     try { p = JSON.parse(localStorage.getItem("level:profile") || "null"); } catch (e) {}
     PLAN.profile = p;
     var FOCUS = {
-        grammar: "grammar (an extra C-Test in the 17:00 block)",
-        vocab: "vocabulary (the 12:15 block runs 60 minutes, connectors and phrases first)",
-        reading: "reading (one timed practice text at 14:00)",
-        listening: "listening (one practice audio with transcript at 14:00)",
-        writing: "writing (the 19:30 block is a second graded text, packed with connectors)"
+        grammar: "grammar (the 19:30 block is a second exam drill)",
+        vocab: "vocabulary (the 12:15 block runs 60 minutes, frequent words and connectors first)",
+        reading: "reading (the 16:15 block, two timed texts)",
+        listening: "listening (90 minutes at 14:00 and a second round at 19:30)"
     };
-    var weak = p && p.weakest && p.weakest.length ? p.weakest : [];
-    var w1 = weak[0] ? FOCUS[weak[0]] : "your weakest skill (take the level test)";
-    var w2 = weak[1] ? FOCUS[weak[1]] : (weak[0] ? FOCUS[weak[0]] : "your second weakest skill");
+    // Only the exam parts, plus vocabulary because it carries reading and listening
+    // Your own call (27 Oct): listening is the weakest, then reading. The test result only orders what comes after.
+    var weak = ["listening", "reading"].concat(p && p.weakest ? p.weakest.filter(function (k) { return FOCUS[k] && k !== "listening" && k !== "reading"; }) : []);
+    var w1 = FOCUS[weak[0]], w2 = FOCUS[weak[1]];
     PLAN.days.forEach(function (d) { d[3] = d[3].replace("{weak1}", w1).replace("{weak2}", w2); });
-    if (!p) return;
 
-    var lvl = function (k) { return p.skills && p.skills[k] && p.skills[k].level ? ({ A1: 1, A2: 2, "A2+": 2.5, B1: 3, "B1+": 3.5, B2: 4, "B2+": 4.5, C1: 5 }[p.skills[k].level] || 0) : 9; };
     var top2 = weak.slice(0, 2);
+    // The second round at 19:30 goes to the weakest exam part
+    var part = weak.filter(function (k) { return k !== "vocab"; })[0];
+    var SECOND = {
+        grammar: ["Grammar: second drill", "Another 30 mixed items, this time only your red-flag and error-pattern topics (Diagnosis page)."],
+        reading: ["Reading: third text", "One more timed text with questions, then mark every word that cost you an answer."],
+        listening: ["Listening: second round", "40 minutes: one harder audio, questions first, played twice, then the transcript read aloud with the audio."]
+    };
     PLAN.blocks.forEach(function (b) {
-        if (b[0] === "1400") {
-            if (lvl("listening") <= lvl("reading")) { b[2] = "Listening and reading"; b[3] = "60 minutes of listening (practice audio, then the transcript), 30 minutes of reading, then the post-mortem."; }
-            else { b[2] = "Reading and listening"; b[3] = "60 minutes of reading (timed practice text), 30 minutes of listening, then the post-mortem."; }
-        }
-        if (b[0] === "1215" && top2.indexOf("vocab") !== -1) { b[3] = "60 minutes: 10 connectors or phrases plus 20 frequent words from Words, then Anki reviews."; }
-        if (b[0] === "1930") {
-            if (top2.indexOf("writing") !== -1) { b[2] = "Second text"; b[3] = "The other template, graded in Coach."; }
-            else { b[2] = "Speaking"; b[3] = "Oral simulation in Coach with voice, interview first."; }
-        }
+        if (b[0] === "1930" && SECOND[part]) { b[2] = SECOND[part][0]; b[3] = SECOND[part][1]; }
+        if (b[0] === "1215" && top2.indexOf("vocab") !== -1) { b[3] = "60 minutes: 20 frequent words and 10 connectors from Words, then Anki reviews."; }
         if (b[0] === "1700" && top2.indexOf("grammar") !== -1) { b[3] = "Due repeats, checks and red flags, then two C-Tests."; }
     });
 })();

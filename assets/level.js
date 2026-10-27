@@ -104,8 +104,9 @@
         LEVELS.forEach(function (l) { if (Math.abs(NUM[l] - n) < Math.abs(NUM[best] - n)) best = l; });
         return best;
     }
-    // skills: {grammar: {level}, ...}; writing optional
-    var WEIGHTS = { grammar: 0.3, vocab: 0.2, reading: 0.2, listening: 0.15, writing: 0.15 };
+    // skills: {grammar: {level}, ...}. The exam is grammar, reading and listening, equally weighted
+    // until we know more; vocabulary feeds reading and listening, so it isn't counted twice.
+    var WEIGHTS = { grammar: 1, reading: 1, listening: 1 };
     function overall(skills) {
         var sum = 0, w = 0;
         Object.keys(WEIGHTS).forEach(function (k) {
@@ -139,6 +140,6 @@
         project: project, hoursLeft: hoursLeft,
         VOCAB: VOCAB, READING: READING, LISTENING: LISTENING, WRITING: WRITING,
         LEVELS: LEVELS, NUM: NUM, bandLevel: bandLevel, overall: overall,
-        SKILL_NAMES: { grammar: "Grammar", vocab: "Vocabulary", reading: "Reading", listening: "Listening", writing: "Writing" }
+        SKILL_NAMES: { listening: "Listening", reading: "Reading", grammar: "Grammar", vocab: "Vocabulary" }
     };
 })();
