@@ -1,0 +1,104 @@
+#separator:comma
+#html:true
+#notetype:Cloze
+#columns:Text,Back Extra,Deck,Tags
+#deck column:3
+#tags column:4
+"<b>behaupten</b><br>Er behauptet, dass er nichts gewusst hat.<br><br>{{c1::afirmar, sostener}}","hat behauptet · Opinión, no hecho.",German B2 Speedrun::Verbos frecuentes B1-B2,verbfreq B1
+<b>erwähnen</b><br>Sie hat das Problem nur kurz erwähnt.<br><br>{{c1::mencionar}},hat erwähnt,German B2 Speedrun::Verbos frecuentes B1-B2,verbfreq B1
+"<b>erwarten</b><br>Wir erwarten viele Gäste.<br><br>{{c1::esperar, contar con}}",hat erwartet · warten auf = esperar (a que llegue); erwarten = contar con.,German B2 Speedrun::Verbos frecuentes B1-B2,verbfreq B1
+"<b>vermuten</b><br>Ich vermute, dass er krank ist.<br><br>{{c1::suponer, sospechar}}",hat vermutet,German B2 Speedrun::Verbos frecuentes B1-B2,verbfreq B2
+"<b>bezweifeln</b><br>Ich bezweifle, dass das stimmt.<br><br>{{c1::dudar de}}",hat bezweifelt,German B2 Speedrun::Verbos frecuentes B1-B2,verbfreq B2
+<b>beweisen</b><br>Das beweist gar nichts.<br><br>{{c1::demostrar}},"hat bewiesen · Irregular: bewies, bewiesen.",German B2 Speedrun::Verbos frecuentes B1-B2,verbfreq B2
+<b>bestätigen</b><br>Die Firma hat den Termin bestätigt.<br><br>{{c1::confirmar}},hat bestätigt,German B2 Speedrun::Verbos frecuentes B1-B2,verbfreq B1
+"<b>betonen</b><br>Der Minister betonte, wie wichtig Bildung sei.<br><br>{{c1::subrayar, recalcar}}",hat betont,German B2 Speedrun::Verbos frecuentes B1-B2,verbfreq B2
+"<b>bemerken</b><br>Niemand hat den Fehler bemerkt.<br><br>{{c1::notar, darse cuenta}}",hat bemerkt,German B2 Speedrun::Verbos frecuentes B1-B2,verbfreq B1
+<b>beobachten</b><br>Die Forscher beobachten das Verhalten der Tiere.<br><br>{{c1::observar}},hat beobachtet,German B2 Speedrun::Verbos frecuentes B1-B2,verbfreq B1
+<b>beschreiben</b><br>Beschreiben Sie das Bild.<br><br>{{c1::describir}},"hat beschrieben · Irregular: beschrieb, beschrieben.",German B2 Speedrun::Verbos frecuentes B1-B2,verbfreq B1
+<b>vergleichen</b><br>Vergleichen Sie die Preise.<br><br>{{c1::comparar}},"hat verglichen · Irregular: verglich, verglichen.",German B2 Speedrun::Verbos frecuentes B1-B2,verbfreq B1
+<b>unterscheiden</b><br>Man muss zwischen Meinung und Fakten unterscheiden.<br><br>{{c1::distinguir}},hat unterschieden,German B2 Speedrun::Verbos frecuentes B1-B2,verbfreq B2
+<b>entwickeln</b><br>Die Firma entwickelt eine neue App.<br><br>{{c1::desarrollar}},hat entwickelt,German B2 Speedrun::Verbos frecuentes B1-B2,verbfreq B1
+"<b>entstehen</b><br>So entstand die Idee für das Projekt.<br><br>{{c1::surgir, originarse}}",ist entstanden · Con sein.,German B2 Speedrun::Verbos frecuentes B1-B2,verbfreq B2
+<b>ermöglichen</b><br>Das Stipendium ermöglicht ihr ein Jahr im Ausland.<br><br>{{c1::posibilitar}},hat ermöglicht,German B2 Speedrun::Verbos frecuentes B1-B2,verbfreq B2
+"<b>erreichen</b><br>Er hat sein Ziel erreicht.<br><br>{{c1::alcanzar, lograr}}",hat erreicht · También: jemanden erreichen = contactar con alguien.,German B2 Speedrun::Verbos frecuentes B1-B2,verbfreq B1
+"<b>gelingen</b><br>Der Kuchen ist mir gut gelungen.<br><br>{{c1::salir bien, lograr}}",ist gelungen · Es gelingt MIR (Dat): la persona no es el sujeto.,German B2 Speedrun::Verbos frecuentes B1-B2,verbfreq B2
+<b>scheitern</b><br>Das Projekt ist am Geld gescheitert.<br><br>{{c1::fracasar}},ist gescheitert,German B2 Speedrun::Verbos frecuentes B1-B2,verbfreq B2
+<b>sich lohnen</b><br>Der Besuch lohnt sich.<br><br>{{c1::merecer la pena}},hat sich gelohnt,German B2 Speedrun::Verbos frecuentes B1-B2,verbfreq B1
+<b>sich leisten</b><br>Das kann ich mir nicht leisten.<br><br>{{c1::permitirse (económicamente)}},hat sich geleistet · sich (Dat) etwas leisten.,German B2 Speedrun::Verbos frecuentes B1-B2,verbfreq B1
+<b>verschwenden</b><br>Wir verschwenden zu viel Wasser.<br><br>{{c1::desperdiciar}},hat verschwendet,German B2 Speedrun::Verbos frecuentes B1-B2,verbfreq B2
+<b>ausgeben</b><br>Wie viel Geld gibst du für Miete aus?<br><br>{{c1::gastar (dinero)}},hat ausgegeben,German B2 Speedrun::Verbos frecuentes B1-B2,verbfreq B1
+<b>betragen</b><br>Die Miete beträgt 600 Euro.<br><br>{{c1::ascender a (cantidad)}},hat betragen · Típico en textos con cifras.,German B2 Speedrun::Verbos frecuentes B1-B2,verbfreq B2
+"<b>enthalten</b><br>Der Preis enthält das Frühstück.<br><br>{{c1::contener, incluir}}",hat enthalten,German B2 Speedrun::Verbos frecuentes B1-B2,verbfreq B1
+<b>besitzen</b><br>Er besitzt zwei Autos.<br><br>{{c1::poseer}},"hat besessen · Irregular: besaß, besessen.",German B2 Speedrun::Verbos frecuentes B1-B2,verbfreq B2
+"<b>verlassen</b><br>Sie hat die Firma letztes Jahr verlassen.<br><br>{{c1::dejar, abandonar, irse de}}",hat verlassen · Con objeto directo: das Haus verlassen.,German B2 Speedrun::Verbos frecuentes B1-B2,verbfreq B1
+<b>anbieten</b><br>Die Uni bietet viele Kurse an.<br><br>{{c1::ofrecer}},hat angeboten,German B2 Speedrun::Verbos frecuentes B1-B2,verbfreq B1
+<b>annehmen</b><br>Sie hat das Angebot angenommen.<br><br>{{c1::aceptar; suponer}},"hat angenommen · Dos sentidos: aceptar / suponer (ich nehme an, dass …).",German B2 Speedrun::Verbos frecuentes B1-B2,verbfreq B1
+<b>ablehnen</b><br>Er hat die Einladung abgelehnt.<br><br>{{c1::rechazar}},hat abgelehnt,German B2 Speedrun::Verbos frecuentes B1-B2,verbfreq B1
+"<b>verlangen</b><br>Der Chef verlangt zu viel.<br><br>{{c1::exigir, pedir}}",hat verlangt,German B2 Speedrun::Verbos frecuentes B1-B2,verbfreq B2
+<b>beantragen</b><br>Ich muss ein Visum beantragen.<br><br>{{c1::solicitar (trámite)}},hat beantragt,German B2 Speedrun::Verbos frecuentes B1-B2,verbfreq B2
+"<b>einreichen</b><br>Die Arbeit muss bis Freitag eingereicht werden.<br><br>{{c1::presentar, entregar (documento)}}",hat eingereicht,German B2 Speedrun::Verbos frecuentes B1-B2,verbfreq B2
+<b>ausfüllen</b><br>Bitte füllen Sie das Formular aus.<br><br>{{c1::rellenar}},hat ausgefüllt,German B2 Speedrun::Verbos frecuentes B1-B2,verbfreq A2
+<b>verursachen</b><br>Der Sturm hat große Schäden verursacht.<br><br>{{c1::causar}},hat verursacht,German B2 Speedrun::Verbos frecuentes B1-B2,verbfreq B2
+<b>verhindern</b><br>Man konnte den Unfall nicht verhindern.<br><br>{{c1::impedir}},hat verhindert,German B2 Speedrun::Verbos frecuentes B1-B2,verbfreq B2
+"<b>vermeiden</b><br>Versuch, Fehler zu vermeiden.<br><br>{{c1::evitar}}","hat vermieden · Irregular: vermied, vermieden.",German B2 Speedrun::Verbos frecuentes B1-B2,verbfreq B2
+<b>schaden</b><br>Rauchen schadet der Gesundheit.<br><br>{{c1::perjudicar}},hat geschadet · + Dativ.,German B2 Speedrun::Verbos frecuentes B1-B2,verbfreq B1
+"<b>nutzen</b><br>Nutzen Sie die Gelegenheit!<br><br>{{c1::aprovechar, usar}}",hat genutzt,German B2 Speedrun::Verbos frecuentes B1-B2,verbfreq B1
+<b>verbrauchen</b><br>Das Auto verbraucht wenig Benzin.<br><br>{{c1::consumir}},hat verbraucht,German B2 Speedrun::Verbos frecuentes B1-B2,verbfreq B2
+<b>steigen</b><br>Die Preise sind stark gestiegen.<br><br>{{c1::subir (solo)}},ist gestiegen · steigen = sube solo; erhöhen = alguien lo sube.,German B2 Speedrun::Verbos frecuentes B1-B2,verbfreq B1
+<b>sinken</b><br>Die Zahl der Unfälle ist gesunken.<br><br>{{c1::bajar (solo)}},ist gesunken · sinken = baja solo; senken = alguien lo baja.,German B2 Speedrun::Verbos frecuentes B1-B2,verbfreq B2
+"<b>erhöhen</b><br>Die Regierung erhöht die Steuern.<br><br>{{c1::aumentar, subir (algo)}}",hat erhöht,German B2 Speedrun::Verbos frecuentes B1-B2,verbfreq B2
+"<b>senken</b><br>Die Firma senkt die Preise.<br><br>{{c1::bajar, reducir (algo)}}",hat gesenkt,German B2 Speedrun::Verbos frecuentes B1-B2,verbfreq B2
+<b>wachsen</b><br>Die Stadt wächst schnell.<br><br>{{c1::crecer}},"ist gewachsen · Irregular: wuchs, gewachsen.",German B2 Speedrun::Verbos frecuentes B1-B2,verbfreq B1
+<b>ersetzen</b><br>Maschinen ersetzen viele Arbeitsplätze.<br><br>{{c1::sustituir}},hat ersetzt,German B2 Speedrun::Verbos frecuentes B1-B2,verbfreq B2
+"<b>einführen</b><br>Die Uni hat neue Regeln eingeführt.<br><br>{{c1::introducir, implantar}}",hat eingeführt,German B2 Speedrun::Verbos frecuentes B1-B2,verbfreq B2
+"<b>abschaffen</b><br>Der 500-Euro-Schein wurde abgeschafft.<br><br>{{c1::abolir, suprimir}}",hat abgeschafft · Salió en el Goethe B2 Hören.,German B2 Speedrun::Verbos frecuentes B1-B2,verbfreq B2
+<b>gründen</b><br>Sie hat 2015 eine Firma gegründet.<br><br>{{c1::fundar}},hat gegründet,German B2 Speedrun::Verbos frecuentes B1-B2,verbfreq B1
+<b>leiten</b><br>Frau Weber leitet das Projekt.<br><br>{{c1::dirigir}},hat geleitet,German B2 Speedrun::Verbos frecuentes B1-B2,verbfreq B2
+<b>überzeugen</b><br>Seine Argumente haben mich überzeugt.<br><br>{{c1::convencer}},hat überzeugt,German B2 Speedrun::Verbos frecuentes B1-B2,verbfreq B1
+<b>überraschen</b><br>Das Ergebnis hat alle überrascht.<br><br>{{c1::sorprender}},hat überrascht,German B2 Speedrun::Verbos frecuentes B1-B2,verbfreq B1
+<b>enttäuschen</b><br>Der Film hat mich enttäuscht.<br><br>{{c1::decepcionar}},hat enttäuscht,German B2 Speedrun::Verbos frecuentes B1-B2,verbfreq B1
+<b>beeinflussen</b><br>Werbung beeinflusst unser Verhalten.<br><br>{{c1::influir en}},"hat beeinflusst · Con objeto directo, sin preposición.",German B2 Speedrun::Verbos frecuentes B1-B2,verbfreq B2
+"<b>betreffen</b><br>Das Problem betrifft alle Studenten.<br><br>{{c1::afectar, concernir}}","hat betroffen · Irregular: betraf, betroffen. betroffen sein = estar afectado.",German B2 Speedrun::Verbos frecuentes B1-B2,verbfreq B2
+"<b>verbinden</b><br>Die Brücke verbindet die beiden Städte.<br><br>{{c1::unir, conectar}}",hat verbunden,German B2 Speedrun::Verbos frecuentes B1-B2,verbfreq B1
+"<b>teilen</b><br>Ich teile mir eine Wohnung mit zwei Leuten.<br><br>{{c1::compartir, dividir}}",hat geteilt,German B2 Speedrun::Verbos frecuentes B1-B2,verbfreq B1
+<b>sich verhalten</b><br>Er hat sich sehr unhöflich verhalten.<br><br>{{c1::comportarse}},hat sich verhalten,German B2 Speedrun::Verbos frecuentes B1-B2,verbfreq B2
+<b>behandeln</b><br>Der Arzt behandelt den Patienten.<br><br>{{c1::tratar}},hat behandelt,German B2 Speedrun::Verbos frecuentes B1-B2,verbfreq B1
+<b>einstellen</b><br>Die Firma stellt zehn neue Mitarbeiter ein.<br><br>{{c1::contratar; ajustar}},hat eingestellt,German B2 Speedrun::Verbos frecuentes B1-B2,verbfreq B2
+<b>entlassen</b><br>Die Firma hat 200 Mitarbeiter entlassen.<br><br>{{c1::despedir}},hat entlassen,German B2 Speedrun::Verbos frecuentes B1-B2,verbfreq B2
+<b>stattfinden</b><br>Das Konzert findet im Park statt.<br><br>{{c1::tener lugar}},hat stattgefunden,German B2 Speedrun::Verbos frecuentes B1-B2,verbfreq B1
+"<b>ausfallen</b><br>Der Unterricht fällt heute aus.<br><br>{{c1::suspenderse, no celebrarse}}",ist ausgefallen · Con sein.,German B2 Speedrun::Verbos frecuentes B1-B2,verbfreq B1
+<b>verschieben</b><br>Wir müssen das Treffen verschieben.<br><br>{{c1::aplazar}},hat verschoben,German B2 Speedrun::Verbos frecuentes B1-B2,verbfreq B1
+"<b>darstellen</b><br>Die Grafik stellt die Entwicklung dar.<br><br>{{c1::representar, mostrar}}",hat dargestellt,German B2 Speedrun::Verbos frecuentes B1-B2,verbfreq B2
+"<b>feststellen</b><br>Die Forscher stellten fest, dass …<br><br>{{c1::constatar, comprobar}}",hat festgestellt · Muy común en textos de estudios.,German B2 Speedrun::Verbos frecuentes B1-B2,verbfreq B2
+"<b>herausfinden</b><br>Ich habe herausgefunden, wer es war.<br><br>{{c1::averiguar}}",hat herausgefunden,German B2 Speedrun::Verbos frecuentes B1-B2,verbfreq B1
+"<b>untersuchen</b><br>Die Studie untersucht den Einfluss von Stress.<br><br>{{c1::investigar, examinar}}",hat untersucht,German B2 Speedrun::Verbos frecuentes B1-B2,verbfreq B2
+<b>erforschen</b><br>Man will die Ursachen genau erforschen.<br><br>{{c1::investigar a fondo}},hat erforscht · Salió en el Goethe B2 Hören (Deutsche Bahn).,German B2 Speedrun::Verbos frecuentes B1-B2,verbfreq B2
+<b>erfahren</b><br>Wann hast du davon erfahren?<br><br>{{c1::enterarse de}},hat erfahren · die Erfahrung = la experiencia.,German B2 Speedrun::Verbos frecuentes B1-B2,verbfreq B1
+"<b>merken</b><br>Ich habe gar nicht gemerkt, dass es spät ist.<br><br>{{c1::darse cuenta}}",hat gemerkt · sich etwas merken = memorizar.,German B2 Speedrun::Verbos frecuentes B1-B2,verbfreq B1
+<b>erkennen</b><br>Ich habe ihn sofort erkannt.<br><br>{{c1::reconocer}},hat erkannt,German B2 Speedrun::Verbos frecuentes B1-B2,verbfreq B1
+<b>berücksichtigen</b><br>Man muss auch die Kosten berücksichtigen.<br><br>{{c1::tener en cuenta}},hat berücksichtigt,German B2 Speedrun::Verbos frecuentes B1-B2,verbfreq B2
+"<b>beachten</b><br>Bitte beachten Sie die Hinweise.<br><br>{{c1::tener en cuenta, respetar}}",hat beachtet,German B2 Speedrun::Verbos frecuentes B1-B2,verbfreq B2
+<b>befürchten</b><br>Experten befürchten höhere Preise.<br><br>{{c1::temer}},hat befürchtet,German B2 Speedrun::Verbos frecuentes B1-B2,verbfreq B2
+"<b>zögern</b><br>Er zögerte keine Sekunde.<br><br>{{c1::dudar, vacilar}}",hat gezögert,German B2 Speedrun::Verbos frecuentes B1-B2,verbfreq B2
+"<b>sich weigern</b><br>Sie weigert sich, das zu unterschreiben.<br><br>{{c1::negarse}}",hat sich geweigert,German B2 Speedrun::Verbos frecuentes B1-B2,verbfreq B2
+<b>zugeben</b><br>Er hat seinen Fehler zugegeben.<br><br>{{c1::admitir}},hat zugegeben,German B2 Speedrun::Verbos frecuentes B1-B2,verbfreq B2
+<b>widersprechen</b><br>Ich muss Ihnen widersprechen.<br><br>{{c1::contradecir}},hat widersprochen · + Dativ.,German B2 Speedrun::Verbos frecuentes B1-B2,verbfreq B2
+<b>zustimmen</b><br>Ich stimme Ihnen völlig zu.<br><br>{{c1::estar de acuerdo con}},hat zugestimmt · + Dativ.,German B2 Speedrun::Verbos frecuentes B1-B2,verbfreq B1
+"<b>überlegen</b><br>Ich muss mir das noch überlegen.<br><br>{{c1::pensarse, considerar}}",hat überlegt,German B2 Speedrun::Verbos frecuentes B1-B2,verbfreq B1
+<b>ausgleichen</b><br>Überstunden werden mit Freizeit ausgeglichen.<br><br>{{c1::compensar}},hat ausgeglichen · Salió en el Goethe B2 Hören.,German B2 Speedrun::Verbos frecuentes B1-B2,verbfreq B2
+"<b>übernehmen</b><br>Sie übernimmt die Leitung des Teams.<br><br>{{c1::asumir, encargarse de}}",hat übernommen,German B2 Speedrun::Verbos frecuentes B1-B2,verbfreq B2
+"<b>erledigen</b><br>Ich muss noch ein paar Sachen erledigen.<br><br>{{c1::hacer, despachar (tareas)}}",hat erledigt,German B2 Speedrun::Verbos frecuentes B1-B2,verbfreq B1
+"<b>verlängern</b><br>Ich möchte meinen Vertrag verlängern.<br><br>{{c1::prolongar, renovar}}",hat verlängert,German B2 Speedrun::Verbos frecuentes B1-B2,verbfreq B1
+<b>unterbrechen</b><br>Darf ich Sie kurz unterbrechen?<br><br>{{c1::interrumpir}},hat unterbrochen · Inseparable: ich unterbreche.,German B2 Speedrun::Verbos frecuentes B1-B2,verbfreq B1
+<b>stören</b><br>Störe ich?<br><br>{{c1::molestar}},hat gestört,German B2 Speedrun::Verbos frecuentes B1-B2,verbfreq A2
+"<b>verpassen</b><br>Ich habe den Bus verpasst.<br><br>{{c1::perder (tren, ocasión)}}",hat verpasst,German B2 Speedrun::Verbos frecuentes B1-B2,verbfreq B1
+<b>umtauschen</b><br>Kann ich die Hose umtauschen?<br><br>{{c1::cambiar (un producto)}},hat umgetauscht,German B2 Speedrun::Verbos frecuentes B1-B2,verbfreq B1
+"<b>sich beeilen</b><br>Beeil dich, der Zug fährt gleich!<br><br>{{c1::darse prisa}}",hat sich beeilt,German B2 Speedrun::Verbos frecuentes B1-B2,verbfreq A2
+<b>verzichten</b><br>Er verzichtet auf Zucker.<br><br>{{c1::renunciar a}},hat verzichtet · + auf + Akk.,German B2 Speedrun::Verbos frecuentes B1-B2,verbfreq B2
+<b>sich ernähren</b><br>Sie ernährt sich vegan.<br><br>{{c1::alimentarse}},hat sich ernährt · Salió en el Goethe B2 Hören.,German B2 Speedrun::Verbos frecuentes B1-B2,verbfreq B1
+"<b>umgehen</b><br>Er kann gut mit Stress umgehen.<br><br>{{c1::manejar, llevar}}",ist umgegangen · + mit + Dat.,German B2 Speedrun::Verbos frecuentes B1-B2,verbfreq B2
+"<b>gelten</b><br>Die Regel gilt für alle.<br><br>{{c1::valer, regir}}",hat gegolten · gelten als = considerarse.,German B2 Speedrun::Verbos frecuentes B1-B2,verbfreq B2
+<b>bestehen</b><br>Ich habe die Prüfung bestanden.<br><br>{{c1::aprobar}},hat bestanden · bestehen aus = consistir en; bestehen auf = insistir.,German B2 Speedrun::Verbos frecuentes B1-B2,verbfreq B1
+"<b>fördern</b><br>Die EU fördert den Austausch von Studierenden.<br><br>{{c1::fomentar, financiar}}",hat gefördert · die Förderung = la ayuda/subvención.,German B2 Speedrun::Verbos frecuentes B1-B2,verbfreq B2
+<b>unterstützen</b><br>Meine Eltern unterstützen mich.<br><br>{{c1::apoyar}},hat unterstützt,German B2 Speedrun::Verbos frecuentes B1-B2,verbfreq B1
+<b>vertreten</b><br>Er vertritt eine andere Meinung.<br><br>{{c1::representar; defender (opinión)}},hat vertreten,German B2 Speedrun::Verbos frecuentes B1-B2,verbfreq B2

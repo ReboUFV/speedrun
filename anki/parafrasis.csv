@@ -1,0 +1,114 @@
+#separator:comma
+#html:true
+#notetype:Cloze
+#columns:Text,Back Extra,Deck,Tags
+#deck column:3
+#tags column:4
+"{{c1::der Beruf}} = {{c2::die Arbeit}} = {{c3::der Job}}<br><i>trabajo, profesión</i>",,German B2 Speedrun::Paráfrasis,parafrasis B1
+{{c1::beginnen}} = {{c2::anfangen}} = {{c3::starten}}<br><i>empezar</i>,,German B2 Speedrun::Paráfrasis,parafrasis A2
+{{c1::beenden}} = {{c2::aufhören mit}} = {{c3::abschließen}}<br><i>terminar</i>,"abschließen = terminar algo con éxito (Studium, Projekt).",German B2 Speedrun::Paráfrasis,parafrasis B1
+{{c1::sich entscheiden}} = {{c2::beschließen}} = {{c3::eine Entscheidung treffen}}<br><i>decidir</i>,,German B2 Speedrun::Paráfrasis,parafrasis B1
+"{{c1::glauben}} = {{c2::meinen}} = {{c3::der Meinung sein}}<br><i>creer, opinar</i>",Opinión ≠ hecho: el examen pregunta a menudo quién opina qué.,German B2 Speedrun::Paráfrasis,parafrasis B1
+{{c1::wichtig}} = {{c2::bedeutend}} = {{c3::von Bedeutung}}<br><i>importante</i>,,German B2 Speedrun::Paráfrasis,parafrasis B1
+{{c1::schwierig}} = {{c2::schwer}} = {{c3::kompliziert}}<br><i>difícil</i>,,German B2 Speedrun::Paráfrasis,parafrasis A2
+{{c1::einfach}} = {{c2::leicht}} = {{c3::unkompliziert}}<br><i>fácil</i>,,German B2 Speedrun::Paráfrasis,parafrasis A2
+{{c1::verboten}} = {{c2::nicht erlaubt}} = {{c3::untersagt}}<br><i>prohibido</i>,Negación + antónimo: nicht erlaubt = verboten.,German B2 Speedrun::Paráfrasis,parafrasis B1
+{{c1::erlaubt}} = {{c2::gestattet}} = {{c3::man darf}}<br><i>permitido</i>,,German B2 Speedrun::Paráfrasis,parafrasis B1
+{{c1::kostenlos}} = {{c2::gratis}} = {{c3::umsonst}}<br><i>gratis</i>,Ojo: umsonst también = en vano.,German B2 Speedrun::Paráfrasis,parafrasis A2
+{{c1::teuer}} = {{c2::kostspielig}} = {{c3::viel Geld kosten}}<br><i>caro</i>,,German B2 Speedrun::Paráfrasis,parafrasis B1
+{{c1::billig}} = {{c2::günstig}} = {{c3::preiswert}}<br><i>barato</i>,,German B2 Speedrun::Paráfrasis,parafrasis A2
+{{c1::die Mehrheit}} = {{c2::die meisten}} = {{c3::über die Hälfte}}<br><i>la mayoría</i>,Números del texto → palabras en la opción.,German B2 Speedrun::Paráfrasis,parafrasis B1
+{{c1::die Hälfte}} = {{c2::50 Prozent}} = {{c3::jeder Zweite}}<br><i>la mitad</i>,,German B2 Speedrun::Paráfrasis,parafrasis B1
+{{c1::ein Viertel}} = {{c2::25 Prozent}} = {{c3::jeder Vierte}}<br><i>un cuarto</i>,,German B2 Speedrun::Paráfrasis,parafrasis B1
+{{c1::drei Viertel}} = {{c2::75 Prozent}} = {{c3::die große Mehrheit}}<br><i>tres cuartos</i>,,German B2 Speedrun::Paráfrasis,parafrasis B2
+{{c1::wenige}} = {{c2::kaum jemand}} = {{c3::eine Minderheit}}<br><i>pocos</i>,,German B2 Speedrun::Paráfrasis,parafrasis B2
+{{c1::oft}} = {{c2::häufig}} = {{c3::immer wieder}}<br><i>a menudo</i>,,German B2 Speedrun::Paráfrasis,parafrasis A2
+{{c1::selten}} = {{c2::kaum}} = {{c3::nicht oft}}<br><i>rara vez</i>,,German B2 Speedrun::Paráfrasis,parafrasis B1
+{{c1::sofort}} = {{c2::gleich}} = {{c3::unverzüglich}}<br><i>inmediatamente</i>,,German B2 Speedrun::Paráfrasis,parafrasis B1
+{{c1::vor Kurzem}} = {{c2::neulich}} = {{c3::kürzlich}}<br><i>hace poco</i>,,German B2 Speedrun::Paráfrasis,parafrasis B1
+"{{c1::früher}} = {{c2::damals}} = {{c3::in der Vergangenheit}}<br><i>antes, en aquella época</i>",,German B2 Speedrun::Paráfrasis,parafrasis B1
+{{c1::heutzutage}} = {{c2::heute}} = {{c3::in der heutigen Zeit}}<br><i>hoy en día</i>,,German B2 Speedrun::Paráfrasis,parafrasis B1
+{{c1::zurzeit}} = {{c2::momentan}} = {{c3::im Moment}}<br><i>actualmente</i>,"Trampa: aktuell = actual/de actualidad, eventuell = quizás (no «eventualmente»).",German B2 Speedrun::Paráfrasis,parafrasis B1
+{{c1::allmählich}} = {{c2::nach und nach}} = {{c3::langsam}}<br><i>poco a poco</i>,,German B2 Speedrun::Paráfrasis,parafrasis B2
+{{c1::plötzlich}} = {{c2::auf einmal}} = {{c3::unerwartet}}<br><i>de repente</i>,,German B2 Speedrun::Paráfrasis,parafrasis B1
+"{{c1::pünktlich}} = {{c2::rechtzeitig}} = {{c3::ohne Verspätung}}<br><i>puntual, a tiempo</i>",,German B2 Speedrun::Paráfrasis,parafrasis B1
+"{{c1::sich verspäten}} = {{c2::zu spät kommen}} = {{c3::Verspätung haben}}<br><i>llegar tarde, retrasarse</i>",,German B2 Speedrun::Paráfrasis,parafrasis B1
+"{{c1::ausfallen}} = {{c2::nicht stattfinden}} = {{c3::abgesagt werden}}<br><i>suspenderse, no celebrarse</i>",Típico en avisos: Der Kurs fällt aus.,German B2 Speedrun::Paráfrasis,parafrasis B1
+{{c1::verschieben}} = {{c2::auf später legen}} = {{c3::einen neuen Termin machen}}<br><i>aplazar</i>,,German B2 Speedrun::Paráfrasis,parafrasis B1
+{{c1::teilnehmen}} = {{c2::mitmachen}} = {{c3::dabei sein}}<br><i>participar</i>,,German B2 Speedrun::Paráfrasis,parafrasis B1
+{{c1::sich anmelden}} = {{c2::sich einschreiben}} = {{c3::sich registrieren}}<br><i>inscribirse</i>,,German B2 Speedrun::Paráfrasis,parafrasis B1
+{{c1::sich bewerben}} = {{c2::eine Bewerbung schicken}} = {{c3::sich um eine Stelle bemühen}}<br><i>presentar candidatura</i>,,German B2 Speedrun::Paráfrasis,parafrasis B1
+{{c1::kündigen}} = {{c2::die Stelle aufgeben}} = {{c3::nicht mehr dort arbeiten}}<br><i>dejar el trabajo / despedir</i>,kündigen vale para los dos lados: el trabajador o la empresa.,German B2 Speedrun::Paráfrasis,parafrasis B2
+{{c1::arbeitslos}} = {{c2::ohne Arbeit}} = {{c3::ohne Job}}<br><i>en paro</i>,,German B2 Speedrun::Paráfrasis,parafrasis A2
+{{c1::das Gehalt}} = {{c2::der Lohn}} = {{c3::die Bezahlung}}<br><i>sueldo</i>,,German B2 Speedrun::Paráfrasis,parafrasis B1
+{{c1::verdienen}} = {{c2::ein Gehalt bekommen}} = {{c3::Geld bekommen}}<br><i>ganar (dinero)</i>,verdienen también = merecer.,German B2 Speedrun::Paráfrasis,parafrasis B1
+{{c1::Überstunden machen}} = {{c2::länger arbeiten}} = {{c3::mehr arbeiten als vereinbart}}<br><i>hacer horas extra</i>,Salió en el Goethe B2 Hören.,German B2 Speedrun::Paráfrasis,parafrasis B2
+{{c1::selbstständig}} = {{c2::allein}} = {{c3::ohne Hilfe}}<br><i>por su cuenta</i>,Salió en el Goethe B2 Hören: alleine → selbstständig.,German B2 Speedrun::Paráfrasis,parafrasis B1
+{{c1::gemeinsam}} = {{c2::zusammen}} = {{c3::im Team}}<br><i>juntos</i>,,German B2 Speedrun::Paráfrasis,parafrasis A2
+{{c1::weltweit}} = {{c2::auf der ganzen Welt}} = {{c3::international}}<br><i>en todo el mundo</i>,,German B2 Speedrun::Paráfrasis,parafrasis B1
+"{{c1::ehrenamtlich}} = {{c2::freiwillig}} = {{c3::ohne Bezahlung}}<br><i>voluntario, sin cobrar</i>",,German B2 Speedrun::Paráfrasis,parafrasis B2
+{{c1::die Prüfung}} = {{c2::das Examen}} = {{c3::der Test}}<br><i>examen</i>,,German B2 Speedrun::Paráfrasis,parafrasis A2
+{{c1::bestehen}} = {{c2::schaffen}} = {{c3::erfolgreich abschließen}}<br><i>aprobar</i>,Trampa: bestehen ≠ «insistir» aquí; eine Prüfung bestehen = aprobar.,German B2 Speedrun::Paráfrasis,parafrasis B1
+{{c1::durchfallen}} = {{c2::nicht bestehen}} = {{c3::nicht schaffen}}<br><i>suspender</i>,,German B2 Speedrun::Paráfrasis,parafrasis B1
+{{c1::die Unterkunft}} = {{c2::die Wohnmöglichkeit}} = {{c3::wo man übernachtet}}<br><i>alojamiento</i>,,German B2 Speedrun::Paráfrasis,parafrasis B1
+{{c1::umziehen}} = {{c2::die Wohnung wechseln}} = {{c3::woanders hinziehen}}<br><i>mudarse</i>,,German B2 Speedrun::Paráfrasis,parafrasis B1
+{{c1::verreisen}} = {{c2::eine Reise machen}} = {{c3::wegfahren}}<br><i>irse de viaje</i>,,German B2 Speedrun::Paráfrasis,parafrasis B1
+{{c1::reservieren}} = {{c2::buchen}} = {{c3::vorbestellen}}<br><i>reservar</i>,,German B2 Speedrun::Paráfrasis,parafrasis A2
+{{c1::empfehlen}} = {{c2::raten}} = {{c3::einen Tipp geben}}<br><i>recomendar</i>,,German B2 Speedrun::Paráfrasis,parafrasis B1
+{{c1::vorschlagen}} = {{c2::einen Vorschlag machen}} = {{c3::anregen}}<br><i>proponer</i>,,German B2 Speedrun::Paráfrasis,parafrasis B1
+{{c1::kritisieren}} = {{c2::bemängeln}} = {{c3::negativ bewerten}}<br><i>criticar</i>,,German B2 Speedrun::Paráfrasis,parafrasis B2
+{{c1::loben}} = {{c2::positiv bewerten}} = {{c3::gut finden}}<br><i>elogiar</i>,,German B2 Speedrun::Paráfrasis,parafrasis B1
+{{c1::zufrieden}} = {{c2::glücklich mit}} = {{c3::nichts auszusetzen haben}}<br><i>satisfecho</i>,,German B2 Speedrun::Paráfrasis,parafrasis B2
+{{c1::enttäuscht}} = {{c2::unzufrieden}} = {{c3::etwas anderes erwartet haben}}<br><i>decepcionado</i>,,German B2 Speedrun::Paráfrasis,parafrasis B1
+{{c1::sich ärgern}} = {{c2::wütend sein}} = {{c3::sauer sein}}<br><i>enfadarse</i>,,German B2 Speedrun::Paráfrasis,parafrasis B1
+{{c1::sich Sorgen machen}} = {{c2::besorgt sein}} = {{c3::beunruhigt sein}}<br><i>preocuparse</i>,,German B2 Speedrun::Paráfrasis,parafrasis B1
+"{{c1::befürchten}} = {{c2::Angst haben, dass}} = {{c3::sich fürchten}}<br><i>temer</i>",,German B2 Speedrun::Paráfrasis,parafrasis B2
+{{c1::überrascht}} = {{c2::erstaunt}} = {{c3::nicht damit gerechnet haben}}<br><i>sorprendido</i>,,German B2 Speedrun::Paráfrasis,parafrasis B1
+{{c1::Lust haben}} = {{c2::gern wollen}} = {{c3::Interesse haben}}<br><i>tener ganas</i>,,German B2 Speedrun::Paráfrasis,parafrasis A2
+"{{c1::helfen}} = {{c2::unterstützen}} = {{c3::Hilfe anbieten}}<br><i>ayudar, apoyar</i>",,German B2 Speedrun::Paráfrasis,parafrasis B1
+{{c1::benutzen}} = {{c2::verwenden}} = {{c3::nutzen}}<br><i>usar</i>,,German B2 Speedrun::Paráfrasis,parafrasis B1
+{{c1::bekommen}} = {{c2::erhalten}} = {{c3::kriegen}}<br><i>recibir</i>,Trampa: bekommen ≠ become.,German B2 Speedrun::Paráfrasis,parafrasis B1
+{{c1::schicken}} = {{c2::senden}} = {{c3::zuschicken}}<br><i>enviar</i>,,German B2 Speedrun::Paráfrasis,parafrasis A2
+"{{c1::mitteilen}} = {{c2::informieren}} = {{c3::Bescheid sagen}}<br><i>comunicar, avisar</i>",,German B2 Speedrun::Paráfrasis,parafrasis B1
+{{c1::erklären}} = {{c2::erläutern}} = {{c3::verständlich machen}}<br><i>explicar</i>,,German B2 Speedrun::Paráfrasis,parafrasis B2
+"{{c1::behaupten}} = {{c2::sagen, dass}} = {{c3::die Meinung vertreten}}<br><i>afirmar (sin pruebas)</i>","behaupten = alguien lo dice, no es un hecho comprobado.",German B2 Speedrun::Paráfrasis,parafrasis B2
+{{c1::zugeben}} = {{c2::eingestehen}} = {{c3::einräumen}}<br><i>admitir</i>,,German B2 Speedrun::Paráfrasis,parafrasis B2
+{{c1::zustimmen}} = {{c2::einverstanden sein}} = {{c3::der gleichen Meinung sein}}<br><i>estar de acuerdo</i>,,German B2 Speedrun::Paráfrasis,parafrasis B1
+{{c1::ablehnen}} = {{c2::nicht annehmen}} = {{c3::dagegen sein}}<br><i>rechazar</i>,,German B2 Speedrun::Paráfrasis,parafrasis B1
+"{{c1::erlauben}} = {{c2::genehmigen}} = {{c3::zulassen}}<br><i>permitir, autorizar</i>",,German B2 Speedrun::Paráfrasis,parafrasis B2
+{{c1::verlangen}} = {{c2::fordern}} = {{c3::erwarten}}<br><i>exigir</i>,,German B2 Speedrun::Paráfrasis,parafrasis B2
+{{c1::brauchen}} = {{c2::benötigen}} = {{c3::nötig sein}}<br><i>necesitar</i>,,German B2 Speedrun::Paráfrasis,parafrasis B1
+{{c1::fehlen}} = {{c2::nicht vorhanden sein}} = {{c3::es gibt kein}}<br><i>faltar</i>,,German B2 Speedrun::Paráfrasis,parafrasis B1
+"{{c1::vermeiden}} = {{c2::verhindern}} = {{c3::nicht passieren lassen}}<br><i>evitar, impedir</i>",vermeiden = evitar tú algo; verhindern = impedir que pase.,German B2 Speedrun::Paráfrasis,parafrasis B2
+{{c1::verbessern}} = {{c2::besser machen}} = {{c3::optimieren}}<br><i>mejorar</i>,,German B2 Speedrun::Paráfrasis,parafrasis B1
+{{c1::sich verändern}} = {{c2::anders werden}} = {{c3::sich wandeln}}<br><i>cambiar</i>,,German B2 Speedrun::Paráfrasis,parafrasis B1
+{{c1::zunehmen}} = {{c2::steigen}} = {{c3::mehr werden}}<br><i>aumentar</i>,,German B2 Speedrun::Paráfrasis,parafrasis B1
+{{c1::abnehmen}} = {{c2::sinken}} = {{c3::zurückgehen}}<br><i>disminuir</i>,abnehmen también = adelgazar.,German B2 Speedrun::Paráfrasis,parafrasis B2
+{{c1::ermöglichen}} = {{c2::möglich machen}} = {{c3::die Chance geben}}<br><i>posibilitar</i>,,German B2 Speedrun::Paráfrasis,parafrasis B2
+{{c1::verursachen}} = {{c2::auslösen}} = {{c3::zu etwas führen}}<br><i>causar</i>,,German B2 Speedrun::Paráfrasis,parafrasis B2
+"{{c1::wegen}} = {{c2::aufgrund}} = {{c3::weil / da}}<br><i>a causa de, porque</i>",wegen/aufgrund + Gen; weil/da + verbo al final.,German B2 Speedrun::Paráfrasis,parafrasis B1
+"{{c1::trotzdem}} = {{c2::dennoch}} = {{c3::trotz allem}}<br><i>sin embargo, aun así</i>",Después de trotzdem/dennoch suele venir la respuesta real.,German B2 Speedrun::Paráfrasis,parafrasis B1
+"{{c1::aber}} = {{c2::jedoch}} = {{c3::allerdings}}<br><i>pero, sin embargo</i>",,German B2 Speedrun::Paráfrasis,parafrasis B1
+{{c1::außerdem}} = {{c2::zusätzlich}} = {{c3::darüber hinaus}}<br><i>además</i>,,German B2 Speedrun::Paráfrasis,parafrasis B1
+{{c1::deshalb}} = {{c2::daher}} = {{c3::aus diesem Grund}}<br><i>por eso</i>,,German B2 Speedrun::Paráfrasis,parafrasis B1
+{{c1::zum Beispiel}} = {{c2::beispielsweise}} = {{c3::etwa}}<br><i>por ejemplo</i>,,German B2 Speedrun::Paráfrasis,parafrasis B1
+{{c1::vor allem}} = {{c2::besonders}} = {{c3::insbesondere}}<br><i>sobre todo</i>,,German B2 Speedrun::Paráfrasis,parafrasis B1
+{{c1::eigentlich}} = {{c2::im Grunde}} = {{c3::in Wirklichkeit}}<br><i>en realidad</i>,"En audios, eigentlich suele anunciar la corrección de lo dicho antes.",German B2 Speedrun::Paráfrasis,parafrasis B1
+{{c1::wahrscheinlich}} = {{c2::vermutlich}} = {{c3::voraussichtlich}}<br><i>probablemente</i>,Posible ≠ seguro: la opción con «sicher» suele ser la trampa.,German B2 Speedrun::Paráfrasis,parafrasis B2
+{{c1::sicher}} = {{c2::bestimmt}} = {{c3::ohne Zweifel}}<br><i>seguro</i>,,German B2 Speedrun::Paráfrasis,parafrasis B1
+{{c1::ungefähr}} = {{c2::etwa}} = {{c3::rund}}<br><i>aproximadamente</i>,,German B2 Speedrun::Paráfrasis,parafrasis B1
+{{c1::fast}} = {{c2::beinahe}} = {{c3::nahezu}}<br><i>casi</i>,,German B2 Speedrun::Paráfrasis,parafrasis B1
+{{c1::mindestens}} = {{c2::wenigstens}} = {{c3::nicht weniger als}}<br><i>como mínimo</i>,,German B2 Speedrun::Paráfrasis,parafrasis B1
+{{c1::höchstens}} = {{c2::maximal}} = {{c3::nicht mehr als}}<br><i>como máximo</i>,,German B2 Speedrun::Paráfrasis,parafrasis B1
+{{c1::täglich}} = {{c2::jeden Tag}} = {{c3::an allen Tagen}}<br><i>a diario</i>,,German B2 Speedrun::Paráfrasis,parafrasis A2
+{{c1::ungesund}} = {{c2::schädlich}} = {{c3::schlecht für die Gesundheit}}<br><i>perjudicial</i>,,German B2 Speedrun::Paráfrasis,parafrasis B1
+"{{c1::der Grund}} = {{c2::die Ursache}} = {{c3::der Anlass}}<br><i>motivo, causa</i>",,German B2 Speedrun::Paráfrasis,parafrasis B2
+"{{c1::das Ziel}} = {{c2::die Absicht}} = {{c3::der Plan}}<br><i>objetivo, intención</i>",,German B2 Speedrun::Paráfrasis,parafrasis B1
+{{c1::der Vorteil}} = {{c2::das Positive}} = {{c3::was dafür spricht}}<br><i>ventaja</i>,,German B2 Speedrun::Paráfrasis,parafrasis B1
+{{c1::der Nachteil}} = {{c2::das Negative}} = {{c3::was dagegen spricht}}<br><i>desventaja</i>,,German B2 Speedrun::Paráfrasis,parafrasis B1
+{{c1::die Möglichkeit}} = {{c2::die Chance}} = {{c3::die Gelegenheit}}<br><i>oportunidad</i>,,German B2 Speedrun::Paráfrasis,parafrasis B1
+{{c1::die Kenntnisse}} = {{c2::das Wissen}} = {{c3::was man kann}}<br><i>conocimientos</i>,,German B2 Speedrun::Paráfrasis,parafrasis B1
+"{{c1::der Kunde}} = {{c2::der Käufer}} = {{c3::der Verbraucher}}<br><i>cliente, consumidor</i>",,German B2 Speedrun::Paráfrasis,parafrasis B1
+{{c1::der Termin}} = {{c2::die Verabredung}} = {{c3::das Treffen}}<br><i>cita</i>,,German B2 Speedrun::Paráfrasis,parafrasis A2
+"{{c1::die Nachricht}} = {{c2::die Mitteilung}} = {{c3::die Information}}<br><i>noticia, aviso</i>",,German B2 Speedrun::Paráfrasis,parafrasis B1
+{{c1::die Veranstaltung}} = {{c2::das Event}} = {{c3::das Fest}}<br><i>evento</i>,,German B2 Speedrun::Paráfrasis,parafrasis B1
