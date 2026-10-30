@@ -16,7 +16,7 @@ window.PLAN = {
     },
     blocks: {
         normal: [
-            ["0800", "Anki with breakfast", "All reviews first. New cards only from Paráfrasis, Verbos frecuentes, Verben mit Präpositionen and New words.", []],
+            ["0800", "Anki with breakfast", "All reviews first. New cards only from Paráfrasis, Sustantivos, Verben mit Präpositionen, Verbos frecuentes and New words.", []],
             ["0900", "Grammar: your unit", "The next unit from your test list. Only the exercises for the rule you got wrong, then the 10-item check.", ["unitcheck"]],
             ["1030", "Grammar: ladder drill", "30 items from A2 to C1 in 20 minutes. Mistakes at or below your level go on your careless list.", ["ladder"]],
             ["1200", "Listening loop", "30–60 second clips at B1: blind, with the transcript, blind again, then shadow it.", ["transcript", "whymiss"]],

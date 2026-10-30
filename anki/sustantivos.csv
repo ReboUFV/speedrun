@@ -1,0 +1,187 @@
+#separator:comma
+#html:true
+#notetype:Cloze
+#columns:Text,Back Extra,Deck,Tags
+#deck column:3
+#tags column:4
+<b>der Unterschied</b> · -e<br>Was ist der Unterschied zwischen den beiden Kursen?<br><br>{{c1::diferencia}},Unterschied zwischen + Dat,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+<b>die Erfahrung</b> · -en<br>Im Ausland hat sie viele Erfahrungen gesammelt.<br><br>{{c1::experiencia}},Erfahrungen sammeln,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+<b>die Folge</b> · -n<br>Der Streik hatte schwere Folgen für die Pendler.<br><br>{{c1::consecuencia}},zur Folge haben = tener como consecuencia,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+<b>die Umwelt</b><br>Wir müssen mehr für die Umwelt tun.<br><br>{{c1::medio ambiente}},Solo singular. der Umweltschutz,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+<b>die Gesellschaft</b> · -en<br>Die Gesellschaft wird immer älter.<br><br>{{c1::sociedad; empresa}},También empresa: GmbH = Gesellschaft mit beschränkter Haftung.,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+<b>die Bevölkerung</b> · -en<br>Die Bevölkerung der Stadt wächst schnell.<br><br>{{c1::población (personas)}},,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+"<b>die Gegend</b> · -en<br>In dieser Gegend gibt es kaum Wohnungen.<br><br>{{c1::zona, región}}",,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+"<b>die Umgebung</b> · -en<br>Die Uni liegt in einer ruhigen Umgebung.<br><br>{{c1::alrededores, entorno}}",,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+"<b>der Zweck</b> · -e<br>Zu welchem Zweck brauchen Sie die Bescheinigung?<br><br>{{c1::fin, propósito}}",,German B2 Speedrun::Sustantivos B1-B2,sustantivos B2
+<b>die Aufgabe</b> · -n<br>Lesen Sie zuerst die Aufgabe.<br><br>{{c1::tarea; función}},"aufgeben = rendirse, ¡otra cosa!",German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+"<b>die Leistung</b> · -en<br>Seine Leistungen in Mathe sind sehr gut.<br><br>{{c1::rendimiento, logro}}",,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+<b>die Voraussetzung</b> · -en<br>Gute Deutschkenntnisse sind Voraussetzung für das Studium.<br><br>{{c1::requisito previo}},Voraussetzung für + Akk,German B2 Speedrun::Sustantivos B1-B2,sustantivos B2
+<b>die Bedingung</b> · -en<br>Unter einer Bedingung: Du hilfst mir morgen.<br><br>{{c1::condición}},"unter der Bedingung, dass …",German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+"<b>die Anforderung</b> · -en<br>Die Anforderungen an Bewerber sind hoch.<br><br>{{c1::exigencia, requisito}}",Anforderungen an + Akk,German B2 Speedrun::Sustantivos B1-B2,sustantivos B2
+<b>der Arbeitgeber</b> · -<br>Mein Arbeitgeber zahlt die Fahrkarte.<br><br>{{c1::empleador}},der Arbeitnehmer = el empleado,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+<b>die Ausbildung</b> · -en<br>Nach der Schule hat er eine Ausbildung als Koch gemacht.<br><br>{{c1::formación profesional}},,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+<b>der Abschluss</b> · -¨e<br>Nach dem Abschluss will sie ins Ausland.<br><br>{{c1::título; final}},einen Abschluss machen,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+<b>die Anmeldung</b> · -en<br>Die Anmeldung für den Kurs endet am Freitag.<br><br>{{c1::inscripción; recepción}},,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+<b>die Vorlesung</b> · -en<br>Die Vorlesung fällt heute aus.<br><br>{{c1::clase magistral}},ausfallen = cancelarse,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+"<b>der Studiengang</b> · -¨e<br>Welchen Studiengang hast du gewählt?<br><br>{{c1::carrera, programa de estudios}}",,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+<b>das Fach</b> · -¨er<br>Mein Lieblingsfach war Geschichte.<br><br>{{c1::asignatura; compartimento}},,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+"<b>der Unterricht</b><br>Der Unterricht beginnt um acht.<br><br>{{c1::clases, enseñanza}}",Solo singular.,German B2 Speedrun::Sustantivos B1-B2,sustantivos A2
+<b>die Miete</b> · -n<br>Die Miete ist im Winter gestiegen.<br><br>{{c1::alquiler}},Ojo: Rente ≠ rent.,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+"<b>der Vermieter</b> · -<br>Der Vermieter will die Kaution behalten.<br><br>{{c1::casero, arrendador}}",der Mieter = el inquilino,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+"<b>die Nebenkosten</b> · (Pl.)<br>Die Miete beträgt 400 Euro plus Nebenkosten.<br><br>{{c1::gastos extra (agua, luz, calefacción)}}","warm = con Nebenkosten, kalt = sin ellos",German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+<b>der Umzug</b> · -¨e<br>Beim Umzug haben mir Freunde geholfen.<br><br>{{c1::mudanza}},umziehen,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+"<b>die Gebühr</b> · -en<br>Die Gebühr für das Semester beträgt 300 Euro.<br><br>{{c1::tasa, cuota}}",,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+<b>die Rechnung</b> · -en<br>Die Rechnung kommt per E-Mail.<br><br>{{c1::factura; cuenta}},,German B2 Speedrun::Sustantivos B1-B2,sustantivos A2
+"<b>die Quittung</b> · -en<br>Heben Sie die Quittung gut auf.<br><br>{{c1::recibo, justificante}}",,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+"<b>der Zuschuss</b> · -¨e<br>Erasmus-Studenten bekommen einen monatlichen Zuschuss.<br><br>{{c1::subvención, ayuda económica}}",,German B2 Speedrun::Sustantivos B1-B2,sustantivos B2
+<b>der Aufenthalt</b> · -e<br>Während meines Aufenthalts in Wien habe ich viel gelernt.<br><br>{{c1::estancia}},der Auslandsaufenthalt,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+"<b>die Durchsage</b> · -n<br>Achtung, eine Durchsage zu Gleis drei.<br><br>{{c1::aviso por megafonía}}",,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+"<b>das Gleis</b> · -e<br>Der Zug fährt heute von Gleis fünf ab.<br><br>{{c1::vía, andén}}",,German B2 Speedrun::Sustantivos B1-B2,sustantivos A2
+"<b>der Fahrgast</b> · -¨e<br>Die Fahrgäste werden gebeten, auszusteigen.<br><br>{{c1::pasajero}}",,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+<b>die Haltestelle</b> · -n<br>Steigen Sie an der nächsten Haltestelle aus.<br><br>{{c1::parada}},,German B2 Speedrun::Sustantivos B1-B2,sustantivos A2
+<b>die Umleitung</b> · -en<br>Wegen einer Baustelle gibt es eine Umleitung.<br><br>{{c1::desvío}},,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+<b>die Baustelle</b> · -n<br>Auf der Autobahn ist eine Baustelle.<br><br>{{c1::obras}},,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+<b>der Stau</b> · -s<br>Ich stand eine Stunde im Stau.<br><br>{{c1::atasco}},im Stau stehen,German B2 Speedrun::Sustantivos B1-B2,sustantivos A2
+<b>der Verkehr</b><br>Am Morgen ist viel Verkehr.<br><br>{{c1::tráfico}},öffentliche Verkehrsmittel = transporte público,German B2 Speedrun::Sustantivos B1-B2,sustantivos A2
+<b>der Unfall</b> · -¨e<br>Bei dem Unfall wurde niemand verletzt.<br><br>{{c1::accidente}},,German B2 Speedrun::Sustantivos B1-B2,sustantivos A2
+"<b>die Ermäßigung</b> · -en<br>Studenten bekommen eine Ermäßigung.<br><br>{{c1::descuento, reducción}}",,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+<b>das Angebot</b> · -e<br>Das Angebot gilt nur bis Sonntag.<br><br>{{c1::oferta}},,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+<b>die Nachfrage</b> · -n<br>Die Nachfrage nach Wohnungen ist groß.<br><br>{{c1::demanda}},Nachfrage nach + Dat,German B2 Speedrun::Sustantivos B1-B2,sustantivos B2
+<b>die Werbung</b><br>Im Fernsehen gibt es zu viel Werbung.<br><br>{{c1::publicidad}},,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+<b>die Zeitschrift</b> · -en<br>Ich lese eine Zeitschrift über Reisen.<br><br>{{c1::revista}},die Zeitung = periódico,German B2 Speedrun::Sustantivos B1-B2,sustantivos A2
+"<b>die Sendung</b> · -en<br>In der heutigen Sendung sprechen wir über Wohnungsnot.<br><br>{{c1::programa (radio, TV); envío}}",Típico de Hören: inicio de un programa.,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+<b>der Zuschauer</b> · -<br>Die Zuschauer können live anrufen.<br><br>{{c1::espectador}},der Zuhörer = oyente,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+<b>der Beitrag</b> · -¨e<br>Jeder kann einen kleinen Beitrag leisten.<br><br>{{c1::aportación; artículo; cuota}},einen Beitrag leisten = contribuir,German B2 Speedrun::Sustantivos B1-B2,sustantivos B2
+<b>die Umfrage</b> · -n<br>Laut einer Umfrage lesen junge Leute weniger.<br><br>{{c1::encuesta}},laut + Dat = según,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+<b>das Ergebnis</b> · -se<br>Die Ergebnisse der Studie sind überraschend.<br><br>{{c1::resultado}},,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+"<b>die Untersuchung</b> · -en<br>Eine neue Untersuchung zeigt, dass Schlaf wichtig ist.<br><br>{{c1::estudio; examen médico}}",,German B2 Speedrun::Sustantivos B1-B2,sustantivos B2
+<b>die Forschung</b> · -en<br>Die Forschung braucht mehr Geld.<br><br>{{c1::investigación (científica)}},,German B2 Speedrun::Sustantivos B1-B2,sustantivos B2
+<b>der Wissenschaftler</b> · -<br>Wissenschaftler warnen vor den Folgen.<br><br>{{c1::científico}},,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+"<b>die Erkenntnis</b> · -se<br>Neue Erkenntnisse zeigen das Gegenteil.<br><br>{{c1::conclusión, descubrimiento}}",,German B2 Speedrun::Sustantivos B1-B2,sustantivos B2
+"<b>der Zusammenhang</b> · -¨e<br>Gibt es einen Zusammenhang zwischen Stress und Schlaf?<br><br>{{c1::relación, contexto}}",in diesem Zusammenhang,German B2 Speedrun::Sustantivos B1-B2,sustantivos B2
+<b>die Ansicht</b> · -en<br>Ich bin anderer Ansicht.<br><br>{{c1::opinión; vista}},"der Ansicht sein, dass …",German B2 Speedrun::Sustantivos B1-B2,sustantivos B2
+<b>der Standpunkt</b> · -e<br>Von meinem Standpunkt aus ist das unfair.<br><br>{{c1::punto de vista}},,German B2 Speedrun::Sustantivos B1-B2,sustantivos B2
+<b>die Lösung</b> · -en<br>Wir haben eine Lösung gefunden.<br><br>{{c1::solución}},,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+<b>die Schwierigkeit</b> · -en<br>Am Anfang hatte ich Schwierigkeiten mit dem Dialekt.<br><br>{{c1::dificultad}},,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+"<b>die Herausforderung</b> · -en<br>Das Studium im Ausland ist eine Herausforderung.<br><br>{{c1::reto, desafío}}",,German B2 Speedrun::Sustantivos B1-B2,sustantivos B2
+<b>der Erfolg</b> · -e<br>Viel Erfolg bei der Prüfung!<br><br>{{c1::éxito}},erfolgreich,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+<b>der Fortschritt</b> · -e<br>Du hast große Fortschritte gemacht.<br><br>{{c1::progreso}},Fortschritte machen,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+"<b>die Entwicklung</b> · -en<br>Die Entwicklung der Stadt war rasant.<br><br>{{c1::desarrollo, evolución}}",,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+<b>die Veränderung</b> · -en<br>Viele Menschen haben Angst vor Veränderungen.<br><br>{{c1::cambio}},,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+<b>der Wandel</b><br>Die Arbeitswelt befindet sich im Wandel.<br><br>{{c1::cambio (gradual)}},Más formal que Veränderung.,German B2 Speedrun::Sustantivos B1-B2,sustantivos B2
+"<b>der Rückgang</b> · -¨e<br>Es gibt einen deutlichen Rückgang der Geburten.<br><br>{{c1::descenso, disminución}}",,German B2 Speedrun::Sustantivos B1-B2,sustantivos B2
+"<b>der Anteil</b> · -e<br>Der Anteil der Frauen ist gestiegen.<br><br>{{c1::proporción, parte}}",Típico de gráficos y estadísticas.,German B2 Speedrun::Sustantivos B1-B2,sustantivos B2
+"<b>der Durchschnitt</b> · -e<br>Im Durchschnitt schlafen Studenten sieben Stunden.<br><br>{{c1::media, promedio}}",im Durchschnitt,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+<b>der Zeitraum</b> · -¨e<br>In diesem Zeitraum ist die Miete stark gestiegen.<br><br>{{c1::periodo}},,German B2 Speedrun::Sustantivos B1-B2,sustantivos B2
+<b>der Zeitpunkt</b> · -e<br>Zum jetzigen Zeitpunkt wissen wir nichts.<br><br>{{c1::momento}},,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+<b>der Alltag</b><br>Im Alltag spreche ich kaum Deutsch.<br><br>{{c1::vida cotidiana}},,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+<b>der Feierabend</b> · -e<br>Nach Feierabend gehe ich ins Fitnessstudio.<br><br>{{c1::fin de la jornada laboral}},,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+<b>der Urlaub</b> · -e<br>Ich nehme im August zwei Wochen Urlaub.<br><br>{{c1::vacaciones (del trabajo)}},die Ferien = vacaciones escolares,German B2 Speedrun::Sustantivos B1-B2,sustantivos A2
+<b>der Feiertag</b> · -e<br>Am Feiertag sind alle Geschäfte geschlossen.<br><br>{{c1::día festivo}},,German B2 Speedrun::Sustantivos B1-B2,sustantivos A2
+"<b>die Rente</b> · -n<br>Mein Vater geht nächstes Jahr in Rente.<br><br>{{c1::pensión, jubilación}}",Falso amigo: no es la renta ni rent.,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+<b>die Steuer</b> · -n<br>Die Steuern sind in diesem Land hoch.<br><br>{{c1::impuesto}},das Steuer = volante,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+<b>die Kündigung</b> · -en<br>Er hat die Kündigung bekommen.<br><br>{{c1::despido; rescisión}},kündigen: también dar de baja un contrato.,German B2 Speedrun::Sustantivos B1-B2,sustantivos B2
+<b>der Haushalt</b> · -e<br>Wer macht bei euch den Haushalt?<br><br>{{c1::hogar; tareas domésticas; presupuesto}},,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+<b>die Schulden</b> · (Pl.)<br>Viele Studenten haben Schulden.<br><br>{{c1::deudas}},die Schuld = culpa,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+<b>die Versicherung</b> · -en<br>Die Versicherung zahlt den Schaden.<br><br>{{c1::seguro}},,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+<b>der Schaden</b> · -¨<br>Der Sturm hat großen Schaden angerichtet.<br><br>{{c1::daño}},,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+<b>die Gefahr</b> · -en<br>Rauchen ist eine Gefahr für die Gesundheit.<br><br>{{c1::peligro}},gefährlich,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+<b>die Sicherheit</b> · -en<br>Die Sicherheit der Fahrgäste geht vor.<br><br>{{c1::seguridad}},,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+<b>der Schutz</b><br>Der Schutz der Umwelt ist wichtig.<br><br>{{c1::protección}},Schutz vor + Dat,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+<b>die Krankheit</b> · -en<br>Sie hat eine seltene Krankheit.<br><br>{{c1::enfermedad}},,German B2 Speedrun::Sustantivos B1-B2,sustantivos A2
+<b>die Ernährung</b><br>Eine gesunde Ernährung ist wichtig.<br><br>{{c1::alimentación}},,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+<b>die Behandlung</b> · -en<br>Die Behandlung dauert drei Wochen.<br><br>{{c1::tratamiento}},,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+"<b>die Verletzung</b> · -en<br>Er musste wegen einer Verletzung aufhören.<br><br>{{c1::lesión, herida}}",,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+"<b>die Pflege</b><br>Die Pflege alter Menschen ist anstrengend.<br><br>{{c1::cuidado (de personas, plantas)}}",,German B2 Speedrun::Sustantivos B1-B2,sustantivos B2
+<b>die Geduld</b><br>Beim Sprachenlernen braucht man Geduld.<br><br>{{c1::paciencia}},,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+<b>das Verständnis</b><br>Danke für Ihr Verständnis.<br><br>{{c1::comprensión}},Típico de Durchsagen.,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+<b>das Vertrauen</b><br>Ich habe Vertrauen zu ihr.<br><br>{{c1::confianza}},Vertrauen zu + Dat,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+<b>die Beziehung</b> · -en<br>Die Beziehung zu meinen Eltern ist gut.<br><br>{{c1::relación}},,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+<b>das Verhalten</b><br>Sein Verhalten war unmöglich.<br><br>{{c1::comportamiento}},,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+"<b>die Gewohnheit</b> · -en<br>Das ist eine schlechte Gewohnheit.<br><br>{{c1::hábito, costumbre}}",sich gewöhnen an + Akk,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+"<b>der Brauch</b> · -¨e<br>Zu Weihnachten gibt es viele alte Bräuche.<br><br>{{c1::costumbre, tradición}}",,German B2 Speedrun::Sustantivos B1-B2,sustantivos B2
+<b>die Gemeinschaft</b> · -en<br>In der WG haben wir eine tolle Gemeinschaft.<br><br>{{c1::comunidad}},,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+"<b>der Verein</b> · -e<br>Er ist Mitglied in einem Sportverein.<br><br>{{c1::asociación, club}}",,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+<b>das Ehrenamt</b> · -¨er<br>Sie arbeitet im Ehrenamt bei der Tafel.<br><br>{{c1::voluntariado}},ehrenamtlich = voluntario,German B2 Speedrun::Sustantivos B1-B2,sustantivos B2
+<b>die Teilnahme</b><br>Die Teilnahme ist kostenlos.<br><br>{{c1::participación}},teilnehmen an + Dat,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+<b>der Teilnehmer</b> · -<br>Alle Teilnehmer bekommen ein Zertifikat.<br><br>{{c1::participante}},,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+<b>die Ausstellung</b> · -en<br>Die Ausstellung ist bis Mai zu sehen.<br><br>{{c1::exposición}},,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+<b>die Sehenswürdigkeit</b> · -en<br>Der Dom ist die bekannteste Sehenswürdigkeit.<br><br>{{c1::lugar de interés turístico}},,German B2 Speedrun::Sustantivos B1-B2,sustantivos A2
+"<b>der Eintritt</b> · -e<br>Der Eintritt ist frei.<br><br>{{c1::entrada (acceso, precio)}}",Eintritt frei = gratis,German B2 Speedrun::Sustantivos B1-B2,sustantivos A2
+<b>die Vorstellung</b> · -en<br>Die Vorstellung beginnt um acht.<br><br>{{c1::función; idea; presentación}},sich etwas vorstellen = imaginar,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+<b>die Einladung</b> · -en<br>Danke für die Einladung!<br><br>{{c1::invitación}},,German B2 Speedrun::Sustantivos B1-B2,sustantivos A2
+"<b>die Absage</b> · -n<br>Ich habe leider eine Absage bekommen.<br><br>{{c1::cancelación, respuesta negativa}}",absagen ≠ zusagen,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+"<b>die Zusage</b> · -n<br>Endlich habe ich die Zusage für den Platz.<br><br>{{c1::confirmación, respuesta positiva}}",,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+<b>die Frist</b> · -en<br>Die Frist für die Anmeldung endet am 15.<br><br>{{c1::plazo}},eine Frist einhalten,German B2 Speedrun::Sustantivos B1-B2,sustantivos B2
+"<b>die Behörde</b> · -n<br>Für das Visum muss man zu mehreren Behörden.<br><br>{{c1::autoridad, organismo oficial}}",,German B2 Speedrun::Sustantivos B1-B2,sustantivos B2
+<b>das Amt</b> · -¨er<br>Melden Sie sich beim Bürgeramt an.<br><br>{{c1::oficina pública; cargo}},,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+<b>die Verwaltung</b> · -en<br>Die Verwaltung der Uni ist sehr langsam.<br><br>{{c1::administración}},,German B2 Speedrun::Sustantivos B1-B2,sustantivos B2
+<b>der Antrag</b> · -¨e<br>Ich habe einen Antrag auf Wohngeld gestellt.<br><br>{{c1::solicitud (formal)}},einen Antrag stellen auf + Akk,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+<b>die Unterschrift</b> · -en<br>Hier fehlt noch Ihre Unterschrift.<br><br>{{c1::firma}},,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+"<b>der Ausweis</b> · -e<br>Bitte zeigen Sie Ihren Ausweis.<br><br>{{c1::documento de identidad, carnet}}",der Studentenausweis,German B2 Speedrun::Sustantivos B1-B2,sustantivos A2
+"<b>die Genehmigung</b> · -en<br>Dafür braucht man eine Genehmigung.<br><br>{{c1::permiso, autorización}}",,German B2 Speedrun::Sustantivos B1-B2,sustantivos B2
+"<b>die Pflicht</b> · -en<br>Die Anmeldung ist Pflicht.<br><br>{{c1::obligación, deber}}",verpflichtet sein = estar obligado,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+<b>das Recht</b> · -e<br>Jeder hat das Recht auf Bildung.<br><br>{{c1::derecho}},recht haben = tener razón,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+<b>das Gesetz</b> · -e<br>Das neue Gesetz tritt im Januar in Kraft.<br><br>{{c1::ley}},in Kraft treten = entrar en vigor,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+<b>die Regierung</b> · -en<br>Die Regierung plant neue Maßnahmen.<br><br>{{c1::gobierno}},,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+<b>die Wahl</b> · -en<br>Du hast die Wahl: Bus oder Fahrrad.<br><br>{{c1::elección; votación}},die Wahlen = elecciones,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+<b>die Gewerkschaft</b> · -en<br>Die Gewerkschaft fordert mehr Lohn.<br><br>{{c1::sindicato}},,German B2 Speedrun::Sustantivos B1-B2,sustantivos B2
+<b>die Armut</b><br>Armut ist auch in reichen Ländern ein Problem.<br><br>{{c1::pobreza}},,German B2 Speedrun::Sustantivos B1-B2,sustantivos B2
+"<b>der Wohlstand</b><br>Der Wohlstand ist ungleich verteilt.<br><br>{{c1::prosperidad, bienestar económico}}",,German B2 Speedrun::Sustantivos B1-B2,sustantivos B2
+"<b>der Mangel</b> · -¨<br>Es gibt einen Mangel an Fachkräften.<br><br>{{c1::falta, carencia; defecto}}",Mangel an + Dat,German B2 Speedrun::Sustantivos B1-B2,sustantivos B2
+"<b>der Bedarf</b><br>Der Bedarf an Wohnungen steigt.<br><br>{{c1::necesidad, demanda}}",Bedarf an + Dat; bei Bedarf = si hace falta,German B2 Speedrun::Sustantivos B1-B2,sustantivos B2
+<b>das Bedürfnis</b> · -se<br>Jedes Kind hat andere Bedürfnisse.<br><br>{{c1::necesidad (personal)}},,German B2 Speedrun::Sustantivos B1-B2,sustantivos B2
+<b>die Bestellung</b> · -en<br>Ihre Bestellung ist unterwegs.<br><br>{{c1::pedido}},,German B2 Speedrun::Sustantivos B1-B2,sustantivos A2
+"<b>die Lieferung</b> · -en<br>Die Lieferung dauert drei Tage.<br><br>{{c1::entrega, envío}}",,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+"<b>die Beschwerde</b> · -n<br>Ich möchte mich beschweren: Wo kann ich eine Beschwerde einreichen?<br><br>{{c1::queja, reclamación}}",sich beschweren über + Akk,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+"<b>der Ersatz</b><br>Als Ersatz für den Zug fahren Busse.<br><br>{{c1::sustituto, reemplazo}}",Típico de Durchsagen: Ersatzverkehr.,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+<b>der Abfall</b> · -¨e<br>Den Abfall trennen wir in drei Tonnen.<br><br>{{c1::residuos}},,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+<b>der Müll</b><br>Bring bitte den Müll raus.<br><br>{{c1::basura}},,German B2 Speedrun::Sustantivos B1-B2,sustantivos A2
+<b>die Verschmutzung</b> · -en<br>Die Verschmutzung der Meere nimmt zu.<br><br>{{c1::contaminación}},,German B2 Speedrun::Sustantivos B1-B2,sustantivos B2
+<b>der Wald</b> · -¨er<br>Am Wochenende gehen wir im Wald spazieren.<br><br>{{c1::bosque}},,German B2 Speedrun::Sustantivos B1-B2,sustantivos A2
+<b>das Gerät</b> · -e<br>Schalten Sie alle elektronischen Geräte aus.<br><br>{{c1::aparato}},,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+<b>der Zugang</b> · -¨e<br>Nicht alle haben Zugang zum Internet.<br><br>{{c1::acceso}},Zugang zu + Dat,German B2 Speedrun::Sustantivos B1-B2,sustantivos B2
+<b>der Einfluss</b> · -¨e<br>Soziale Medien haben großen Einfluss auf Jugendliche.<br><br>{{c1::influencia}},Einfluss auf + Akk,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+"<b>die Auswirkung</b> · -en<br>Welche Auswirkungen hat das auf die Umwelt?<br><br>{{c1::repercusión, efecto}}",Auswirkungen auf + Akk,German B2 Speedrun::Sustantivos B1-B2,sustantivos B2
+<b>die Wirkung</b> · -en<br>Das Medikament zeigt schnell Wirkung.<br><br>{{c1::efecto}},,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+"<b>der Nutzen</b><br>Der Nutzen dieser Regel ist unklar.<br><br>{{c1::utilidad, beneficio}}",,German B2 Speedrun::Sustantivos B1-B2,sustantivos B2
+"<b>der Aufwand</b><br>Der Aufwand lohnt sich nicht.<br><br>{{c1::esfuerzo, gasto (de tiempo o dinero)}}",sich lohnen = merecer la pena,German B2 Speedrun::Sustantivos B1-B2,sustantivos B2
+"<b>die Mühe</b> · -n<br>Sie hat sich große Mühe gegeben.<br><br>{{c1::esfuerzo, molestia}}",sich Mühe geben,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+"<b>der Umgang</b><br>Der Umgang mit Kunden macht mir Spaß.<br><br>{{c1::trato, manejo}}",Umgang mit + Dat,German B2 Speedrun::Sustantivos B1-B2,sustantivos B2
+<b>die Rücksicht</b><br>Nimm bitte Rücksicht auf die Nachbarn.<br><br>{{c1::consideración (hacia otros)}},Rücksicht nehmen auf + Akk,German B2 Speedrun::Sustantivos B1-B2,sustantivos B2
+<b>die Verantwortung</b> · -en<br>Wer übernimmt die Verantwortung?<br><br>{{c1::responsabilidad}},Verantwortung übernehmen für + Akk,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+"<b>der Vorwurf</b> · -¨e<br>Er macht mir ständig Vorwürfe.<br><br>{{c1::reproche, acusación}}",jemandem Vorwürfe machen,German B2 Speedrun::Sustantivos B1-B2,sustantivos B2
+<b>die Ausrede</b> · -n<br>Das ist doch nur eine Ausrede!<br><br>{{c1::excusa}},,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+<b>die Entschuldigung</b> · -en<br>Ich warte noch auf eine Entschuldigung.<br><br>{{c1::disculpa}},,German B2 Speedrun::Sustantivos B1-B2,sustantivos A2
+"<b>der Streit</b> · -e<br>Sie hatten Streit wegen des Geldes.<br><br>{{c1::pelea, discusión}}",sich streiten über + Akk,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+"<b>die Auseinandersetzung</b> · -en<br>Es kam zu einer heftigen Auseinandersetzung.<br><br>{{c1::conflicto, debate}}",,German B2 Speedrun::Sustantivos B1-B2,sustantivos B2
+"<b>der Eindruck</b> · -¨e<br>Ich habe den Eindruck, dass er lügt.<br><br>{{c1::impresión}}",,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+<b>die Erwartung</b> · -en<br>Der Kurs hat meine Erwartungen übertroffen.<br><br>{{c1::expectativa}},,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+"<b>die Laune</b> · -n<br>Heute hat er gute Laune.<br><br>{{c1::humor, estado de ánimo}}",,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+<b>die Stimmung</b> · -en<br>Die Stimmung auf der Party war super.<br><br>{{c1::ambiente; estado de ánimo}},,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+"<b>das Gefühl</b> · -e<br>Ich habe ein gutes Gefühl.<br><br>{{c1::sentimiento, sensación}}",,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+<b>der Ratschlag</b> · -¨e<br>Kannst du mir einen Ratschlag geben?<br><br>{{c1::consejo}},der Rat (sin plural) = lo mismo,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+<b>die Auskunft</b> · -¨e<br>Am Schalter bekommen Sie Auskunft.<br><br>{{c1::información (que te dan)}},,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+"<b>der Hinweis</b> · -e<br>Bitte beachten Sie die Hinweise auf der Website.<br><br>{{c1::indicación, aviso, pista}}",,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+<b>die Anleitung</b> · -en<br>Lies zuerst die Anleitung.<br><br>{{c1::instrucciones}},,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+<b>die Übung</b> · -en<br>Übung macht den Meister.<br><br>{{c1::ejercicio; práctica}},,German B2 Speedrun::Sustantivos B1-B2,sustantivos A2
+"<b>der Fehler</b> · -<br>Jeder macht Fehler.<br><br>{{c1::error, fallo}}",,German B2 Speedrun::Sustantivos B1-B2,sustantivos A2
+"<b>der Wortschatz</b><br>Lesen hilft, den Wortschatz zu erweitern.<br><br>{{c1::vocabulario}}",,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+<b>die Aussprache</b> · -n<br>Ihre Aussprache ist sehr gut.<br><br>{{c1::pronunciación}},sich aussprechen = desahogarse,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+"<b>die Bitte</b> · -n<br>Ich habe eine Bitte an dich.<br><br>{{c1::petición, favor}}",Bitte an + Akk,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+<b>der Lebenslauf</b> · -¨e<br>Schicken Sie uns Ihren Lebenslauf.<br><br>{{c1::currículum}},,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+<b>das Vorstellungsgespräch</b> · -e<br>Morgen habe ich ein Vorstellungsgespräch.<br><br>{{c1::entrevista de trabajo}},,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+<b>das Unternehmen</b> · -<br>Das Unternehmen hat 500 Mitarbeiter.<br><br>{{c1::empresa}},,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+<b>der Betrieb</b> · -e<br>Die Anlage ist außer Betrieb.<br><br>{{c1::empresa; funcionamiento}},außer Betrieb = fuera de servicio,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+"<b>die Abteilung</b> · -en<br>Sie arbeitet in der Abteilung für Marketing.<br><br>{{c1::departamento, sección}}",,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+<b>die Besprechung</b> · -en<br>Der Chef ist gerade in einer Besprechung.<br><br>{{c1::reunión}},,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+"<b>der Bereich</b> · -e<br>Im Bereich Technik gibt es viele Stellen.<br><br>{{c1::área, ámbito}}",,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+<b>das Gebiet</b> · -e<br>Sie ist Expertin auf diesem Gebiet.<br><br>{{c1::zona; campo (de saber)}},auf diesem Gebiet,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+<b>die Lage</b> · -n<br>Die Lage auf dem Wohnungsmarkt ist schwierig.<br><br>{{c1::situación; ubicación}},in der Lage sein = ser capaz,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+"<b>der Zustand</b> · -¨e<br>Das Auto ist in gutem Zustand.<br><br>{{c1::estado, condición}}",,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+<b>der Ort</b> · -e<br>Wir treffen uns am üblichen Ort.<br><br>{{c1::lugar; pueblo}},vor Ort = in situ,German B2 Speedrun::Sustantivos B1-B2,sustantivos A2
+"<b>der Hintergrund</b> · -¨e<br>Was ist der Hintergrund der Entscheidung?<br><br>{{c1::fondo, trasfondo}}",,German B2 Speedrun::Sustantivos B1-B2,sustantivos B2
+<b>der Rahmen</b> · -<br>Im Rahmen des Projekts reisen wir nach Polen.<br><br>{{c1::marco}},im Rahmen + Gen,German B2 Speedrun::Sustantivos B1-B2,sustantivos B2
+"<b>die Herkunft</b><br>Die Herkunft spielt keine Rolle.<br><br>{{c1::origen, procedencia}}",,German B2 Speedrun::Sustantivos B1-B2,sustantivos B2
+"<b>die Heimat</b><br>Ich vermisse manchmal meine Heimat.<br><br>{{c1::tierra natal, hogar}}",,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
+<b>die Ehe</b> · -n<br>Ihre Ehe hält schon dreißig Jahre.<br><br>{{c1::matrimonio}},verheiratet,German B2 Speedrun::Sustantivos B1-B2,sustantivos B1
