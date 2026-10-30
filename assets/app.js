@@ -10,7 +10,7 @@
         { href: "drill.html", label: "Drill", icon: ico('<path d="M13 3 5 13.5h6L10 21l8-10.5h-6z"/>') },
         { href: "words.html", label: "Words", icon: ico('<path d="M4 19 9 5l5 14M5.8 14.5h6.4M15 15.5c0-2 1.4-3 3-3s3 1 3 3v3.5M21 17c-.6 1.5-1.7 2-3 2-1.6 0-3-.6-3-2.2"/>') },
         { href: "anki.html", label: "Anki", icon: ico('<rect x="6" y="3.5" width="13" height="16" rx="2.5"/><path d="M4 7v11.5A2.5 2.5 0 0 0 6.5 21H15"/>') },
-        { href: "archive.html", label: "Essays", icon: ico('<path d="M14 3.5H7.5A2.5 2.5 0 0 0 5 6v12a2.5 2.5 0 0 0 2.5 2.5h9A2.5 2.5 0 0 0 19 18V8.5z"/><path d="M14 3.5v5h5M8.5 13h7M8.5 16.5h5"/>') },
+        { href: "war.html", label: "War room", icon: ico('<path d="M5 21V4"/><path d="M5 4.5h11.5l-2.2 4 2.2 4H5"/>') },
         { href: "performance.html", label: "Audit", icon: ico('<path d="M4 20V10M10 20V4M16 20v-7M21 20H3"/>') }
     ];
 
@@ -57,7 +57,7 @@
     // ---------- Pages ----------
     function currentPage() {
         var file = location.pathname.split("/").pop() || "index.html";
-        if (/^essay-/.test(file)) return "archive.html";
+        if (/^essay-/.test(file) || file === "archive.html") return "war.html";
         if (file === "reboot.html" || file === "test.html") return "index.html";
         return file;
     }
@@ -119,7 +119,7 @@
     window.haptic = haptic;
 
     // ---------- Data: backup, import, delete (with undo) ----------
-    var KEY_RE = /^(units:|test:|level:|mine:|reboot-done|words:|anki:|perf:|speedrunBannedSet|home:|open:|tab:|coach:chat|coach:spent|theme$)/;
+    var KEY_RE = /^(units:|test:|level:|mine:|war:|reboot-done|words:|anki:|perf:|speedrunBannedSet|home:|open:|tab:|coach:chat|coach:spent|theme$)/;
     function ownKeys() {
         var keys = [];
         try { for (var i = 0; i < localStorage.length; i++) { var k = localStorage.key(i); if (KEY_RE.test(k)) keys.push(k); } } catch (e) {}
@@ -173,7 +173,7 @@
 
     // ---------- Device sync by link: all progress travels in the URL fragment (never sent to a server).
     // The API key and the theme stay on each device.
-    var SYNC_RE = /^(units:|test:|level:|mine:|reboot-done|words:|anki:|perf:|speedrunBannedSet|home:|open:|tab:|coach:chat|coach:spent)/;
+    var SYNC_RE = /^(units:|test:|level:|mine:|war:|reboot-done|words:|anki:|perf:|speedrunBannedSet|home:|open:|tab:|coach:chat|coach:spent)/;
     function b64url(bytes) { var s = ""; for (var i = 0; i < bytes.length; i++) s += String.fromCharCode(bytes[i]); return btoa(s).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, ""); }
     function unb64url(t) { t = t.replace(/-/g, "+").replace(/_/g, "/"); while (t.length % 4) t += "="; var s = atob(t), b = new Uint8Array(s.length); for (var i = 0; i < s.length; i++) b[i] = s.charCodeAt(i); return b; }
     async function packData() {

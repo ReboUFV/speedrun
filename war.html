@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>War room · Speedrun</title>
+    <link rel="stylesheet" href="assets/style.css?v=20261030192829">
+    <script src="assets/app.js?v=20261030192829"></script>
+    <script src="assets/plan.js?v=20261030192829"></script>
+    <script src="assets/units.js?v=20261030192829"></script>
+    <style>
+        .page { padding-top: 14px; }
+        .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+        .stat { background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow); padding: 12px; }
+        .stat b { display: block; font-size: 1.5rem; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+        .stat span { font-size: 0.8rem; color: var(--text-3); }
+        .ids { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
+        .mcq { margin-bottom: 18px; }
+        .mcq__q { font-weight: 600; margin-bottom: 8px; line-height: 1.45; }
+        .mcq__n { color: var(--text-3); font-weight: 700; margin-right: 6px; font-variant-numeric: tabular-nums; }
+        .opts { display: grid; gap: 6px; }
+        .opt {
+            font: inherit; font-size: 0.95rem; text-align: left; cursor: pointer;
+            background: var(--surface); color: var(--text); border: none; box-shadow: var(--shadow), inset 0 0 0 1px var(--border);
+            border-radius: var(--radius-sm); padding: 10px 13px; min-height: 44px; display: flex; gap: 12px; align-items: center;
+        }
+        .opt[aria-pressed="true"] { box-shadow: inset 0 0 0 2px var(--accent); background: var(--accent-soft); }
+        .opt__key { font-weight: 700; color: var(--text-3); width: 16px; flex-shrink: 0; font-size: 0.82rem; }
+        .opt--idk { color: var(--text-2); background: transparent; box-shadow: inset 0 0 0 1px var(--border); }
+        .text-box { background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow); padding: 16px; line-height: 1.7; margin-bottom: 16px; }
+        .text-box p { margin: 0 0 10px; }
+        .lvl-row { display: grid; grid-template-columns: 44px 1fr 52px; gap: 10px; align-items: center; padding: 6px 0; font-variant-numeric: tabular-nums; }
+        .meter { height: 6px; border-radius: 3px; background: var(--fill); overflow: hidden; }
+        .meter span { display: block; height: 100%; border-radius: 3px; background: var(--accent); }
+        .meter span.is-low { background: var(--danger); }
+        .miss { padding: 10px 0; font-size: 0.93rem; }
+        .miss + .miss { box-shadow: inset 0 0.5px 0 var(--border); }
+        .miss__q { font-weight: 600; }
+        .miss__x { color: var(--text-2); margin-top: 3px; }
+        .deck { display: grid; grid-template-columns: 12px 1fr; gap: 4px 10px; padding: 10px 0; }
+        .deck + .deck { box-shadow: inset 0 0.5px 0 var(--border); }
+        .deck__dot { width: 10px; height: 10px; border-radius: 50%; margin-top: 6px; }
+        .deck__name { font-weight: 600; }
+        .deck__do { grid-column: 2; font-size: 0.92rem; color: var(--text-2); }
+        .step h3 { display: flex; gap: 8px; align-items: baseline; }
+        .step__time { font-size: 0.8rem; color: var(--text-3); font-variant-numeric: tabular-nums; font-weight: 600; }
+        .sticky-score { position: sticky; bottom: calc(env(safe-area-inset-bottom) + 76px); z-index: 2; }
+    </style>
+</head>
+<body>
+
+<main class="page page--narrow" id="main">
+    <div class="page-head">
+        <h1>War room</h1>
+        <p class="lede" id="lede">The last week before the exam on 6 Nov at 10:00: only what scores.</p>
+    </div>
+
+    <div class="tabset" id="war-tabs">
+        <div class="seg seg--sticky" aria-label="War room">
+            <button class="seg__btn" data-for="w-status">Status</button>
+            <button class="seg__btn" data-for="w-test">Mini test</button>
+            <button class="seg__btn" data-for="w-steps">Steps</button>
+            <button class="seg__btn" data-for="w-anki">Anki</button>
+        </div>
+        <div class="panels" style="margin-top:12px">
+
+            <!-- STATUS -->
+            <section class="tabpanel" id="w-status">
+                <div class="card stack">
+                    <div class="row" style="justify-content:space-between"><h3 style="margin:0">Your progress so far</h3><span class="badge" id="snap-when">now</span></div>
+                    <div class="stats" id="snap-stats"></div>
+                    <div id="snap-lists"></div>
+                    <div class="row">
+                        <button class="btn btn--sm" type="button" id="snap-copy">Copy for Claude</button>
+                    </div>
+                </div>
+
+                <div class="callout callout--danger" id="arm" style="margin-top:12px">
+                    <h3>Activate the war room</h3>
+                    <p>Saves the progress above, empties the unit queue and switches the daily plan to the war-room routine. Then take the mini test: it refills the queue with only the units behind your mistakes.</p>
+                    <button class="btn btn--primary" type="button" id="arm-btn">Save progress and activate</button>
+                </div>
+
+                <div class="card stack" id="armed" style="margin-top:12px" hidden>
+                    <div class="row" style="justify-content:space-between"><h3 style="margin:0">War room active</h3><span class="badge badge--danger" id="armed-since"></span></div>
+                    <p id="armed-next" style="margin:0"></p>
+                    <div id="war-queue"></div>
+                    <div class="row">
+                        <a class="btn btn--primary btn--sm" href="index.html">Today's plan</a>
+                        <button class="btn btn--sm" type="button" id="disarm">Deactivate and restore the old queue</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- MINI TEST -->
+            <section class="tabpanel" id="w-test" hidden>
+                <div id="t-run">
+                    <div class="card" style="margin-bottom:14px">
+                        <h3>Mini test · about 25 minutes</h3>
+                        <p style="margin:0">24 grammar items that climb from A2 to C1, the way a placement exam does, then one exam-style reading. Choose "I don't know" instead of guessing: a guess hides what to fix. It saves as you go.</p>
+                    </div>
+                    <h2 style="font-size:1.1rem;margin:4px 0 12px">Grammar</h2>
+                    <div id="t-grammar"></div>
+                    <h2 style="font-size:1.1rem;margin:20px 0 12px">Reading <span class="subtle" style="font-weight:500">· about 10 minutes, questions first</span></h2>
+                    <div class="text-box" lang="de" id="t-text"></div>
+                    <div id="t-reading"></div>
+                    <div class="sticky-score">
+                        <button class="btn btn--primary btn--block" type="button" id="t-score" disabled>Answer everything to score</button>
+                    </div>
+                </div>
+                <div id="t-result" hidden>
+                    <div class="card result">
+                        <div class="row" style="justify-content:space-between"><h3 style="margin:0">Mini test result</h3><span class="subtle" id="r-date"></span></div>
+                        <p id="r-line" style="margin:6px 0 10px"></p>
+                        <div id="r-levels"></div>
+                    </div>
+                    <div class="card" style="margin-top:12px">
+                        <h3>Floor leaks <span class="badge badge--danger">Fix first</span></h3>
+                        <p class="subtle" style="margin:0 0 4px">Mistakes at or below your level: the cheapest points left before the exam.</p>
+                        <div id="r-floor"></div>
+                    </div>
+                    <div class="card" style="margin-top:12px">
+                        <h3>Above your level</h3>
+                        <p class="subtle" style="margin:0 0 4px">Recognise these; don't sink hours into them.</p>
+                        <div id="r-ceiling"></div>
+                    </div>
+                    <div class="callout callout--ok" style="margin-top:12px">
+                        <h3>War-room queue</h3>
+                        <p id="r-queue" style="margin:0 0 8px"></p>
+                        <div class="row">
+                            <a class="btn btn--primary btn--sm" href="index.html#p-units">Open Units</a>
+                            <button class="btn btn--sm" type="button" id="r-copy">Copy for Claude</button>
+                            <button class="btn btn--sm" type="button" id="r-retake">Retake</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- STEPS -->
+            <section class="tabpanel" id="w-steps" hidden>
+                <p class="subtle" style="margin:0 0 10px">The war-room day, block by block. Each step: how to do it, then the prompt (copy it into Coach or any chat).</p>
+
+                <details class="card step" open>
+                    <summary><h3><span class="step__time">08:00</span> Anki</h3></summary>
+                    <ol class="steps">
+                        <li>All reviews first, before anything else. They're cheap points you already paid for.</li>
+                        <li>New cards only from Verben mit Präpositionen, Connectors and New words (see the Anki tab). The other decks: reviews only.</li>
+                        <li>A card with a bad or vague translation: suspend it on the spot, don't argue with it.</li>
+                        <li>From 4 Nov: no new cards at all, only reviews.</li>
+                    </ol>
+                </details>
+
+                <details class="card step">
+                    <summary><h3><span class="step__time">09:00</span> Targeted unit</h3></summary>
+                    <ol class="steps">
+                        <li>Take the next unit from the war-room queue (Today → Units). It's there because of a mistake in the mini test.</li>
+                        <li>Theory in 5 minutes: find the one rule behind your mistake and write it in one line, next to the Spanish.</li>
+                        <li>Do only the exercises that train that rule, typed. Skip the rest of the unit.</li>
+                        <li>Log the %. Then the prompt below: 10 cold items on the same rule.</li>
+                    </ol>
+                    <details class="prompt"><summary>Unit check on my mistake</summary><pre class="prompt__text">Test me on this German grammar rule: [rule, e.g. relative pronouns in the dative]. My original mistake was: [the mini-test item and my answer]. Give me 10 short exam-style items one at a time, mixed multiple choice (3 options) and one-word gap fill, from B1 to B2. Don't explain before I answer. After all 10: my score, and each mistake as my answer → correct → the rule in 5 words.</pre></details>
+                </details>
+
+                <details class="card step">
+                    <summary><h3><span class="step__time">10:30</span> Ladder drill</h3></summary>
+                    <ol class="steps">
+                        <li>30 items from A2 to C1, timed: 20 minutes, no notes.</li>
+                        <li>Score per level. Your ceiling is the first level under 70%.</li>
+                        <li>Every mistake at or below your ceiling goes on the careless list (a note on your phone): my answer → correct → rule.</li>
+                    </ol>
+                    <details class="prompt"><summary>Ladder drill, A2 to C1</summary><pre class="prompt__text">Act as the grammar section of a university German placement exam that places students from A1 to C1. Give me 30 numbered items at once, easiest first: 8 at A2, 8 at B1, 8 at B2 and 6 at C1, multiple choice with 3 or 4 options and one-word gap fills. Don't show the levels. Focus on: verb position, cases after prepositions and verbs, adjective endings, verbs with prepositions, connectors (als/wenn, obwohl/trotzdem, damit/um … zu), passive, Konjunktiv II and relative pronouns, plus these weak spots of mine: [from the mini test]. No answers yet. When I send mine: score per level, my estimated placement (highest level at 70%+), then each mistake as my answer → correct → rule in 5 words. Mark the mistakes at or below my placement as careless.</pre></details>
+                </details>
+
+                <details class="card step">
+                    <summary><h3><span class="step__time">12:00</span> Listening loop</h3></summary>
+                    <ol class="steps">
+                        <li>Material at B1, not B2 (Nicos Weg B1, DW Langsam gesprochene Nachrichten, Goethe B1 model test). If you catch only loose words, it's too hard: go down.</li>
+                        <li>Clips of 30–60 seconds. 1: listen blind and note what you got. 2: listen reading the transcript. 3: stop at each sentence you missed: unknown word, known word you didn't recognise, or speed? 4: listen blind again. 5: shadow it 2–3 times.</li>
+                        <li>Start at 0.75× if needed, always finish at 1×.</li>
+                        <li>Chunks you didn't recognise go to New words in Anki, with the audio sentence.</li>
+                    </ol>
+                    <details class="prompt"><summary>Clean an automatic transcript</summary><pre class="prompt__text">This is an automatic YouTube transcript of German audio, without punctuation: [paste]. Rewrite it with correct punctuation, capitals and spelling, one speaker turn per line. Don't change the words except to fix recognition errors, and list the fixes you made. Then mark in bold the 8 chunks a B1 learner most often fails to hear (contractions, unstressed endings, separable prefixes at the end).</pre></details>
+                    <details class="prompt"><summary>Why didn't I hear it?</summary><pre class="prompt__text">I listened to this German sentence and didn't understand it: "[sentence from the transcript]". What I thought I heard: "[what you heard, even loose words]". Explain why I probably missed it (unknown word, sounds merged, unstressed ending, speed, separable verb at the end), how it actually sounds in fast speech, and give me 3 similar sentences to read aloud.</pre></details>
+                </details>
+
+                <details class="card step">
+                    <summary><h3><span class="step__time">14:30</span> Reading</h3></summary>
+                    <ol class="steps">
+                        <li>Two texts: one at your level, one a level above.</li>
+                        <li>Questions first (2 minutes), underline the key word in each. Then find the paragraph; read only that.</li>
+                        <li>Paraphrase hunt: the right option says the same with other words; an option that copies the text's words is often the trap.</li>
+                        <li>Post-mortem for every miss: quote the sentence that held the answer and name the cause (word, paraphrase, trap, time).</li>
+                    </ol>
+                    <details class="prompt"><summary>Exam-style reading at my level</summary><pre class="prompt__text">Write a German newspaper-style text of about 350 words at [B1 / B2] level on [studies / work / environment / technology / society]. Then 7 questions: 4 richtig / falsch / nicht im Text and 3 multiple choice with 3 options. Like real exams, put paraphrases in the correct options and word-matching traps or absolute words (immer, alle, nie) in the wrong ones. Wait for my answers. Then grade them; for each mistake, quote the sentence that holds the answer and name the trap.</pre></details>
+                    <details class="prompt"><summary>Paraphrase pairs from a text</summary><pre class="prompt__text">From this German text [paste], pick the 12 words or phrases an exam would most likely paraphrase in its questions. For each: the original → 2 paraphrases an exam would use (synonym, nominalisation or different structure) → Spanish meaning. Format it as Anki lines: front = paraphrase, back = original + Spanish.</pre></details>
+                </details>
+
+                <details class="card step">
+                    <summary><h3><span class="step__time">16:45</span> Listening, exam format</h3></summary>
+                    <ol class="steps">
+                        <li>One part of a real model test (Goethe B1, then B2 from 2 Nov), played as in the exam: once or twice as the instructions say, no pausing.</li>
+                        <li>Use the reading time: underline key words, predict each answer.</li>
+                        <li>Listen for turns: aber, eigentlich, doch, nicht … sondern. Watch numbers and negation.</li>
+                        <li>Score it, then do the loop from 12:00 on the parts you missed.</li>
+                    </ol>
+                    <details class="prompt"><summary>Listening post-mortem</summary><pre class="prompt__text">I did a German listening task. Transcript: [paste]. Questions and options: [paste]. My answers: [..]. Correct answers: [..]. For each wrong answer: the exact words that gave it, the trap I fell for (word repeated from the audio, paraphrase, a turn after aber/eigentlich, numbers, negation, possible vs certain), and one listening habit to fix. Then 5 chunks from the transcript worth an Anki card, with Spanish.</pre></details>
+                </details>
+
+                <details class="card step">
+                    <summary><h3><span class="step__time">19:45</span> Error review</h3></summary>
+                    <ol class="steps">
+                        <li>Read the careless list out loud, correct version only.</li>
+                        <li>The 5 most repeated errors → the prompt below.</li>
+                        <li>Words that cost you an answer today → New words in Anki (Mine vocab on Today).</li>
+                    </ol>
+                    <details class="prompt"><summary>Minimal pairs from my errors</summary><pre class="prompt__text">These are my repeated German mistakes this week: [paste careless list]. For each one, drill me with minimal pairs: one sentence at a time where I choose between two forms (dem/den, weil … ist / weil ist …, auf/an). Mix the errors. Stop when I get 10 in a row right, then tell me which error still looks shaky.</pre></details>
+                </details>
+
+                <details class="card step">
+                    <summary><h3><span class="step__time">Mock days</span> 31 Oct and 3 Nov at 10:00</h3></summary>
+                    <ol class="steps">
+                        <li>Grammar (ladder drill, 20 min), one reading part and one listening part from a model test, back to back, no breaks, phone in another room.</li>
+                        <li>The time rule: an item over 60 seconds → mark, guess, move on, come back at the end.</li>
+                        <li>Afternoon: the post-mortem prompts above, then only repeats.</li>
+                    </ol>
+                </details>
+
+                <details class="card step">
+                    <summary><h3><span class="step__time">4–6 Nov</span> Taper and exam</h3></summary>
+                    <ul>
+                        <li><b>4 Nov:</b> no new cards or units. One reading and one listening part, the careless list, an early night.</li>
+                        <li><b>5 Nov:</b> two hours at most: the careless list and easy listening. Pack ID and pens. Sleep by 23:00.</li>
+                        <li><b>6 Nov:</b> wake at 7:00, a walk with easy German audio to warm up your ear, arrive by 9:30. In the exam: floor first, time rule, no blanks unless wrong answers subtract.</li>
+                    </ul>
+                </details>
+            </section>
+
+            <!-- ANKI -->
+            <section class="tabpanel" id="w-anki" hidden>
+                <div class="card">
+                    <h3>Your decks this week</h3>
+                    <div class="deck"><span class="deck__dot" style="background:#e5484d"></span><span class="deck__name">B2 Words</span><span class="deck__do">Never used: suspend the whole deck (right-click → Suspend) or delete it. Twenty new cards a day waiting there is noise.</span></div>
+                    <div class="deck"><span class="deck__dot" style="background:#3e63dd"></span><span class="deck__name">4000 German Words by Frequency</span><span class="deck__do">New cards: 0. Keep only the reviews you have now, and suspend any card with a bad translation the moment it shows up. Don't add more.</span></div>
+                    <div class="deck"><span class="deck__dot" style="background:#30a46c"></span><span class="deck__name">Adverbs · Connectors · Speedrun Verbos</span><span class="deck__do">Keep. Connectors are the highest-value deck for reading and listening, since the answer usually sits after aber, jedoch or trotzdem: up to 15 new a day. Adverbs and Verbos: reviews plus 10 new.</span></div>
+                    <div class="deck"><span class="deck__dot" style="background:#d6409f"></span><span class="deck__name">New words</span><span class="deck__do">Only 10 cards, but it's the most valuable deck: words that already cost you an answer. Feed it every day from the listening and reading post-mortems, about 10 a day.</span></div>
+                    <div class="deck"><span class="deck__dot" style="background:#f76b15"></span><span class="deck__name">Top 100 German Verbs</span><span class="deck__do">You know these. Reviews only, new cards 0. The hard part is rarer verbs and their prepositions: that's the new deck below.</span></div>
+                </div>
+
+                <div class="callout callout--ok" style="margin-top:12px">
+                    <h3>Add: Verben mit Präpositionen <span class="badge">108 cards</span></h3>
+                    <p>Verbs with fixed prepositions and their case (sich verlassen auf + Akk, teilnehmen an + Dat, verfügen über, es mangelt an …), from B1 to C1. Each card asks the preposition and the case; the back has the trap for Spanish speakers (pensar <i>en</i> → denken <i>an</i>). They come up in grammar items and decide many reading and listening answers.</p>
+                    <p class="subtle">Import like the verbs deck: File → Import, note type Respuesta anidada (Cloze), field separator comma, Allow HTML on; column 3 = Deck, 4 = Tags. It lands in German B2 Speedrun → Verben mit Präpositionen. New cards: 25 a day until 3 Nov.</p>
+                    <a class="btn btn--primary btn--sm" href="anki/verben-mit-praepositionen.csv" download>Download the CSV</a>
+                </div>
+
+                <div class="card" style="margin-top:12px">
+                    <h3>Daily budget until 3 Nov</h3>
+                    <ul style="margin:0">
+                        <li>New cards in total: about 50 a day (Verben mit Präpositionen 25, Connectors 15, New words 10).</li>
+                        <li>From 4 Nov: 0 new. Cards learned in the last two days barely stick for the exam and cost review time.</li>
+                        <li>Over 200 reviews due: reviews first, new cards only if there's time.</li>
+                    </ul>
+                </div>
+            </section>
+        </div>
+    </div>
+</main>
+
+<script>
+(function () {
+    var U = window.Units, store = window.SpeedrunStore, $ = function (id) { return document.getElementById(id); };
+    function loadJSON(k, d) { try { var v = JSON.parse(store(k) || "null"); return v == null ? d : v; } catch (e) { return d; } }
+    function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
+    function fmt(d) { return new Date(d + "T12:00:00").toLocaleDateString("en-GB", { day: "numeric", month: "short" }); }
+    var LEVELS = ["A2", "B1", "B2", "C1"];
+
+    // ---------- Mini test: 24 grammar items climbing A2 → C1 (e = error type when missed) ----------
+    var G = [
+        { l: "A2", q: "Gestern ___ ich mit meiner Schwester ins Kino gegangen.", o: ["habe", "bin", "war"], a: 1, e: "part", x: "gehen is movement → Perfekt with sein: ich bin gegangen." },
+        { l: "A2", q: "Ich fahre morgen mit ___ Bus zur Uni.", o: ["dem", "den", "der"], a: 0, e: "case", x: "mit always takes the dative: der Bus → mit dem Bus." },
+        { l: "A2", q: "Ich kann heute nicht kommen, weil ich ___.", o: ["arbeiten muss", "muss arbeiten", "arbeite muss"], a: 0, e: "vpos", x: "weil sends the conjugated verb to the end: … weil ich arbeiten muss." },
+        { l: "A2", q: "Das ist ein sehr ___ Buch.", o: ["interessant", "interessante", "interessantes"], a: 2, e: "end", x: "ein + neuter noun without a der-word: the adjective shows the gender → interessantes." },
+        { l: "A2", q: "Kannst du ___ bitte helfen?", o: ["mich", "mir", "ich"], a: 1, e: "case", x: "helfen takes the dative: jemandem helfen → mir." },
+        { l: "A2", q: "Am Wochenende ___ nach Berlin.", o: ["wir fahren", "fahren wir", "wir sind fahren"], a: 1, e: "vpos", x: "Something else in position 1 → the verb stays in position 2, the subject goes after it." },
+        { l: "B1", q: "___ ich nach Deutschland kam, konnte ich kein Wort Deutsch.", o: ["Als", "Wenn", "Wann"], a: 0, e: "conn", x: "One event in the past → als. wenn is for repeated or present events; wann is a question." },
+        { l: "B1", q: "Ich lerne Deutsch, ___ ich in Berlin studieren kann.", o: ["um", "damit", "dass"], a: 1, e: "conn", x: "A full clause with its own subject → damit. um … zu has no subject and needs zu + infinitive." },
+        { l: "B1", q: "Der Mann, ___ ich gestern geholfen habe, ist mein Nachbar.", o: ["der", "den", "dem"], a: 2, e: "pron", u: ["B70", "A76"], x: "Relative pronoun = gender of der Mann + case in its own clause: helfen → dative → dem." },
+        { l: "B1", q: "Ich interessiere mich sehr ___ Politik.", o: ["an", "für", "über"], a: 1, e: "prep", u: ["A58", "B33", "B34"], x: "sich interessieren für + Akk. (The noun is different: Interesse an.)" },
+        { l: "B1", q: "Wenn ich mehr Zeit ___, würde ich öfter Sport machen.", o: ["habe", "hätte", "hatte"], a: 1, e: "tense", x: "Unreal condition → Konjunktiv II: wenn ich … hätte, würde ich …" },
+        { l: "B1", q: "Das Rathaus ___ im Jahr 1950 gebaut.", o: ["wurde", "hat", "wird"], a: 0, e: "part", u: ["A62", "A63"], x: "Passive in the past: wurde + Partizip II. hat gebaut would be active and needs a subject who builds." },
+        { l: "B2", q: "Je früher du anfängst, ___ besser wird das Ergebnis.", o: ["desto", "so", "als"], a: 0, e: "conn", x: "je + comparative …, desto/umso + comparative …" },
+        { l: "B2", q: "___ des schlechten Wetters fand das Konzert statt.", o: ["Trotz", "Obwohl", "Wegen"], a: 0, e: "conn", x: "A noun in the genitive follows → a preposition, not a conjunction. The meaning is contrast → trotz (wegen = cause)." },
+        { l: "B2", q: "Der Antrag muss bis Freitag ___.", o: ["abgegeben werden", "abgeben werden", "abgegeben worden"], a: 0, e: "part", u: ["B15"], x: "Passive with a modal: Partizip II + werden at the end → muss abgegeben werden." },
+        { l: "B2", q: "Wenn ich das gewusst ___, wäre ich nicht gekommen.", o: ["hätte", "habe", "würde"], a: 0, e: "tense", x: "Unreal past: hätte/wäre + Partizip II → wenn ich das gewusst hätte." },
+        { l: "B2", q: "Ich ärgere mich ___, dass ich den Zug verpasst habe.", o: ["darüber", "darauf", "worüber"], a: 0, e: "prep", u: ["A59", "B80", "B33"], x: "sich ärgern über → before a dass-clause, da(r) + preposition: darüber." },
+        { l: "B2", q: "Er tut so, ___ er alles wüsste.", o: ["als ob", "wie", "dass"], a: 0, e: "conn", x: "so tun, als ob + Konjunktiv II = pretend. The verb goes to the end." },
+        { l: "B2", q: "Weder mein Bruder ___ meine Schwester spricht Deutsch.", o: ["noch", "oder", "und"], a: 0, e: "conn", x: "Two-part connector: weder … noch = neither … nor." },
+        { l: "C1", q: "Der Minister erklärte, er ___ von dem Plan nichts gewusst.", o: ["habe", "hat", "hatte"], a: 0, e: "tense", x: "Reported speech in news and formal texts → Konjunktiv I: er habe … gewusst." },
+        { l: "C1", q: "Die seit Jahren ___ Mieten sind für viele Studenten ein Problem.", o: ["steigenden", "steigende", "gestiegen"], a: 0, e: "end", x: "Extended participle used as an adjective: die … steigenden Mieten (die + plural → -en)." },
+        { l: "C1", q: "Das Problem ___ sich nur schwer lösen.", o: ["lässt", "wird", "ist"], a: 0, e: "part", u: ["B16"], x: "Passive substitute: sich lassen + infinitive = can be done (lässt sich lösen = kann gelöst werden)." },
+        { l: "C1", q: "Nach ___ des Vertrags begann die Arbeit.", o: ["der Unterzeichnung", "die Unterzeichnung", "dem Unterzeichnen"], a: 0, e: "case", x: "Nominal style: nach + dative; die Unterzeichnung → der Unterzeichnung, then a genitive (des Vertrags)." },
+        { l: "C1", q: "Die Ergebnisse, ___ Bedeutung erst später erkannt wurde, …", o: ["deren", "dessen", "die"], a: 0, e: "pron", u: ["B71"], x: "Possessive relative pronoun: plural (die Ergebnisse) → deren; dessen is for der/das nouns." }
+    ];
+
+    // ---------- Mini test: one reading, B1 to B2, with paraphrases and traps ----------
+    var TEXT = [
+        "<b>Ein Semester im Ausland – mehr als nur Party?</b>",
+        "Jedes Jahr verbringen Zehntausende deutsche Studierende mit dem Erasmus-Programm einige Monate an einer Hochschule im Ausland. Viele berichten danach, dass sie selbstständiger geworden sind. Kritiker behaupten dagegen, der Aufenthalt sei für manche vor allem eine lange Ferienzeit.",
+        "Eine Umfrage unter 1.200 ehemaligen Teilnehmern zeichnet ein differenziertes Bild. Zwar gaben nur 35 Prozent an, ihre Noten hätten sich im Ausland verbessert, doch fast drei Viertel meinten, sie könnten heute besser mit unbekannten Situationen umgehen. Besonders deutlich ist der Effekt bei den Sprachkenntnissen: Wer vor dem Aufenthalt schon ein mittleres Niveau hatte, machte die größten Fortschritte. Anfänger dagegen blieben oft unter sich und sprachen im Alltag hauptsächlich Englisch.",
+        "Auch auf dem Arbeitsmarkt scheint sich ein Auslandssemester auszuzahlen, allerdings weniger direkt als erwartet. Personalchefs achten nach eigenen Angaben nicht so sehr auf den Aufenthalt selbst, sondern darauf, was die Bewerber daraus gemacht haben. „Wer im Vorstellungsgespräch nur von seinen Reisen erzählt, überzeugt uns nicht“, sagt Petra Lindner, die bei einem Hamburger Logistikunternehmen für die Auswahl von Trainees zuständig ist.",
+        "Ein Problem bleibt die Finanzierung. Das Stipendium deckt in teuren Städten wie Paris oder Kopenhagen nur einen Teil der Kosten. Studierende, deren Eltern sie nicht unterstützen können, verzichten deshalb häufiger auf den Aufenthalt. Die Hochschulen versuchen, mit zusätzlichen Zuschüssen gegenzusteuern – bisher allerdings mit mäßigem Erfolg."
+    ];
+    var RF = ["Richtig", "Falsch", "Nicht im Text"];
+    var R = [
+        { l: "B1", q: "Laut der Umfrage haben sich bei den meisten Teilnehmern die Noten verbessert.", o: RF, a: 1, x: "Only 35% said so (zwar … nur 35 Prozent). The word Noten is in the text: that's the trap." },
+        { l: "B2", q: "Wer schon Vorkenntnisse hatte, hat sprachlich am meisten profitiert.", o: RF, a: 0, x: "Paraphrase: schon ein mittleres Niveau = Vorkenntnisse; die größten Fortschritte = am meisten profitiert." },
+        { l: "B1", q: "Anfänger sprechen im Ausland vor allem die Landessprache.", o: RF, a: 1, x: "They mostly spoke English (hauptsächlich Englisch). dagegen marks the contrast." },
+        { l: "B1", q: "Petra Lindner hat selbst ein Semester im Ausland verbracht.", o: RF, a: 2, x: "The text says what she does at work, nothing about her own studies. Not in the text ≠ false." },
+        { l: "B2", q: "Was ist Personalchefs besonders wichtig?", o: ["dass die Bewerber viel gereist sind", "was die Bewerber aus dem Aufenthalt gelernt haben", "wie lange der Aufenthalt gedauert hat"], a: 1, x: "nicht so sehr … sondern darauf, was die Bewerber daraus gemacht haben. Option a reuses Reisen from the quote, which says the opposite." },
+        { l: "B2", q: "Warum gehen manche Studierende nicht ins Ausland?", o: ["Das Stipendium ist in allen Städten zu niedrig.", "Ihre Familie kann sie finanziell nicht unterstützen.", "Die Hochschulen zahlen keine Zuschüsse."], a: 1, x: "deren Eltern sie nicht unterstützen können. a is too absolute (allen; the text says teure Städte); c contradicts the text." },
+        { l: "B2", q: "Wie bewertet der Text die zusätzlichen Zuschüsse?", o: ["Sie haben das Problem gelöst.", "Sie helfen bisher nur begrenzt.", "Sie sind für die Hochschulen zu teuer."], a: 1, x: "bisher allerdings mit mäßigem Erfolg = they help only a little so far." }
+    ];
+
+    // ---------- Progress snapshot (what the war room saves before clearing) ----------
+    function snapshot() {
+        var st = U.loadState(), q = U.loadQueue(), log = U.loadLog(), by = { todo: [], first: [], repeat: [], solid: [], red: [], parked: [] };
+        Object.keys(st).forEach(function (id) { var s = st[id].s || "todo"; (by[s] = by[s] || []).push(id); });
+        var prof = loadJSON("level:profile", null), last = loadJSON("test:last", null);
+        return {
+            at: U.today(), queue: q, state: by, logs: log.length,
+            lastWeek: log.filter(function (l) { return l.date >= addDays(U.today(), -7); }).length,
+            profile: prof ? { date: prof.date, overall: prof.overall, skills: Object.keys(prof.skills || {}).reduce(function (o, k) { o[k] = prof.skills[k].level + (prof.skills[k].pct != null ? " (" + prof.skills[k].pct + "%)" : ""); return o; }, {}) } : null,
+            grammarTest: last ? { date: last.date, correct: last.res && last.res.correct, total: last.res && last.res.total } : null
+        };
+    }
+    function addDays(s, n) { var d = new Date(s + "T12:00:00"); d.setDate(d.getDate() + n); return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); }
+    function idsHtml(ids) { return ids.length ? '<div class="ids">' + ids.map(function (id) { return '<span class="badge" title="' + esc(U.UNITS[id] || "") + '">' + U.label(id) + "</span>"; }).join("") + "</div>" : '<span class="subtle">none</span>'; }
+    function snapText(s) {
+        var lines = ["Speedrun progress, " + s.at + (store("war:on") ? " (war room)" : "") + ":"];
+        lines.push("Units solid: " + s.state.solid.join(", ") + " | in progress: " + s.state.first.concat(s.state.repeat).join(", ") + " | red: " + s.state.red.join(", ") + " | parked: " + s.state.parked.join(", "));
+        lines.push("Results logged: " + s.logs + " (" + s.lastWeek + " in the last 7 days). Queue had " + s.queue.length + " units.");
+        if (s.profile) lines.push("Level test " + s.profile.date + ": overall " + s.profile.overall + "; " + Object.keys(s.profile.skills).map(function (k) { return k + " " + s.profile.skills[k]; }).join(", "));
+        var t = loadJSON("war:test", null);
+        if (t) lines.push(resultText(t));
+        return lines.join("\n");
+    }
+    function renderSnap() {
+        var on = store("war:on"), s = on ? loadJSON("war:snap", null) || snapshot() : snapshot();
+        $("snap-when").textContent = on ? "saved " + fmt(s.at) : "now";
+        var inProg = s.state.first.length + s.state.repeat.length;
+        $("snap-stats").innerHTML =
+            '<div class="stat"><b>' + s.state.solid.length + '</b><span>solid units</span></div>' +
+            '<div class="stat"><b>' + inProg + '</b><span>in progress</span></div>' +
+            '<div class="stat"><b>' + (s.state.red.length + s.state.parked.length) + '</b><span>red or parked</span></div>';
+        $("snap-lists").innerHTML =
+            '<p style="margin:0 0 4px"><b>Solid</b>' + idsHtml(s.state.solid) + "</p>" +
+            '<p style="margin:8px 0 4px"><b>In progress</b>' + idsHtml(s.state.first.concat(s.state.repeat)) + "</p>" +
+            '<p style="margin:8px 0 4px"><b>Red / parked</b>' + idsHtml(s.state.red.concat(s.state.parked)) + "</p>" +
+            '<p class="subtle" style="margin:8px 0 0">' + s.logs + " results logged, " + s.lastWeek + " in the last 7 days" +
+            (s.profile ? " · level test " + fmt(s.profile.date) + ": " + s.profile.overall : "") + "</p>";
+        $("snap-copy").onclick = function () { window.copyText(snapText(s)).then(function () { toast("Copied. Paste it in the chat with Claude."); }); };
+    }
+
+    // ---------- Activate / deactivate ----------
+    function renderArmed() {
+        var on = store("war:on"), t = loadJSON("war:test", null);
+        $("arm").hidden = !!on; $("armed").hidden = !on;
+        $("lede").textContent = on ? "Active since " + fmt(on) + ". Exam on 6 Nov at 10:00: only what scores." : "The last week before the exam on 6 Nov at 10:00: only what scores.";
+        if (!on) return;
+        $("armed-since").textContent = "since " + fmt(on);
+        var q = U.loadQueue();
+        $("armed-next").textContent = !t ? "Next: take the mini test. It fills the queue with the units behind your mistakes." :
+            q.length ? "Queue rebuilt from the mini test (" + fmt(t.date) + "). Units show up in Today → Units, two a day until 2 Nov." : "The mini test found nothing to fix in the units: spend unit time on the ladder drill and listening.";
+        $("war-queue").innerHTML = q.length ? q.map(function (id) {
+            var u = U.stateOf(U.loadState(), id);
+            return '<div class="row" style="gap:8px;padding:4px 0"><span class="badge">' + U.label(id) + "</span><span>" + esc(U.UNITS[id] || id) + '</span><span class="subtle">' + (u.s !== "todo" ? u.s : "") + "</span></div>";
+        }).join("") : "";
+    }
+    $("arm-btn").addEventListener("click", function () {
+        if (!confirm("Save your progress and empty the unit queue? Unit history stays; you can restore the old queue later.")) return;
+        store("war:snap", JSON.stringify(snapshot()));
+        U.saveQueue([]);
+        store("war:on", U.today());
+        var done = loadJSON("war:test", null);
+        if (done && done.queue) U.saveQueue(done.queue);
+        renderSnap(); renderArmed();
+        toast("War room active. Take the mini test next.");
+        document.querySelector('[data-for="w-test"]').click();
+    });
+    $("disarm").addEventListener("click", function () {
+        if (!confirm("Leave the war room and restore the queue you had before?")) return;
+        var s = loadJSON("war:snap", null);
+        if (s) U.saveQueue(s.queue);
+        store("war:on", null);
+        U.rerank();
+        renderSnap(); renderArmed();
+        toast("War room off, old queue restored.");
+    });
+
+    // ---------- Mini test UI ----------
+    var P_KEY = "war:progress";
+    var ans = loadJSON(P_KEY, { g: [], r: [] });
+    function optList(item, chosen, onPick, idk) {
+        var box = document.createElement("div"); box.className = "opts";
+        item.o.concat(idk ? ["I don't know"] : []).forEach(function (txt, i) {
+            var isIdk = idk && i === item.o.length, val = isIdk ? -1 : i;
+            var b = document.createElement("button"); b.type = "button"; b.className = "opt" + (isIdk ? " opt--idk" : "");
+            b.setAttribute("aria-pressed", chosen === val ? "true" : "false");
+            b.innerHTML = '<span class="opt__key">' + (isIdk ? "?" : String.fromCharCode(97 + i)) + "</span><span></span>";
+            b.lastChild.textContent = txt;
+            if (!isIdk) b.lastChild.lang = "de";
+            b.addEventListener("click", function () { onPick(val); box.querySelectorAll(".opt").forEach(function (x, k) { x.setAttribute("aria-pressed", k === i ? "true" : "false"); }); });
+            box.appendChild(b);
+        });
+        return box;
+    }
+    function renderTest() {
+        var g = $("t-grammar"); g.innerHTML = "";
+        G.forEach(function (it, i) {
+            var m = document.createElement("div"); m.className = "mcq";
+            m.innerHTML = '<div class="mcq__q"><span class="mcq__n">' + (i + 1) + '</span><span lang="de"></span></div>';
+            m.querySelector("[lang]").textContent = it.q;
+            m.appendChild(optList(it, ans.g[i], function (v) { ans.g[i] = v; save(); }, true));
+            g.appendChild(m);
+        });
+        $("t-text").innerHTML = TEXT.map(function (p) { return "<p>" + p + "</p>"; }).join("");
+        var r = $("t-reading"); r.innerHTML = "";
+        R.forEach(function (it, i) {
+            var m = document.createElement("div"); m.className = "mcq";
+            m.innerHTML = '<div class="mcq__q"><span class="mcq__n">' + (G.length + i + 1) + '</span><span lang="de"></span></div>';
+            m.querySelector("[lang]").textContent = it.q;
+            m.appendChild(optList(it, ans.r[i], function (v) { ans.r[i] = v; save(); }, true));
+            r.appendChild(m);
+        });
+        save(true);
+    }
+    function answeredAll() { return G.every(function (_, i) { return ans.g[i] != null; }) && R.every(function (_, i) { return ans.r[i] != null; }); }
+    function save(quiet) {
+        if (!quiet) store(P_KEY, JSON.stringify(ans));
+        var left = G.length + R.length - ans.g.filter(function (x) { return x != null; }).length - ans.r.filter(function (x) { return x != null; }).length;
+        $("t-score").disabled = left > 0;
+        $("t-score").textContent = left > 0 ? left + " left to answer" : "Score the mini test";
+    }
+
+    // ---------- Scoring → floor leaks, ceiling, war-room queue ----------
+    var MISS_W = { A2: 2, B1: 2, B2: 1.2, C1: 0.4 };   // a missed floor item matters more than a missed C1 item
+    function score() {
+        var lv = {}, misses = [];
+        LEVELS.forEach(function (l) { lv[l] = { c: 0, n: 0 }; });
+        G.forEach(function (it, i) { lv[it.l].n++; if (ans.g[i] === it.a) lv[it.l].c++; else misses.push({ kind: "g", i: i, l: it.l, e: it.e, pick: ans.g[i] }); });
+        var rc = 0;
+        R.forEach(function (it, i) { if (ans.r[i] === it.a) rc++; else misses.push({ kind: "r", i: i, l: it.l, pick: ans.r[i] }); });
+        // Placement: climb while each level is at two thirds or more (4/6 counts; 6-item bands are coarse)
+        var place = "A1";
+        for (var k = 0; k < LEVELS.length; k++) { var x = lv[LEVELS[k]]; if (x.c / x.n >= 0.66) place = LEVELS[k]; else break; }
+        return { date: U.today(), levels: lv, place: place, reading: { c: rc, n: R.length }, misses: misses };
+    }
+    function buildQueue(res) {
+        var st = U.loadState(), w = {}, low = {}, own = {};
+        res.misses.forEach(function (m) {
+            if (m.kind !== "g") return;
+            w[m.e] = (w[m.e] || 0) + MISS_W[m.l];
+            (G[m.i].u || []).forEach(function (id) { (own[m.e] = own[m.e] || []).push(id); });   // units for that exact structure first
+            if (m.l === "A2" || m.l === "B1") low[m.e] = true;
+        });
+        var types = Object.keys(w).sort(function (a, b) { return w[b] - w[a]; }), q = [];
+        var cap = Math.max(2, U.capacity(U.today()).core);
+        // One unit per error type first (A-book when the misses were at A2/B1, B-book otherwise), then a second unit only for structure-specific misses
+        for (var pass = 0; pass < 2 && q.length < cap; pass++) {
+            types.forEach(function (t) {
+                if (q.length >= cap) return;
+                var units = (own[t] || []).concat(pass === 0 ? U.ERROR_TYPES[t].units : []).filter(function (id, k, all) { return all.indexOf(id) === k; }).filter(function (id) { var s = U.stateOf(st, id).s; return s !== "solid" && s !== "parked" && q.indexOf(id) === -1; });
+                // Units you already did before (book A) go last: the careless list fixes those faster than a whole unit
+                units.sort(function (x, y) { return (U.DONE_BEFORE.indexOf(x) !== -1) - (U.DONE_BEFORE.indexOf(y) !== -1); });
+                var pref = own[t] ? units : units.filter(function (id) { return (id[0] === "A") === !!low[t]; });
+                var pick = (pref.length ? pref : units)[0];
+                if (pick) q.push(pick);
+            });
+        }
+        return q;
+    }
+    function itemOf(m) { return m.kind === "g" ? G[m.i] : R[m.i]; }
+    function missHtml(m) {
+        var it = itemOf(m), pick = m.pick === -1 ? "I don't know" : it.o[m.pick];
+        return '<div class="miss"><div class="miss__q"><span class="badge">' + m.l + "</span> <span lang=\"de\">" + esc(it.q.replace("___", "[" + it.o[it.a] + "]")) + "</span></div>" +
+            '<div class="miss__x">You: <span lang="de">' + esc(pick) + "</span> · " + esc(it.x) + (m.kind === "g" ? ' <span class="subtle">(' + esc(U.ERROR_TYPES[it.e].name) + ")</span>" : "") + "</div></div>";
+    }
+    function resultText(t) {
+        return "War-room mini test " + t.date + ": grammar " + LEVELS.map(function (l) { return l + " " + t.levels[l].c + "/" + t.levels[l].n; }).join(", ") +
+            " → placement " + t.place + "; reading " + t.reading.c + "/" + t.reading.n + ". Misses: " +
+            t.misses.map(function (m) { var it = itemOf(m); return (m.kind === "g" ? "G" : "R") + (m.i + 1) + " [" + m.l + (m.kind === "g" ? ", " + it.e : "") + "]"; }).join(", ") +
+            ". Queue: " + (t.queue || []).join(", ") + ".";
+    }
+    function renderResult(t) {
+        $("t-run").hidden = true; $("t-result").hidden = false;
+        $("r-date").textContent = fmt(t.date);
+        $("r-line").innerHTML = "Grammar placement: <b>" + t.place + "</b> (the highest level with two thirds or more right, climbing from A2). Reading: <b>" + t.reading.c + "/" + t.reading.n + "</b>.";
+        $("r-levels").innerHTML = LEVELS.map(function (l) {
+            var x = t.levels[l], p = Math.round(x.c / x.n * 100);
+            return '<div class="lvl-row"><b>' + l + '</b><div class="meter"><span class="' + (p < 66 ? "is-low" : "") + '" style="width:' + p + '%"></span></div><span>' + x.c + "/" + x.n + "</span></div>";
+        }).join("");
+        var idx = LEVELS.indexOf(t.place);
+        var floor = t.misses.filter(function (m) { return LEVELS.indexOf(m.l) <= Math.max(idx, 1); });
+        var ceil = t.misses.filter(function (m) { return LEVELS.indexOf(m.l) > Math.max(idx, 1); });
+        $("r-floor").innerHTML = floor.length ? floor.map(missHtml).join("") : '<p style="margin:6px 0 0">No floor leaks. Your base is clean.</p>';
+        $("r-ceiling").innerHTML = ceil.length ? ceil.map(missHtml).join("") : '<p style="margin:6px 0 0">Nothing missed above your level.</p>';
+        $("r-queue").textContent = !store("war:on") ? "Activate the war room (Status) to load " + (t.queue || []).length + " units from these mistakes into your queue." : t.queue && t.queue.length ? "Rebuilt with " + t.queue.length + " units from your mistakes, floor errors first: " + t.queue.map(function (id) { return U.label(id) + " " + U.UNITS[id]; }).join(" · ") + "." :
+            "No unit needed: the mistakes were above your level. Use the ladder drill and the reading steps instead.";
+        $("r-copy").onclick = function () { window.copyText(resultText(t)).then(function () { toast("Copied. Paste it in the chat with Claude."); }); };
+    }
+    $("t-score").addEventListener("click", function () {
+        if (!answeredAll()) return;
+        var t = score();
+        t.queue = buildQueue(t);
+        if (store("war:on")) U.saveQueue(t.queue);   // only in the war room; otherwise activation does it
+        store("war:test", JSON.stringify(t));
+        store(P_KEY, null);
+        renderResult(t); renderArmed();
+        window.scrollTo(0, 0);
+    });
+    $("r-retake").addEventListener("click", function () {
+        ans = { g: [], r: [] }; store(P_KEY, null);
+        $("t-result").hidden = true; $("t-run").hidden = false; renderTest(); window.scrollTo(0, 0);
+    });
+
+    renderSnap(); renderArmed(); renderTest();
+    var done = loadJSON("war:test", null);
+    if (done && !loadJSON(P_KEY, null)) renderResult(done);
+})();
+</script>
+</body>
+</html>

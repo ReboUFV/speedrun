@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Today · Speedrun</title>
-    <link rel="stylesheet" href="assets/style.css?v=20261027193900">
-    <script src="assets/app.js?v=20261027193900"></script>
-    <script src="assets/plan.js?v=20261027193900"></script>
-    <script src="assets/level.js?v=20261027193900"></script>
-    <script src="assets/units.js?v=20261027193900"></script>
+    <link rel="stylesheet" href="assets/style.css?v=20261030192829">
+    <script src="assets/app.js?v=20261030192829"></script>
+    <script src="assets/plan.js?v=20261030192829"></script>
+    <script src="assets/level.js?v=20261030192829"></script>
+    <script src="assets/units.js?v=20261030192829"></script>
     <style>
         .page { padding-top: 14px; }
 
@@ -163,7 +163,7 @@
                         <div class="ring__label"><div><b id="ring-n">0/0</b><small class="subtle">blocks</small></div></div>
                     </div>
                     <div class="progress-card__text">
-                        <div class="row"><span class="badge" id="m-phase">–</span><span class="badge badge--warn" id="m-kind" hidden></span><span class="badge badge--ok" id="m-level" hidden></span></div>
+                        <div class="row"><span class="badge" id="m-phase">–</span><a class="badge badge--danger" id="m-war" href="war.html" hidden>War room</a><span class="badge badge--warn" id="m-kind" hidden></span><span class="badge badge--ok" id="m-level" hidden></span></div>
                         <p class="mission" id="m-text">–</p>
                         <button class="btn btn--sm" type="button" id="m-today" hidden style="margin-top:8px">Back to today</button>
                     </div>
@@ -469,6 +469,7 @@
         $("dateline").textContent = fmt(selected, { weekday: isToday ? "long" : undefined, day: "numeric", month: "long" }) + " · " + PHASES[row[1]];
         // Recomputed with the exam weights (grammar, reading, listening), so older results follow the new format
         if (prof && prof.skills && window.LevelTest) prof.overall = window.LevelTest.overall(prof.skills) || prof.overall;
+        $("m-war").hidden = !window.PLAN.war;
         $("m-level").hidden = !(prof && prof.overall);
         if (prof && prof.overall) {
             var pr = window.LevelTest && window.LevelTest.project(prof.overall, U.today());

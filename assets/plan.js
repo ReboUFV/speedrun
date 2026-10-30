@@ -105,4 +105,25 @@ window.PLAN = {
         if (b[0] === "1215" && top2.indexOf("vocab") !== -1) { b[3] = "60 minutes: 20 frequent words and 10 connectors from Words, then Anki reviews."; }
         if (b[0] === "1700" && top2.indexOf("grammar") !== -1) { b[3] = "Due repeats, checks and red flags, then two C-Tests."; }
     });
+
+    // War room (war.html): the last-week routine. Each block has its guide and prompt in War room → Steps.
+    var war = null;
+    try { war = localStorage.getItem("war:on"); } catch (e) {}
+    PLAN.war = war;
+    if (war) PLAN.blocks = [
+        ["0730", "off",   "Wake up", "Water, daylight, no phone for 30 minutes."],
+        ["0800", "light", "Anki", "All reviews first. New cards only from Verben mit Präpositionen, Connectors and New words."],
+        ["0900", "deep",  "Grammar: targeted unit", "The next war-room unit: only the exercises for the rule behind your mistake, then the 10-item check.", "new"],
+        ["1030", "deep",  "Grammar: ladder drill", "30 items from A2 to C1 in 20 minutes. Score per level; mistakes at or below your level go on the careless list."],
+        ["1200", "deep",  "Listening loop", "60 to 90 minutes on 30-60 s clips at B1: blind, with the transcript, blind again, then shadow."],
+        ["1330", "off",   "Lunch", "A real break."],
+        ["1430", "deep",  "Reading", "Two texts, your level and one above. Questions first, hunt the paraphrases, post-mortem every miss."],
+        ["1600", "light", "Walk", "The morning clips again, passively."],
+        ["1645", "deep",  "Listening: exam format", "One model-test part, played as in the exam, questions first. Then the loop on what you missed."],
+        ["1745", "deep",  "Grammar: repeats", "Due repeats and red flags, then read the careless list out loud.", "due"],
+        ["1830", "off",   "Exercise and dinner", ""],
+        ["1945", "light", "Error review", "Minimal-pair drill on the 5 most repeated errors; words that cost answers go to New words."],
+        ["2030", "light", "Immersion", "A series or podcast with German subtitles."],
+        ["2200", "off",   "Shutdown", "Screens off by 22:30. Sleep is part of the plan this week."]
+    ];
 })();

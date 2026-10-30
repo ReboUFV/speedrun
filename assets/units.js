@@ -248,6 +248,7 @@
 
     // Re-rank the queue from all the evidence: in-progress units first, then the new ranking.
     function rerank() {
+        if (store("war:on")) return null;   // war room: the mini test owns the queue
         var last = null;
         try { last = JSON.parse(store("test:last") || "null"); } catch (e) {}
         var q = loadQueue();
