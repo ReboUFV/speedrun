@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>War room · Speedrun</title>
-    <link rel="stylesheet" href="assets/style.css?v=20261030210424">
-    <script src="assets/app.js?v=20261030210424"></script>
-    <script src="assets/plan.js?v=20261030210424"></script>
-    <script src="assets/units.js?v=20261030210424"></script>
+    <link rel="stylesheet" href="assets/style.css?v=20261101143707">
+    <script src="assets/app.js?v=20261101143707"></script>
+    <script src="assets/plan.js?v=20261101143707"></script>
+    <script src="assets/units.js?v=20261101143707"></script>
     <style>
         .page { padding-top: 14px; }
         .countdown { font-size: 0.95rem; color: var(--text-2); margin: 2px 0 0; }
@@ -47,6 +47,8 @@
         .units-list li { display: grid; grid-template-columns: 26px 54px 1fr; gap: 8px; padding: 8px 0; align-items: baseline; counter-increment: u; }
         .units-list li::before { content: counter(u); color: var(--text-3); font-weight: 700; font-variant-numeric: tabular-nums; }
         .units-list li + li { box-shadow: inset 0 0.5px 0 var(--border); }
+        .units-list .u__why { display: block; color: var(--text-3); font-size: 0.85rem; margin-top: 2px; }
+        .units-list.is-extra li { opacity: 0.7; }
 
         /* Prompts */
         .pr { padding: 16px; }
@@ -127,6 +129,15 @@
                     <h2 id="week-h" style="font-size:1.05rem;margin:0 0 8px">Until the exam</h2>
                     <div class="week" id="week"></div>
                 </section>
+
+                <section class="card" style="margin-top:12px" aria-labelledby="exp-h">
+                    <h2 id="exp-h" style="font-size:1.05rem;margin:0">Export</h2>
+                    <p class="subtle" style="margin:4px 0 10px">The whole plan until the exam, your test result with every miss, your units and the prompts, in one text file.</p>
+                    <div class="actions" style="margin-top:0">
+                        <button class="btn btn--primary" type="button" data-export="file">Download (.md)</button>
+                        <button class="btn" type="button" data-export="copy">Copy all</button>
+                    </div>
+                </section>
             </section>
 
             <!-- TEST -->
@@ -164,6 +175,7 @@
                     <div class="actions">
                         <button class="btn btn--primary" type="button" id="r-today">See your units in Today</button>
                         <button class="btn" type="button" id="r-copy">Copy result for Claude</button>
+                        <button class="btn" type="button" data-export="file">Export plan and results</button>
                         <button class="btn" type="button" id="r-retake">Retake</button>
                     </div>
                 </div>
@@ -187,19 +199,20 @@
                 </div>
 
                 <div class="callout callout--ok" style="margin-top:12px">
-                    <h3>Add these four decks</h3>
+                    <h3>Add these five decks</h3>
                     <p class="subtle">Import each like the verbs deck: File → Import, note type Respuesta anidada (Cloze), comma separator, Allow HTML on; column 3 = Deck, column 4 = Tags. They land under German B2 Speedrun. Cards come in priority order, so the first ones you see are the most useful.</p>
                     <div class="deck"><span class="deck__dot" style="background:var(--accent)"></span><span class="deck__name">Paráfrasis <span class="badge">108 notes · 324 cards</span></span><span class="deck__do">What the text says ↔ what the right option says: beschließen = sich entscheiden, die meisten = die Mehrheit, nicht erlaubt = verboten. Each card hides one member of the group. This is the reading and listening trap, trained directly. <a href="anki/parafrasis.csv" download>Download</a></span></div>
                     <div class="deck"><span class="deck__dot" style="background:var(--accent)"></span><span class="deck__name">Verbos frecuentes B1-B2 <span class="badge">98 cards</span></span><span class="deck__do">Verbs that show up all the time in texts and audio but aren't the basics: behaupten, erwähnen, gelingen, abschaffen, feststellen … German verb with a sentence on the front, Spanish meaning to recall, Perfekt on the back. <a href="anki/verbos-frecuentes.csv" download>Download</a></span></div>
                     <div class="deck"><span class="deck__dot" style="background:var(--accent)"></span><span class="deck__name">Verben mit Präpositionen <span class="badge">116 cards</span></span><span class="deck__do">Frequent verbs with their fixed preposition and case (sich verlassen auf, teilnehmen an, sich halten an …), with the trap for Spanish speakers on the back. <a href="anki/verben-mit-praepositionen.csv" download>Download</a></span></div>
                     <div class="deck"><span class="deck__dot" style="background:var(--accent)"></span><span class="deck__name">Sustantivos B1-B2 <span class="badge">181 cards</span></span><span class="deck__do">Common nouns without an obvious English root, none repeated from Paráfrasis: der Aufenthalt, die Frist, der Zuschuss, die Durchsage, der Antrag … Article and plural on the front with a sentence, Spanish meaning to recall, false friends flagged on the back. <a href="anki/sustantivos.csv" download>Download</a></span></div>
+                    <div class="deck"><span class="deck__dot" style="background:var(--accent)"></span><span class="deck__name">Adjetivos esenciales <span class="badge">34 cards</span></span><span class="deck__do">The Pareto set, small enough to finish before Friday: attitude words that decide listening answers (begeistert, gespannt, unsicher), quantity and degree (knapp, gering, erheblich) and status words from texts (zuständig, gültig, erforderlich, künftig). With its preposition when it has one. <a href="anki/adjetivos.csv" download>Download</a></span></div>
                 </div>
 
                 <div class="card" style="margin-top:12px">
                     <h3>Daily budget until 3 Nov</h3>
                     <ul style="margin:0">
-                        <li>About 70 new cards a day: Paráfrasis 20, Sustantivos 15, Verben mit Präpositionen 15, Verbos frecuentes 10, New words 10. Connectors: reviews only now.</li>
-                        <li>You won't finish all four decks before the exam, and that's fine: they're ordered by priority.</li>
+                        <li>About 70 new cards a day: Paráfrasis 20, Sustantivos 15, Adjetivos 12 (done by 3 Nov), Verben mit Präpositionen 10, New words 10. Verbos frecuentes: reviews only now. Connectors: reviews only now.</li>
+                        <li>You won't finish the big decks before the exam, and that's fine: they're ordered by priority.</li>
                         <li>From 4 Nov: 0 new. Cards learned in the last two days barely stick for the exam and cost review time.</li>
                         <li>Over 200 reviews due: reviews first, new cards only if there's time.</li>
                     </ul>
@@ -244,6 +257,15 @@
             '</div><details><summary>Show the prompt</summary><pre>' + esc(p.text) + "</pre></details></article>";
     }).join("");
 
+    function unitLi(u) {
+        return '<li><span class="badge">' + U.label(u.id) + "</span><span>" + esc(U.UNITS[u.id] || u.id) + '<span class="u__why">' + esc(U.ERROR_TYPES[u.t].name) +
+            (u.easier ? " · Too hard? Do " + U.label(u.easier) + " (" + esc(U.UNITS[u.easier]) + ") first" : "") + "</span></span></li>";
+    }
+    // Grammar slots are the 09:00 blocks of full days up to the last unit day; today's counts until 10:30
+    function unitSlots(d, hhmm) {
+        return Object.keys(PLAN.days).filter(function (k) { return k <= PLAN.lastUnitDay && PLAN.days[k][0] === "normal" && (k > d || (k === d && hhmm < "1030")); }).length;
+    }
+
     // ---------- Today: now, schedule, units, week ----------
     function dayType(d) { var x = PLAN.days[d]; return x ? x[0] : (d < PLAN.examStart ? "normal" : null); }
     function renderToday() {
@@ -273,15 +295,16 @@
             var t = PLAN.days[k][0], label = { normal: "Full day", mock: "Mock 10:00", light: "Light", exam: "Exam 10:00" }[t];
             return '<div class="wk is-' + t + (k === d ? " is-today" : "") + '"><b>' + fmt(k, { weekday: "short", day: "numeric" }) + "</b>" + label + "</div>";
         }).join("");
-        var t = loadJSON("war:test", null);
-        $("units").innerHTML = t && t.queue && t.queue.length ?
-            '<p class="subtle" style="margin:4px 0 0">From your test on ' + fmt(t.date) + ". Top to bottom, one at 09:00 each day.</p><ol class=\"units-list\">" +
-                t.queue.map(function (id) { return '<li><span class="badge">' + U.label(id) + "</span><span>" + esc(U.UNITS[id] || id) + "</span></li>"; }).join("") + "</ol>" :
+        var t = loadJSON("war:test", null), q = t ? buildQueue(t) : [], n = unitSlots(d, hhmm);
+        $("units").innerHTML = q.length ?
+            '<p class="subtle" style="margin:4px 0 0">From your test on ' + fmt(t.date) + ". Ordered by how much each one helps you understand texts and audio; B2–C1 units first, with the easier unit if one is too hard. " +
+                (n ? n + (n === 1 ? " slot" : " slots") + " left at 09:00." : "No unit slots left: fix these with the careless list and the minimal-pairs prompt.") + "</p>" +
+                (n ? '<ol class="units-list">' + q.slice(0, n).map(unitLi).join("") + "</ol>" : "") +
+                (q.length > n ? (n ? '<p class="subtle" style="margin:10px 0 0">Only if a mock shows the same mistake:</p>' : "") + '<ol class="units-list is-extra" style="counter-reset:u ' + n + '">' + q.slice(n).map(unitLi).join("") + "</ol>" : "") :
             t ? '<p style="margin:6px 0 0">Your test found nothing a unit would fix. Use 09:00 for a second ladder drill.</p>' :
             '<p style="margin:6px 0 10px">Take the mini test: it picks the units behind your mistakes.</p><button class="btn btn--primary" type="button" id="go-test">Take the test · 25 min</button>';
         if ($("go-test")) $("go-test").onclick = function () { document.querySelector('[data-for="w-test"]').click(); window.scrollTo(0, 0); };
     }
-    renderToday();
     var lastKey = "";
     setInterval(function () {
         var n = new Date(), k = iso(n) + (PLAN.blocks[dayType(iso(n))] || []).filter(function (b) { return b[0] <= String(n.getHours()).padStart(2, "0") + String(n.getMinutes()).padStart(2, "0"); }).length;
@@ -299,19 +322,19 @@
         { l: "A2", q: "Das ist ein sehr ___ Buch.", o: ["interessant", "interessante", "interessantes"], a: 2, e: "end", x: "ein + neuter noun without a der-word: the adjective shows the gender → interessantes." },
         { l: "A2", q: "Kannst du ___ bitte helfen?", o: ["mich", "mir", "ich"], a: 1, e: "case", x: "helfen takes the dative: jemandem helfen → mir." },
         { l: "A2", q: "Am Wochenende ___ nach Berlin.", o: ["wir fahren", "fahren wir", "wir sind fahren"], a: 1, e: "vpos", x: "Something else in position 1 → the verb stays in position 2, the subject goes after it." },
-        { l: "B1", q: "___ ich nach Deutschland kam, konnte ich kein Wort Deutsch.", o: ["Als", "Wenn", "Wann"], a: 0, e: "conn", x: "One event in the past → als. wenn is for repeated or present events; wann is a question." },
-        { l: "B1", q: "Ich lerne Deutsch, ___ ich in Berlin studieren kann.", o: ["um", "damit", "dass"], a: 1, e: "conn", x: "A full clause with its own subject → damit. um … zu has no subject and needs zu + infinitive." },
+        { l: "B1", q: "___ ich nach Deutschland kam, konnte ich kein Wort Deutsch.", o: ["Als", "Wenn", "Wann"], a: 0, e: "conn", u: ["B62"], x: "One event in the past → als. wenn is for repeated or present events; wann is a question." },
+        { l: "B1", q: "Ich lerne Deutsch, ___ ich in Berlin studieren kann.", o: ["um", "damit", "dass"], a: 1, e: "conn", u: ["B69"], x: "A full clause with its own subject → damit. um … zu has no subject and needs zu + infinitive." },
         { l: "B1", q: "Der Mann, ___ ich gestern geholfen habe, ist mein Nachbar.", o: ["der", "den", "dem"], a: 2, e: "pron", u: ["B70", "A76"], x: "Relative pronoun = gender of der Mann + case in its own clause: helfen → dative → dem." },
-        { l: "B1", q: "Ich interessiere mich sehr ___ Politik.", o: ["an", "für", "über"], a: 1, e: "prep", u: ["A58", "B33", "B34"], x: "sich interessieren für + Akk. (The noun is different: Interesse an.)" },
+        { l: "B1", q: "Ich interessiere mich sehr ___ Politik.", o: ["an", "für", "über"], a: 1, e: "prep", u: ["B33", "B34", "A58"], x: "sich interessieren für + Akk. (The noun is different: Interesse an.)" },
         { l: "B1", q: "Wenn ich mehr Zeit ___, würde ich öfter Sport machen.", o: ["habe", "hätte", "hatte"], a: 1, e: "tense", x: "Unreal condition → Konjunktiv II: wenn ich … hätte, würde ich …" },
-        { l: "B1", q: "Das Rathaus ___ im Jahr 1950 gebaut.", o: ["wurde", "hat", "wird"], a: 0, e: "part", u: ["A62", "A63"], x: "Passive in the past: wurde + Partizip II. hat gebaut would be active and needs a subject who builds." },
+        { l: "B1", q: "Das Rathaus ___ im Jahr 1950 gebaut.", o: ["wurde", "hat", "wird"], a: 0, e: "part", u: ["B14", "A63"], x: "Passive in the past: wurde + Partizip II. hat gebaut would be active and needs a subject who builds." },
         { l: "B2", q: "Je früher du anfängst, ___ besser wird das Ergebnis.", o: ["desto", "so", "als"], a: 0, e: "conn", x: "je + comparative …, desto/umso + comparative …" },
         { l: "B2", q: "___ des schlechten Wetters fand das Konzert statt.", o: ["Trotz", "Obwohl", "Wegen"], a: 0, e: "conn", x: "A noun in the genitive follows → a preposition, not a conjunction. The meaning is contrast → trotz (wegen = cause)." },
         { l: "B2", q: "Der Antrag muss bis Freitag ___.", o: ["abgegeben werden", "abgeben werden", "abgegeben worden"], a: 0, e: "part", u: ["B15"], x: "Passive with a modal: Partizip II + werden at the end → muss abgegeben werden." },
         { l: "B2", q: "Wenn ich das gewusst ___, wäre ich nicht gekommen.", o: ["hätte", "habe", "würde"], a: 0, e: "tense", x: "Unreal past: hätte/wäre + Partizip II → wenn ich das gewusst hätte." },
-        { l: "B2", q: "Ich ärgere mich ___, dass ich den Zug verpasst habe.", o: ["darüber", "darauf", "worüber"], a: 0, e: "prep", u: ["A59", "B80", "B33"], x: "sich ärgern über → before a dass-clause, da(r) + preposition: darüber." },
-        { l: "B2", q: "Er tut so, ___ er alles wüsste.", o: ["als ob", "wie", "dass"], a: 0, e: "conn", x: "so tun, als ob + Konjunktiv II = pretend. The verb goes to the end." },
-        { l: "B2", q: "Weder mein Bruder ___ meine Schwester spricht Deutsch.", o: ["noch", "oder", "und"], a: 0, e: "conn", x: "Two-part connector: weder … noch = neither … nor." },
+        { l: "B2", q: "Ich ärgere mich ___, dass ich den Zug verpasst habe.", o: ["darüber", "darauf", "worüber"], a: 0, e: "prep", u: ["B80", "B33", "A59"], x: "sich ärgern über → before a dass-clause, da(r) + preposition: darüber." },
+        { l: "B2", q: "Er tut so, ___ er alles wüsste.", o: ["als ob", "wie", "dass"], a: 0, e: "conn", u: ["B12"], x: "so tun, als ob + Konjunktiv II = pretend. The verb goes to the end." },
+        { l: "B2", q: "Weder mein Bruder ___ meine Schwester spricht Deutsch.", o: ["noch", "oder", "und"], a: 0, e: "conn", u: ["B73"], x: "Two-part connector: weder … noch = neither … nor." },
         { l: "C1", q: "Der Minister erklärte, er ___ von dem Plan nichts gewusst.", o: ["habe", "hat", "hatte"], a: 0, e: "tense", x: "Reported speech in news and formal texts → Konjunktiv I: er habe … gewusst." },
         { l: "C1", q: "Die seit Jahren ___ Mieten sind für viele Studenten ein Problem.", o: ["steigenden", "steigende", "gestiegen"], a: 0, e: "end", x: "Extended participle used as an adjective: die … steigenden Mieten (die + plural → -en)." },
         { l: "C1", q: "Das Problem ___ sich nur schwer lösen.", o: ["lässt", "wird", "ist"], a: 0, e: "part", u: ["B16"], x: "Passive substitute: sich lassen + infinitive = can be done (lässt sich lösen = kann gelöst werden)." },
@@ -392,28 +415,49 @@
         for (var k = 0; k < LEVELS.length; k++) { var x = lv[LEVELS[k]]; if (x.c / x.n >= 0.66) place = LEVELS[k]; else break; }
         return { date: iso(new Date()), levels: lv, place: place, reading: { c: rc, n: R.length }, misses: misses };
     }
-    // Units behind the mistakes: one per error type (A-book for A2/B1 misses, B-book otherwise), a second only for structure-specific misses
+    // Candidate units per error type: [unit, comprehension value 0-3, easier A-book unit].
+    // The exam is grammar MC, reading and listening: no writing, no speaking. What helps you parse
+    // a sentence you hear or read (connectors, passive, Konjunktiv, relative clauses, da-words) ranks high;
+    // what only matters when you produce German (object order, nicht position, rare Perfekt forms) ranks low.
+    var POOL = {
+        conn:  [["B63", 3, "A46"], ["B65", 3, "A80"], ["B62", 3, "A77"], ["B73", 2.5, "A80"]],
+        part:  [["B14", 3, "A62"], ["B16", 3, null], ["B15", 2.5, "A62"], ["B36", 1, "A28"], ["B37", 0.5, "A27"]],
+        pron:  [["B70", 3, "A75"], ["B71", 2.5, "A76"], ["B72", 2.5, "A76"]],
+        tense: [["B12", 3, "A61"], ["B9", 2.5, "A60"], ["B10", 2.5, "A60"], ["B38", 1.5, "A55"], ["B11", 1.5, "A61"]],
+        prep:  [["B80", 3, "A59"], ["B33", 2, "A58"], ["B34", 1.5, "A58"], ["B35", 1.5, "A58"]],
+        vpos:  [["B2", 3, "A46"], ["B1", 2, "A12"], ["B4", 1, "A13"], ["B6", 1, null]],
+        form:  [["B69", 2.5, "A79"], ["B67", 2, "A73"], ["B68", 2, "A73"], ["B57", 1.5, "A42"]],
+        "case": [["B49", 2, "A68"], ["B31", 2, "A22"], ["B3", 1, "A21"]],
+        end:   [["B56", 1.5, "A84"], ["B55", 1.5, "A41"], ["B50", 0.5, "A69"]]
+    };
+    var COMP = {}, EASIER = {};
+    Object.keys(POOL).forEach(function (t) { POOL[t].forEach(function (p) { COMP[p[0]] = p[1]; if (p[2]) EASIER[p[0]] = p[2]; }); });
+    function comp(id) { return COMP[id] != null ? COMP[id] : 1.5; }
+    // One unit per error type behind your misses, a second only when it helps comprehension a lot.
+    // A B2-C1 unit always comes before an A1-B1 one; the A unit shows up as the easier way in.
     function buildQueue(res) {
-        var w = {}, low = {}, own = {}, q = [], CAP = 6;
+        var w = {}, own = {}, q = [], CAP = 6;
         res.misses.forEach(function (m) {
             if (m.kind !== "g") return;
             w[m.e] = (w[m.e] || 0) + MISS_W[m.l];
-            if (m.l === "A2" || m.l === "B1") low[m.e] = true;
             (G[m.i].u || []).forEach(function (id) { (own[m.e] = own[m.e] || []).push(id); });
         });
-        var types = Object.keys(w).sort(function (a, b) { return w[b] - w[a]; });
-        for (var pass = 0; pass < 2 && q.length < CAP; pass++) {
-            types.forEach(function (t) {
-                if (q.length >= CAP) return;
-                var units = (own[t] || []).concat(pass === 0 ? U.ERROR_TYPES[t].units : []).filter(function (id, k, all) { return all.indexOf(id) === k && q.indexOf(id) === -1; });
-                // Units done before the war room go last: the careless list fixes those faster than a whole unit
-                units.sort(function (x, y) { return (U.DONE_BEFORE.indexOf(x) !== -1) - (U.DONE_BEFORE.indexOf(y) !== -1); });
-                var pref = own[t] ? units : units.filter(function (id) { return (id[0] === "A") === !!low[t]; });
-                var pick = (pref.length ? pref : units)[0];
-                if (pick) q.push(pick);
+        var types = Object.keys(w).sort(function (a, b) { return w[b] * comp(POOL[b][0][0]) - w[a] * comp(POOL[a][0][0]); });
+        function cands(t) {
+            var mine = own[t] || [];
+            return mine.concat(POOL[t].map(function (p) { return p[0]; })).filter(function (id, k, all) { return all.indexOf(id) === k; }).sort(function (x, y) {
+                return (x[0] !== "B") - (y[0] !== "B") || (mine.indexOf(y) !== -1) - (mine.indexOf(x) !== -1) || comp(y) - comp(x);
             });
         }
-        return q;
+        var taken = function (id) { return q.some(function (u) { return u.id === id; }); };
+        for (var pass = 0; pass < 2; pass++) {
+            types.forEach(function (t) {
+                if (q.length >= CAP) return;
+                var pick = cands(t).filter(function (id) { return !taken(id) && (pass === 0 || (own[t] || []).indexOf(id) !== -1 || comp(id) >= 2.5); })[0];
+                if (pick) q.push({ id: pick, t: t, easier: EASIER[pick] || null, p: w[t] * comp(pick) });
+            });
+        }
+        return q.sort(function (a, b) { return b.p - a.p; });
     }
     function itemOf(m) { return m.kind === "g" ? G[m.i] : R[m.i]; }
     function missHtml(m) {
@@ -425,7 +469,7 @@
         return "Mini test " + t.date + ": grammar " + LEVELS.map(function (l) { return l + " " + t.levels[l].c + "/" + t.levels[l].n; }).join(", ") +
             " → placement " + t.place + "; reading " + t.reading.c + "/" + t.reading.n + ". Misses: " +
             t.misses.map(function (m) { var it = itemOf(m); return (m.kind === "g" ? "G" : "R") + (m.i + 1) + " [" + m.l + (m.kind === "g" ? ", " + it.e : "") + "]"; }).join(", ") +
-            ". Units: " + (t.queue || []).join(", ") + ".";
+            ". Units: " + buildQueue(t).map(function (u) { return u.id; }).join(", ") + ".";
     }
     function renderResult(t) {
         $("t-run").hidden = true; $("t-result").hidden = false;
@@ -445,7 +489,7 @@
     $("t-score").addEventListener("click", function () {
         if (left()) return;
         var t = score();
-        t.queue = buildQueue(t);
+        t.queue = buildQueue(t).map(function (u) { return u.id; });
         store("war:test", JSON.stringify(t));
         store(P_KEY, null);
         renderResult(t); renderToday();
@@ -458,8 +502,60 @@
     $("r-today").addEventListener("click", function () { document.querySelector('[data-for="w-today"]').click(); window.scrollTo(0, 0); });
 
     renderTest();
+    renderToday();
     var done = loadJSON("war:test", null);
     if (done && !loadJSON(P_KEY, null)) renderResult(done);
+
+    // ---------- Export: plan, result, units and prompts as Markdown ----------
+    function exportText() {
+        var t = loadJSON("war:test", null), d = iso(new Date()), L = [];
+        var day = function (k) { return fmt(k, { weekday: "short", day: "numeric", month: "short" }); };
+        L.push("# War room · German placement exam", "", "Exam: " + day(PLAN.examStart) + ", " + PLAN.examTime + " · grammar, reading, listening (A1–C1). Exported " + day(d) + ".", "");
+        L.push("## Test result", "");
+        if (!t) L.push("No test taken yet.", "");
+        else {
+            L.push("Date: " + day(t.date) + " · placement **" + t.place + "** · reading " + t.reading.c + "/" + t.reading.n, "");
+            L.push("| Level | Right |", "|---|---|");
+            LEVELS.forEach(function (l) { L.push("| " + l + " | " + t.levels[l].c + "/" + t.levels[l].n + " |"); });
+            L.push("", "### Misses", "");
+            if (!t.misses.length) L.push("None.");
+            t.misses.forEach(function (m) {
+                var it = itemOf(m);
+                L.push("- " + (m.kind === "g" ? "Grammar " + (m.i + 1) : "Reading " + (m.i + 1)) + " [" + m.l + (m.kind === "g" ? ", " + U.ERROR_TYPES[it.e].name : "") + "]: " +
+                    it.q.replace("___", "[" + it.o[it.a] + "]") + " · you: " + (m.pick === -1 ? "I don't know" : it.o[m.pick]) + " · " + it.x);
+            });
+            L.push("", "### Grammar units", "");
+            var now = new Date(), q = buildQueue(t), n = unitSlots(d, String(now.getHours()).padStart(2, "0") + String(now.getMinutes()).padStart(2, "0"));
+            if (!q.length) L.push("None: nothing a unit would fix.");
+            q.forEach(function (u, i) {
+                L.push((i + 1) + ". " + U.label(u.id) + " " + U.UNITS[u.id] + " (" + U.ERROR_TYPES[u.t].name + ")" + (u.easier ? " · too hard? " + U.label(u.easier) + " " + U.UNITS[u.easier] + " first" : "") + (i >= n ? " · only if a mock shows the same mistake" : ""));
+            });
+            L.push("");
+        }
+        L.push("## Plan", "");
+        Object.keys(PLAN.days).filter(function (k) { return k >= d; }).forEach(function (k) {
+            var x = PLAN.days[k];
+            L.push("### " + day(k) + " · " + { normal: "Full day", mock: "Mock day", light: "Light day", exam: "Exam" }[x[0]], "", x[1], "");
+            PLAN.blocks[x[0]].forEach(function (b) {
+                L.push("- **" + hm(b[0]) + " " + b[1] + "**: " + b[2] + (b[3].length ? " (prompts: " + b[3].map(function (id) { return PROMPTS[id].title; }).join(", ") + ")" : ""));
+            });
+            L.push("");
+        });
+        L.push("## Prompts", "");
+        ORDER.forEach(function (id) { L.push("### " + PROMPTS[id].title, "", "When: " + PROMPTS[id].when, "", "> " + PROMPTS[id].text, ""); });
+        return L.join("\n");
+    }
+    document.addEventListener("click", function (e) {
+        var b = e.target.closest("[data-export]");
+        if (!b) return;
+        var txt = exportText();
+        if (b.getAttribute("data-export") === "copy") return copy(txt, "Plan and results");
+        var a = document.createElement("a");
+        a.href = URL.createObjectURL(new Blob([txt], { type: "text/markdown" }));
+        a.download = "war-room-" + iso(new Date()) + ".md";
+        document.body.appendChild(a); a.click(); a.remove();
+        setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
+    });
 })();
 </script>
 </body>
