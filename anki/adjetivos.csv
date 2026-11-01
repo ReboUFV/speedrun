@@ -4,37 +4,37 @@
 #columns:Text,Back Extra,Deck,Tags
 #deck column:3
 #tags column:4
-<b>begeistert</b> · von + Dat<br>Die Teilnehmer waren von dem Workshop begeistert.<br><br>{{c1::entusiasmado}},,German B2 Speedrun::Adjetivos esenciales,adjetivos B1
-"<b>überzeugt</b> · von + Dat<br>Ich bin davon überzeugt, dass es klappt.<br><br>{{c1::convencido}}",überzeugend = convincente,German B2 Speedrun::Adjetivos esenciales,adjetivos B1
-"<b>unsicher</b><br>Ich bin mir noch unsicher, ob ich komme.<br><br>{{c1::inseguro, dudoso}}",,German B2 Speedrun::Adjetivos esenciales,adjetivos B1
-"<b>gespannt</b> · auf + Akk<br>Ich bin gespannt auf die Ergebnisse.<br><br>{{c1::con ganas de saber, expectante}}",,German B2 Speedrun::Adjetivos esenciales,adjetivos B1
-"<b>bereit</b> · zu + Dat<br>Sind Sie bereit, am Wochenende zu arbeiten?<br><br>{{c1::dispuesto, listo}}",,German B2 Speedrun::Adjetivos esenciales,adjetivos B1
-"<b>zuständig</b> · für + Akk<br>Wer ist hier für die Anmeldung zuständig?<br><br>{{c1::responsable, encargado}}",Típico de Durchsagen y textos de la uni.,German B2 Speedrun::Adjetivos esenciales,adjetivos B2
-<b>abhängig</b> · von + Dat<br>Der Preis ist abhängig von der Saison.<br><br>{{c1::dependiente}},unabhängig = independiente,German B2 Speedrun::Adjetivos esenciales,adjetivos B1
-<b>betroffen</b> · von + Dat<br>Von dem Streik sind viele Pendler betroffen.<br><br>{{c1::afectado}},,German B2 Speedrun::Adjetivos esenciales,adjetivos B2
-"<b>gewohnt</b><br>Ich bin es gewohnt, früh aufzustehen.<br><br>{{c1::acostumbrado}}",sich gewöhnen an + Akk,German B2 Speedrun::Adjetivos esenciales,adjetivos B1
-"<b>gering</b><br>Das Risiko ist sehr gering.<br><br>{{c1::escaso, bajo}}",Trampa: gering ≠ nada.,German B2 Speedrun::Adjetivos esenciales,adjetivos B2
-<b>erheblich</b><br>Die Kosten sind erheblich gestiegen.<br><br>{{c1::considerable}},,German B2 Speedrun::Adjetivos esenciales,adjetivos B2
-"<b>deutlich</b><br>Die Zahl ist deutlich gesunken.<br><br>{{c1::claro, notable}}",Con comparativo: deutlich mehr = bastante más.,German B2 Speedrun::Adjetivos esenciales,adjetivos B1
-"<b>knapp</b><br>Knapp die Hälfte der Studenten arbeitet nebenbei.<br><br>{{c1::escaso, justo; casi}}",knapp 50 % = algo menos de 50 %. Trampa de números.,German B2 Speedrun::Adjetivos esenciales,adjetivos B2
-<b>ausreichend</b><br>Für alle Teilnehmer gibt es ausreichend Plätze.<br><br>{{c1::suficiente}},,German B2 Speedrun::Adjetivos esenciales,adjetivos B2
-<b>ähnlich</b><br>Die beiden Angebote sind sich sehr ähnlich.<br><br>{{c1::parecido}},,German B2 Speedrun::Adjetivos esenciales,adjetivos B1
-"<b>üblich</b><br>Wie üblich beginnt der Kurs um neun.<br><br>{{c1::habitual, normal}}",wie üblich = como siempre,German B2 Speedrun::Adjetivos esenciales,adjetivos B1
-"<b>bisherig</b><br>Die bisherigen Ergebnisse sind gut.<br><br>{{c1::anterior, hasta ahora}}",bisher = hasta ahora,German B2 Speedrun::Adjetivos esenciales,adjetivos B2
-"<b>ehemalig</b><br>Ein ehemaliger Student erzählt von seinem Studium.<br><br>{{c1::antiguo, ex-}}",,German B2 Speedrun::Adjetivos esenciales,adjetivos B2
-<b>künftig</b><br>Künftig müssen sich alle online anmelden.<br><br>{{c1::futuro; en el futuro}},Cambio de norma: típico de reading.,German B2 Speedrun::Adjetivos esenciales,adjetivos B2
-<b>vorläufig</b><br>Das ist nur eine vorläufige Lösung.<br><br>{{c1::provisional}},≠ endgültig,German B2 Speedrun::Adjetivos esenciales,adjetivos B2
-<b>endgültig</b><br>Die endgültige Entscheidung fällt im Mai.<br><br>{{c1::definitivo}},,German B2 Speedrun::Adjetivos esenciales,adjetivos B2
-"<b>erforderlich</b><br>Für die Anmeldung ist ein Ausweis erforderlich.<br><br>{{c1::necesario, requerido}}",Lenguaje oficial.,German B2 Speedrun::Adjetivos esenciales,adjetivos B2
-<b>gültig</b><br>Das Ticket ist nur heute gültig.<br><br>{{c1::válido}},ungültig = no válido,German B2 Speedrun::Adjetivos esenciales,adjetivos B1
-"<b>umstritten</b><br>Das neue Gesetz ist umstritten.<br><br>{{c1::polémico, discutido}}",,German B2 Speedrun::Adjetivos esenciales,adjetivos B2
-<b>zuverlässig</b><br>Der Bus ist hier nicht sehr zuverlässig.<br><br>{{c1::fiable}},,German B2 Speedrun::Adjetivos esenciales,adjetivos B1
-<b>anstrengend</b><br>Die erste Woche war sehr anstrengend.<br><br>{{c1::agotador}},,German B2 Speedrun::Adjetivos esenciales,adjetivos B1
-<b>berufstätig</b><br>Beide Eltern sind berufstätig.<br><br>{{c1::que trabaja (con empleo)}},,German B2 Speedrun::Adjetivos esenciales,adjetivos B1
-<b>eilig</b><br>Ich habe es eilig.<br><br>{{c1::urgente}},es eilig haben = tener prisa,German B2 Speedrun::Adjetivos esenciales,adjetivos B1
-"<b>peinlich</b><br>Das war mir total peinlich.<br><br>{{c1::vergonzoso, embarazoso}}",,German B2 Speedrun::Adjetivos esenciales,adjetivos B1
-"<b>vorsichtig</b><br>Seien Sie bitte vorsichtig, der Boden ist nass.<br><br>{{c1::prudente, cuidadoso}}",,German B2 Speedrun::Adjetivos esenciales,adjetivos A2
-"<b>gründlich</b><br>Lesen Sie den Vertrag gründlich durch.<br><br>{{c1::minucioso, a fondo}}",,German B2 Speedrun::Adjetivos esenciales,adjetivos B2
-<b>ehrgeizig</b><br>Sie ist sehr ehrgeizig und will Chefin werden.<br><br>{{c1::ambicioso}},,German B2 Speedrun::Adjetivos esenciales,adjetivos B2
-<b>gleichzeitig</b><br>Ich kann nicht gleichzeitig arbeiten und lernen.<br><br>{{c1::simultáneo; a la vez}},,German B2 Speedrun::Adjetivos esenciales,adjetivos B1
-"<b>unbedingt</b><br>Du musst den Film unbedingt sehen.<br><br>{{c1::sin falta, absolutamente}}",,German B2 Speedrun::Adjetivos esenciales,adjetivos B1
+<b>begeistert</b> · von + Dat<br>Die Teilnehmer waren von dem Workshop begeistert.<br><br>{{c1::entusiasmado}},"<div class=""srx"">[sound:srde_72ff1f3542ce.mp3]</div>",German B2 Speedrun::Adjetivos esenciales,adjetivos B1
+"<b>überzeugt</b> · von + Dat<br>Ich bin davon überzeugt, dass es klappt.<br><br>{{c1::convencido}}","überzeugend = convincente<div class=""srx"">[sound:srde_b7f7ffa36e6b.mp3]</div>",German B2 Speedrun::Adjetivos esenciales,adjetivos B1
+"<b>unsicher</b><br>Ich bin mir noch unsicher, ob ich komme.<br><br>{{c1::inseguro, dudoso}}","<div class=""srx"">[sound:srde_f113bb400347.mp3]</div>",German B2 Speedrun::Adjetivos esenciales,adjetivos B1
+"<b>gespannt</b> · auf + Akk<br>Ich bin gespannt auf die Ergebnisse.<br><br>{{c1::con ganas de saber, expectante}}","<div class=""srx"">[sound:srde_8dc617432c72.mp3]</div>",German B2 Speedrun::Adjetivos esenciales,adjetivos B1
+"<b>bereit</b> · zu + Dat<br>Sind Sie bereit, am Wochenende zu arbeiten?<br><br>{{c1::dispuesto, listo}}","<div class=""srx"">[sound:srde_2b2092c44ea4.mp3]</div>",German B2 Speedrun::Adjetivos esenciales,adjetivos B1
+"<b>zuständig</b> · für + Akk<br>Wer ist hier für die Anmeldung zuständig?<br><br>{{c1::responsable, encargado}}","Típico de Durchsagen y textos de la uni.<div class=""srx"">[sound:srde_08481b82efc7.mp3]</div>",German B2 Speedrun::Adjetivos esenciales,adjetivos B2
+<b>abhängig</b> · von + Dat<br>Der Preis ist abhängig von der Saison.<br><br>{{c1::dependiente}},"unabhängig = independiente<div class=""srx"">[sound:srde_837661e8918d.mp3]</div>",German B2 Speedrun::Adjetivos esenciales,adjetivos B1
+<b>betroffen</b> · von + Dat<br>Von dem Streik sind viele Pendler betroffen.<br><br>{{c1::afectado}},"<div class=""srx"">[sound:srde_a4e4a93903fe.mp3]</div>",German B2 Speedrun::Adjetivos esenciales,adjetivos B2
+"<b>gewohnt</b><br>Ich bin es gewohnt, früh aufzustehen.<br><br>{{c1::acostumbrado}}","sich gewöhnen an + Akk<div class=""srx"">[sound:srde_e064503a6085.mp3]</div>",German B2 Speedrun::Adjetivos esenciales,adjetivos B1
+"<b>gering</b><br>Das Risiko ist sehr gering.<br><br>{{c1::escaso, bajo}}","Trampa: gering ≠ nada.<div class=""srx"">[sound:srde_207940ace081.mp3]</div>",German B2 Speedrun::Adjetivos esenciales,adjetivos B2
+<b>erheblich</b><br>Die Kosten sind erheblich gestiegen.<br><br>{{c1::considerable}},"<div class=""srx"">[sound:srde_51568b72405f.mp3]</div>",German B2 Speedrun::Adjetivos esenciales,adjetivos B2
+"<b>deutlich</b><br>Die Zahl ist deutlich gesunken.<br><br>{{c1::claro, notable}}","Con comparativo: deutlich mehr = bastante más.<div class=""srx"">[sound:srde_f4d32225f832.mp3]</div>",German B2 Speedrun::Adjetivos esenciales,adjetivos B1
+"<b>knapp</b><br>Knapp die Hälfte der Studenten arbeitet nebenbei.<br><br>{{c1::escaso, justo; casi}}","knapp 50 % = algo menos de 50 %. Trampa de números.<div class=""srx"">[sound:srde_fffc82eaef3a.mp3]</div>",German B2 Speedrun::Adjetivos esenciales,adjetivos B2
+<b>ausreichend</b><br>Für alle Teilnehmer gibt es ausreichend Plätze.<br><br>{{c1::suficiente}},"<div class=""srx"">[sound:srde_6603a0b23642.mp3]</div>",German B2 Speedrun::Adjetivos esenciales,adjetivos B2
+<b>ähnlich</b><br>Die beiden Angebote sind sich sehr ähnlich.<br><br>{{c1::parecido}},"<div class=""srx"">[sound:srde_b44b007ed106.mp3]</div>",German B2 Speedrun::Adjetivos esenciales,adjetivos B1
+"<b>üblich</b><br>Wie üblich beginnt der Kurs um neun.<br><br>{{c1::habitual, normal}}","wie üblich = como siempre<div class=""srx"">[sound:srde_0fc2ad04c511.mp3]</div>",German B2 Speedrun::Adjetivos esenciales,adjetivos B1
+"<b>bisherig</b><br>Die bisherigen Ergebnisse sind gut.<br><br>{{c1::anterior, hasta ahora}}","bisher = hasta ahora<div class=""srx"">[sound:srde_389bbccaad16.mp3]</div>",German B2 Speedrun::Adjetivos esenciales,adjetivos B2
+"<b>ehemalig</b><br>Ein ehemaliger Student erzählt von seinem Studium.<br><br>{{c1::antiguo, ex-}}","<div class=""srx"">[sound:srde_a8fcfaa5f816.mp3]</div>",German B2 Speedrun::Adjetivos esenciales,adjetivos B2
+<b>künftig</b><br>Künftig müssen sich alle online anmelden.<br><br>{{c1::futuro; en el futuro}},"Cambio de norma: típico de reading.<div class=""srx"">[sound:srde_d1fef85c910f.mp3]</div>",German B2 Speedrun::Adjetivos esenciales,adjetivos B2
+<b>vorläufig</b><br>Das ist nur eine vorläufige Lösung.<br><br>{{c1::provisional}},"≠ endgültig<div class=""srx"">[sound:srde_13468b54168e.mp3]</div>",German B2 Speedrun::Adjetivos esenciales,adjetivos B2
+<b>endgültig</b><br>Die endgültige Entscheidung fällt im Mai.<br><br>{{c1::definitivo}},"<div class=""srx"">[sound:srde_adf243824606.mp3]</div>",German B2 Speedrun::Adjetivos esenciales,adjetivos B2
+"<b>erforderlich</b><br>Für die Anmeldung ist ein Ausweis erforderlich.<br><br>{{c1::necesario, requerido}}","Lenguaje oficial.<div class=""srx"">[sound:srde_6f1c7fe8bf77.mp3]</div>",German B2 Speedrun::Adjetivos esenciales,adjetivos B2
+<b>gültig</b><br>Das Ticket ist nur heute gültig.<br><br>{{c1::válido}},"ungültig = no válido<div class=""srx"">[sound:srde_4d8ea70d81cb.mp3]</div>",German B2 Speedrun::Adjetivos esenciales,adjetivos B1
+"<b>umstritten</b><br>Das neue Gesetz ist umstritten.<br><br>{{c1::polémico, discutido}}","<div class=""srx"">[sound:srde_809f7946c2e9.mp3]</div>",German B2 Speedrun::Adjetivos esenciales,adjetivos B2
+<b>zuverlässig</b><br>Der Bus ist hier nicht sehr zuverlässig.<br><br>{{c1::fiable}},"<div class=""srx"">[sound:srde_14bc6ae85a88.mp3]</div>",German B2 Speedrun::Adjetivos esenciales,adjetivos B1
+<b>anstrengend</b><br>Die erste Woche war sehr anstrengend.<br><br>{{c1::agotador}},"<div class=""srx"">[sound:srde_6bc9258a7efd.mp3]</div>",German B2 Speedrun::Adjetivos esenciales,adjetivos B1
+<b>berufstätig</b><br>Beide Eltern sind berufstätig.<br><br>{{c1::que trabaja (con empleo)}},"<div class=""srx"">[sound:srde_3a70691f6d02.mp3]</div>",German B2 Speedrun::Adjetivos esenciales,adjetivos B1
+<b>eilig</b><br>Ich habe es eilig.<br><br>{{c1::urgente}},"es eilig haben = tener prisa<div class=""srx"">[sound:srde_e7f204d2f8ab.mp3]</div>",German B2 Speedrun::Adjetivos esenciales,adjetivos B1
+"<b>peinlich</b><br>Das war mir total peinlich.<br><br>{{c1::vergonzoso, embarazoso}}","<div class=""srx"">[sound:srde_300536222917.mp3]</div>",German B2 Speedrun::Adjetivos esenciales,adjetivos B1
+"<b>vorsichtig</b><br>Seien Sie bitte vorsichtig, der Boden ist nass.<br><br>{{c1::prudente, cuidadoso}}","<div class=""srx"">[sound:srde_ba545d970dc6.mp3]</div>",German B2 Speedrun::Adjetivos esenciales,adjetivos A2
+"<b>gründlich</b><br>Lesen Sie den Vertrag gründlich durch.<br><br>{{c1::minucioso, a fondo}}","<div class=""srx"">[sound:srde_c0789c1167ca.mp3]</div>",German B2 Speedrun::Adjetivos esenciales,adjetivos B2
+<b>ehrgeizig</b><br>Sie ist sehr ehrgeizig und will Chefin werden.<br><br>{{c1::ambicioso}},"<div class=""srx"">[sound:srde_66e3b6e42c63.mp3]</div>",German B2 Speedrun::Adjetivos esenciales,adjetivos B2
+<b>gleichzeitig</b><br>Ich kann nicht gleichzeitig arbeiten und lernen.<br><br>{{c1::simultáneo; a la vez}},"<div class=""srx"">[sound:srde_61f4ec4ea102.mp3]</div>",German B2 Speedrun::Adjetivos esenciales,adjetivos B1
+"<b>unbedingt</b><br>Du musst den Film unbedingt sehen.<br><br>{{c1::sin falta, absolutamente}}","<div class=""srx"">[sound:srde_3675ba1c2cf6.mp3]</div>",German B2 Speedrun::Adjetivos esenciales,adjetivos B1
