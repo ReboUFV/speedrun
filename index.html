@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Deutsch · Speedrun</title>
-    <link rel="stylesheet" href="assets/style.css?v=20261108212407">
-    <script src="assets/app.js?v=20261108212407"></script>
+    <link rel="stylesheet" href="assets/style.css?v=20261108212831">
+    <script src="assets/app.js?v=20261108212831"></script>
     <style>
         .page { padding-top: 14px; }
         .day-note { margin: 10px 0 0; font-weight: 600; }
@@ -141,6 +141,28 @@
                 </div>
 
                 <div class="card" style="margin-top:12px">
+                    <h2>Goethe in 2027, no rush</h2>
+                    <p style="margin:0 0 8px">The exam is a milestone, not the plan. The plan is to become fluent; the certificate follows when your mock results say it will. There are no dates here on purpose.</p>
+                    <div class="rule"><b>Phase 1 · Base</b><span>Daily loop, a growing input ladder, one grammar unit a week, a free text every Sunday. Don't take mock papers yet.</span></div>
+                    <div class="rule"><b>Phase 2 · Build</b><span>Add a timed Goethe-style writing task every second Sunday, a monthly self-check, and the vocabulary of C1 topics (society, work, science, environment, media). Take one full C1 mock paper to see where you are.</span></div>
+                    <div class="rule"><b>Phase 3 · Mock</b><span>About 6–8 weeks before the exam you sit: full papers under real time, one module at a time, and the post-mortem prompts. Only now does exam technique matter.</span></div>
+                    <div class="rule"><b>B2 or C1?</b><span>Take the C1 mocks first. If every module is at or above about 70%, book C1. If reading and listening sit near 60% (the usual pattern), take B2 first or wait two months: a low pass doesn't help you and a failed module costs another sitting. Reports say C1 can be taken module by module; check what your centre offers, and check dates early because places can fill.</span></div>
+                    <h3 style="margin:14px 0 4px;font-size:1rem">Grammar lane: suggested order</h3>
+                    <p class="subtle" style="margin:0 0 6px">Grammatik aktiv B2–C1. Chosen for what helps you understand and write C1 German first; skip units you already control.</p>
+                    <ol style="margin:0;padding-left:22px">
+                        <li>Kausale und konzessive Nebensätze (B·63), Konditionale und adversative (B·65)</li>
+                        <li>Temporale Nebensätze (B·62), Doppelkonnektoren (B·73)</li>
+                        <li>Passiv in allen Zeiten (B·14), Passiv mit Modalverben (B·15), Alternativen zum Passiv (B·16)</li>
+                        <li>Relativpronomen (B·70, B·71, B·72)</li>
+                        <li>Konjunktiv 2 (B·9, B·10, B·12)</li>
+                        <li>Verben, Nomen, Adjektive mit Präpositionen (B·33, B·34, B·35), Wörter mit da- (B·80)</li>
+                        <li>Infinitiv- und Nebensätze (B·67, B·68, B·69)</li>
+                        <li>Genitiv (B·49), Adjektivdeklination (B·55, B·56)</li>
+                    </ol>
+                    <p class="subtle" style="margin:8px 0 0">Funktionsverbgefüge, Nominalstil and Konjunktiv I aren't on this list because I haven't checked where your book covers them; look them up in its index and add them as you go.</p>
+                </div>
+
+                <div class="card" style="margin-top:12px">
                     <h2>Self-checks, no logging</h2>
                     <p class="subtle" style="margin:0 0 6px">Do one when it feels like time, about monthly. If you pass it twice in a row, make it harder.</p>
                     <ul style="margin:0">
@@ -148,7 +170,7 @@
                         <li><b>Listening:</b> a 5-minute Tagesschau or DW report without subtitles; you can retell most of it. Then try a banter podcast for 5 minutes.</li>
                         <li><b>Speaking:</b> 20 minutes with a native speaker without switching to English.</li>
                         <li><b>Writing:</b> 250 words on an opinion topic in 45 minutes with at most three errors Claude can find.</li>
-                        <li><b>The exam itself:</b> a Goethe C1 mock paper (free on goethe.de) when you feel ready.</li>
+                        <li><b>Mock paper:</b> a Goethe C1 module under real time (free samples on goethe.de), once in Phase 2 and then in Phase 3.</li>
                     </ul>
                 </div>
 
@@ -239,10 +261,11 @@
         whymiss: { title: "Why didn't I hear it?", when: "Listening day", text: "I listened to this German sentence and didn't understand it: \"[sentence from the transcript]\". What I thought I heard: \"[loose words are fine]\". Explain why I probably missed it (unknown word, sounds merged, unstressed ending, speed, separable verb at the end), how it actually sounds in fast speech, and give me 3 similar sentences to read aloud. Then make one cloze Anki card from it." },
         rewrite: { title: "Rewrite it at C1", when: "Sunday · writing", text: "Here is a German text I wrote in 45–55 minutes on [topic]: [paste, about 250–350 words]. 1) Rewrite it at C1 academic level (Hochschule register), keeping my arguments and my structure. 2) Then extract only the DIFFERENCES that matter, as a table: my phrase → your phrase → the device (Nominalisierung, Funktionsverbgefüge, Partizipialattribut, Konjunktiv I, connector, a more precise verb instead of sagen, gut, machen). 3) Pick the 8 most reusable differences and write each as an Anki cloze sentence, one per line, with the key part hidden as {{c1::...}}. 4) Grade my original text honestly against the Goethe C1 writing criteria, and name the single weakness to fix first." },
         monologue: { title: "Check my monologue", when: "Conversation day · speaking", text: "I recorded a 5-minute German monologue on [a debatable topic, e.g. quotas on company boards, banning cars from city centres] and typed what I said, with my hesitations and repairs as I said them: [paste]. Correct it like a C1 examiner. Give me: the 5 mistakes that cost the most, where my sentences collapsed (usually word order in long subordinate clauses), 5 phrases to sound more natural, and one fixed version of my opening and my conclusion that I can reuse on any topic (a neutral frame: claim, reason, example). Then give me a new topic to record again tomorrow." },
+        goethewrite: { title: "Goethe writing task", when: "Every second Sunday · timed", text: "Act as a Goethe-Zertifikat [B2 / C1] Schreiben examiner. If I pasted the official task description or rubric from goethe.de here, follow it exactly: [paste, or leave empty]. If not, say that your format and criteria are approximate and give me one task in the style of that exam: situation, required content points, word count and time limit. Then wait. I will write it with a timer and send it. Grade it with the official criteria (task fulfilment, coherence, vocabulary, correctness, or the ones in the rubric) and give a score out of 100. List the 5 costliest errors, the 5 phrases that would lift the register, and one structure to practise this week. Don't rewrite my whole text: show only the lines to change." },
         grammar: { title: "Grammar on demand", when: "Grammar day", text: "I keep making this German mistake: [paste 3–5 examples from my corrections]. Explain the rule in German at B2 level in under 120 words, with a Spanish line only for the trap that comes from Spanish. Then test me with 10 gap-fill items, one at a time, mixing B2 and C1 difficulty, and don't explain until I've answered. After the 10: my score, each mistake as my answer → correct → rule in 5 words, and whether to look at the rule again this week." },
         weekly: { title: "Weekly review", when: "Sunday · 20 min", text: "Here are my corrections and notes from this week: [paste]. Find the 3 patterns that cost me the most, ranked by how often they appeared and how much they would hurt at C1. For each pattern: the rule in one sentence, 3 fresh sentences to repair it, and what to watch for while I read or listen this week. Then suggest next week's topic for the daily output, and the one weakness I should ask a native speaker about." }
     };
-    var ORDER = ["correct", "rewrite", "mine", "talk", "monologue", "transcript", "whymiss", "grammar", "weekly"];
+    var ORDER = ["correct", "rewrite", "goethewrite", "mine", "talk", "monologue", "transcript", "whymiss", "grammar", "weekly"];
     function promptButtons(ids, label) {
         return ids.map(function (id) { return '<button class="btn btn--primary btn--sm" type="button" data-copy="' + id + '">' + (label || "Copy: " + esc(PROMPTS[id].title)) + "</button>"; }).join("");
     }
@@ -260,14 +283,14 @@
     var FOCUS = [
         { n: "Reading", t: "Read an article, twice", d: "Intensive: 25 minutes on a Zeit, Spiegel or Spektrum article, looking up what blocks you and mining the rest. Extensive: another 15 minutes on something easier, without stopping at all.", p: ["mine"] },
         { n: "Listening", t: "Climb the speed ladder", d: "A 2–5 minute clip you can follow with its transcript. Play it at 0.8× to find the word boundaries, then 1.0×, then 1.2×. Transcribe 2 minutes by dictation, shadow 5 or 6 times while recording yourself, and add what you missed to Anki.", p: ["transcript", "whymiss"] },
-        { n: "Grammar", t: "Fix one repeated mistake", d: "Take the mistake that appeared most in this week's corrections, or one C1 structure: Funktionsverbgefüge, Nominalstil, Konjunktiv I, two-part connectors, a passive substitute. Learn the rule in German, test yourself, then use it in your daily output.", p: ["grammar"] },
+        { n: "Grammar", t: "One unit, then use it", d: "Work one unit of Grammatik aktiv B2–C1 from the suggested order in Method (or the mistake that hurts most in your corrections). Do the exercises, test yourself, then use the structure in today's output. One unit a week is enough; two is a strong week.", p: ["grammar"] },
         { n: "Conversation", t: "Speak for 45 minutes", d: "A tutor who prepares C1 exams, or an exchange partner. First record a 5-minute monologue on a debatable topic and have it checked. With no one available, use the conversation prompt and speak your answers aloud.", p: ["talk", "monologue"] },
         { n: "Book", t: "Read your novel", d: "20–30 pages of a German novel or non-fiction book. No dictionary: underline, keep going, and mine 5 sentences at the end.", p: ["mine"] },
         { n: "Immersion", t: "A long German session", d: "A film or a series with German subtitles, a Mediathek documentary, a long podcast. Two hours or more, and no studying at all. Include something messy: people interrupting each other, slang, accents.", p: [] },
-        { n: "Review", t: "Review the week", d: "Paste this week's corrections into the review prompt, pick next week's output topic, then write a 45-minute text on it and have it rewritten at C1, keeping only the differences.", p: ["weekly", "rewrite"] }
+        { n: "Review", t: "Review the week", d: "Paste this week's corrections into the review prompt and pick next week's topic. Then write for 45 minutes: one week a free text rewritten at C1 keeping only the differences, the next a timed Goethe-style task graded like the exam.", p: ["weekly", "rewrite", "goethewrite"] }
     ];
     var DAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-    var mode = (store("war:mode") === "light" || store("war:mode") === "full") ? store("war:mode") : "normal";
+    var mode = (store("os:mode") === "light" || store("os:mode") === "full") ? store("os:mode") : "normal";
     function blocksFor(f, day) {
         var anki = { m: "20 min", t: "Anki", d: "Reviews first, then up to 10 new cards. Mined sentences before anything else.", p: [] };
         var focus = { m: day === 6 ? "2 h+" : "45 min", t: f.n + ": " + f.t, d: f.d, p: f.p };
@@ -295,7 +318,7 @@
         }).join("");
     }
     document.querySelectorAll("[data-mode]").forEach(function (b) {
-        b.addEventListener("click", function () { mode = b.getAttribute("data-mode"); store("war:mode", mode); render(); });
+        b.addEventListener("click", function () { mode = b.getAttribute("data-mode"); store("os:mode", mode); render(); });
     });
     render();
 })();

@@ -113,7 +113,7 @@
     window.haptic = haptic;
 
     // ---------- Data: backup, import, delete (with undo) ----------
-    var KEY_RE = /^(units:|test:|level:|mine:|war:|reboot-done|words:|anki:|perf:|speedrunBannedSet|home:|open:|tab:|coach:chat|coach:spent|theme$)/;
+    var KEY_RE = /^(units:|test:|level:|mine:|os:|reboot-done|words:|anki:|perf:|speedrunBannedSet|home:|open:|tab:|coach:chat|coach:spent|theme$)/;
     function ownKeys() {
         var keys = [];
         try { for (var i = 0; i < localStorage.length; i++) { var k = localStorage.key(i); if (KEY_RE.test(k)) keys.push(k); } } catch (e) {}
@@ -167,7 +167,7 @@
 
     // ---------- Device sync by link: all progress travels in the URL fragment (never sent to a server).
     // The API key and the theme stay on each device.
-    var SYNC_RE = /^(units:|test:|level:|mine:|war:|reboot-done|words:|anki:|perf:|speedrunBannedSet|home:|open:|tab:|coach:chat|coach:spent)/;
+    var SYNC_RE = /^(units:|test:|level:|mine:|os:|reboot-done|words:|anki:|perf:|speedrunBannedSet|home:|open:|tab:|coach:chat|coach:spent)/;
     function b64url(bytes) { var s = ""; for (var i = 0; i < bytes.length; i++) s += String.fromCharCode(bytes[i]); return btoa(s).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, ""); }
     function unb64url(t) { t = t.replace(/-/g, "+").replace(/_/g, "/"); while (t.length % 4) t += "="; var s = atob(t), b = new Uint8Array(s.length); for (var i = 0; i < s.length; i++) b[i] = s.charCodeAt(i); return b; }
     async function packData() {
