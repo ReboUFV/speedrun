@@ -5,7 +5,7 @@
     // Line icons, one stroke weight, used only in the navigation
     function ico(d) { return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">' + d + "</svg>"; }
     var NAV = [
-        { href: "index.html", label: "War room", icon: ico('<path d="M5 21V4"/><path d="M5 4.5h11.5l-2.2 4 2.2 4H5"/>') },
+        { href: "index.html", label: "Deutsch", icon: ico('<path d="M5 21V4"/><path d="M5 4.5h11.5l-2.2 4 2.2 4H5"/>') },
         { href: "words.html", label: "Words", icon: ico('<path d="M4 19 9 5l5 14M5.8 14.5h6.4M15 15.5c0-2 1.4-3 3-3s3 1 3 3v3.5M21 17c-.6 1.5-1.7 2-3 2-1.6 0-3-.6-3-2.2"/>') },
         { href: "anki.html", label: "Anki", icon: ico('<rect x="6" y="3.5" width="13" height="16" rx="2.5"/><path d="M4 7v11.5A2.5 2.5 0 0 0 6.5 21H15"/>') }
     ];
@@ -71,7 +71,7 @@
         header.className = "appbar";
         header.innerHTML =
             '<div class="appbar__inner">' +
-                '<a class="brand" href="index.html"><span class="brand__mark" aria-hidden="true">B2</span><span>Speedrun</span></a>' +
+                '<a class="brand" href="index.html"><span class="brand__mark" aria-hidden="true">C1</span><span>Deutsch</span></a>' +
                 '<span class="appbar__spacer"></span>' +
                 '<nav class="tabs" aria-label="Main">' + navLinks() + "</nav>" +
                 '<button class="icon-btn" id="open-settings" type="button" aria-label="Settings and data" title="Settings and data" aria-haspopup="dialog">' + ico('<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/>') + '</button>' +
